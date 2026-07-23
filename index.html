@@ -186,6 +186,22 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .coffee .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.8rem}
 .coffee a{font-weight:500;color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:2px}
 
+/* ── image bands ── */
+.band{position:relative;overflow:hidden}
+.band img{width:100%;height:clamp(300px,42vw,520px);object-fit:cover;display:block}
+.band::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,32,59,.85) 0%,rgba(12,32,59,.35) 45%,transparent 100%)}
+.band-txt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 3rem;z-index:2;max-width:640px}
+.band-txt h3{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.3rem);font-weight:900;line-height:1.2;margin-bottom:.9rem}
+.band-txt p{color:var(--cream-dim);font-size:1rem;line-height:1.8}
+
+/* ── series ── */
+.series{text-align:center}
+.series-img{max-width:960px;margin:2.8rem auto 0}
+.series-img img{width:100%}
+.series-cap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:820px;margin:2.5rem auto 0;text-align:left}
+.series-cap b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.series-cap p{font-size:.9rem;color:var(--cream-dim);line-height:1.75}
+
 /* ── sunfish ── */
 .sf{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:center}
 .sf img{width:100%;max-width:300px;box-shadow:-12px 14px 46px rgba(0,0,0,.5)}
@@ -240,6 +256,9 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .prog-row{grid-template-columns:1fr;gap:.3rem}
   .spk-head{flex-direction:column;text-align:center;align-items:center}
   .foot-in{flex-direction:column;text-align:center}
+  .band-txt{padding:0 1.4rem}
+  .band::after{background:linear-gradient(to right,rgba(12,32,59,.92) 0%,rgba(12,32,59,.7) 70%,rgba(12,32,59,.5) 100%)}
+  .series-cap{grid-template-columns:1fr;gap:1.5rem}
 }
 </style>
 </head>
@@ -292,6 +311,20 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
       <div class="stat"><b>20+</b><span>Years unchanged</span></div>
       <div class="stat"><b>$2.3T</b><span>Annual cost of failure</span></div>
       <div class="stat"><b>12%</b><span>Sustain beyond 3 years</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: MOLA SERIES ═══════════ -->
+<section class="sec sec-dark">
+  <div class="wrap series">
+    <p class="tag reveal" style="text-align:center">The Mola Series</p>
+    <h2 class="head reveal">Two books. One ocean.</h2>
+    <p class="lead reveal" style="margin:0 auto">The mola — the ocean sunfish — is the heaviest bony fish alive, and it drifts. It looks unfinished, almost impossible. It survives anyway. Two books on why organisations struggle to move, and what makes movement possible.</p>
+    <div class="series-img reveal"><img src="images/both-books.jpg" alt="Change Anesthesiology and Sunfish Paradox"></div>
+    <div class="series-cap">
+      <div class="reveal"><b>Book One</b><p><strong style="color:var(--cream)">Change Anesthesiology</strong> — why resistance is never the problem, and what to do before the change begins.</p></div>
+      <div class="reveal"><b>Book Two</b><p><strong style="color:var(--cream)">Sunfish Paradox</strong> — why organisations know what to do and still can't do it.</p></div>
     </div>
   </div>
 </section>
@@ -361,6 +394,15 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
       <p>She is not resistant. She is full.</p>
       <cite>— Chapter 6, White Space Thinking</cite>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: IMAGE BAND ═══════════ -->
+<section class="band reveal">
+  <img src="images/ca-lifestyle.jpg" alt="Change Anesthesiology">
+  <div class="band-txt">
+    <h3>Not a framework to deploy.<br>A practice to keep.</h3>
+    <p>Fifteen chapters, five daily dimensions, and a diagnostic you can use on Monday morning.</p>
   </div>
 </section>
 
@@ -502,7 +544,7 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
 <section class="sec sec-dark">
   <div class="wrap">
     <div class="sf">
-      <div class="reveal"><img src="images/sp-cover-flat.jpg" alt="Sunfish Paradox book cover"></div>
+      <div class="reveal"><img src="images/sp-cover-mockup.jpg" alt="Sunfish Paradox book cover" style="max-width:none;width:100%;box-shadow:none"></div>
       <div>
         <p class="tag reveal">The Mola Series · Book Two</p>
         <p class="sf-t reveal">SUNFISH<br>PARADOX</p>
@@ -511,6 +553,15 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
         <p class="reveal" style="font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:1.8rem">Coming soon</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: CLOSING BAND ═══════════ -->
+<section class="band reveal">
+  <img src="images/sp-lifestyle.jpg" alt="The Mola Series">
+  <div class="band-txt">
+    <h3>Two books.<br>One ocean.</h3>
+    <p>The Mola Series — published by Systovation Publications, Saskatoon.</p>
   </div>
 </section>
 
