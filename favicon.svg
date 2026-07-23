@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#0C0C0E"/>
+  
+  <!-- Subtle radial glow behind fish -->
+  <radialGradient id="glow">
+    <stop offset="0%" stop-color="#C9A96E" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="#0C0C0E" stop-opacity="0"/>
+  </radialGradient>
+  <circle cx="256" cy="248" r="200" fill="url(#glow)"/>
+  
+  <!-- === THE MOLA (OCEAN SUNFISH) === -->
+  
+  <!-- Main body — large round shape with top/bottom fin points -->
+  <!-- Body gradient: dark grey center fading lighter at edges -->
+  <radialGradient id="body_grad" cx="50%" cy="48%" r="50%">
+    <stop offset="0%" stop-color="#6B6860"/>
+    <stop offset="60%" stop-color="#555049"/>
+    <stop offset="100%" stop-color="#3A3832"/>
+  </radialGradient>
+  
+  <!-- Body path: round with pointed dorsal (top) and anal (bottom) fins -->
+  <path d="
+    M 256 72
+    C 256 72, 248 90, 246 108
+    C 238 108, 220 112, 204 126
+    C 180 148, 160 180, 152 216
+    C 144 252, 148 290, 164 322
+    C 178 350, 200 370, 228 382
+    C 238 386, 248 394, 252 412
+    C 254 420, 256 436, 256 436
+    C 256 436, 258 420, 260 412
+    C 264 394, 274 386, 284 382
+    C 312 370, 334 350, 348 322
+    C 364 290, 368 252, 360 216
+    C 352 180, 332 148, 308 126
+    C 292 112, 274 108, 266 108
+    C 264 90, 256 72, 256 72
+    Z
+  " fill="url(#body_grad)" stroke="#E8E4DC" stroke-width="4"/>
+  
+  <!-- Dorsal fin details (top, three small lines/dots) -->
+  <circle cx="248" cy="130" r="3" fill="#E8E4DC" opacity="0.5"/>
+  <circle cx="256" cy="122" r="3" fill="#E8E4DC" opacity="0.5"/>
+  <circle cx="264" cy="130" r="3" fill="#E8E4DC" opacity="0.5"/>
+  
+  <!-- Gill marks (curved lines on each side of head) -->
+  <path d="M 226 170 C 220 182, 218 196, 222 208" fill="none" stroke="#E8E4DC" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+  <path d="M 218 174 C 212 186, 210 200, 214 212" fill="none" stroke="#E8E4DC" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+  <path d="M 286 170 C 292 182, 294 196, 290 208" fill="none" stroke="#E8E4DC" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+  <path d="M 294 174 C 300 186, 302 200, 298 212" fill="none" stroke="#E8E4DC" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+  
+  <!-- LEFT EYE -->
+  <circle cx="212" cy="240" r="16" fill="none" stroke="#E8E4DC" stroke-width="3"/>
+  <circle cx="212" cy="240" r="6" fill="#E8E4DC" opacity="0.6"/>
+  
+  <!-- RIGHT EYE -->
+  <circle cx="300" cy="240" r="16" fill="none" stroke="#E8E4DC" stroke-width="3"/>
+  <circle cx="300" cy="240" r="6" fill="#E8E4DC" opacity="0.6"/>
+  
+  <!-- MOUTH — gold-tinted, slightly smiling -->
+  <path d="M 238 278 C 244 288, 256 292, 268 288 C 274 284, 274 278, 268 274 C 260 270, 248 270, 238 278 Z" 
+        fill="none" stroke="#C9A96E" stroke-width="3" stroke-linejoin="round"/>
+  
+  <!-- === GOLD PECTORAL FINS (the signature accent) === -->
+  
+  <!-- LEFT FIN — multiple gold strokes radiating outward -->
+  <g opacity="0.85">
+    <line x1="152" y1="220" x2="100" y2="204" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="150" y1="230" x2="94" y2="218" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="148" y1="240" x2="90" y2="232" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="148" y1="250" x2="88" y2="248" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="148" y1="260" x2="90" y2="264" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="150" y1="270" x2="94" y2="278" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="152" y1="280" x2="100" y2="292" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="155" y1="288" x2="108" y2="304" stroke="#C9A96E" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  
+  <!-- RIGHT FIN — mirror -->
+  <g opacity="0.85">
+    <line x1="360" y1="220" x2="412" y2="204" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="362" y1="230" x2="418" y2="218" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="364" y1="240" x2="422" y2="232" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="364" y1="250" x2="424" y2="248" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="364" y1="260" x2="422" y2="264" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="362" y1="270" x2="418" y2="278" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="360" y1="280" x2="412" y2="292" stroke="#C9A96E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="357" y1="288" x2="404" y2="304" stroke="#C9A96E" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+</svg>
