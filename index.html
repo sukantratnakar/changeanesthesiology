@@ -67,11 +67,13 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 
 /* ── hero ── */
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;background:var(--navy);overflow:hidden}
-.hero::after{content:'';position:absolute;right:0;bottom:0;width:52%;height:78%;background:var(--cream);clip-path:polygon(100% 0,100% 100%,0 100%);opacity:.055;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  /* 140.53deg = perpendicular to the cover's 39.47° diagonal — the two tapers now run parallel */
+  background:linear-gradient(140.53deg,transparent 0 61%,rgba(240,237,228,.055) 61% 100%)}
 .hero-l{padding:8rem 3rem 5rem 4rem;position:relative;z-index:2}
-.hero-series{display:flex;align-items:center;gap:.9rem;margin-bottom:2.2rem}
-.hero-series img{height:46px;width:auto;opacity:.9}
-.hero-series span{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--slate);line-height:1.7}
+.hero-series{display:flex;align-items:center;gap:1.3rem;margin-bottom:2.4rem;padding-bottom:1.6rem;border-bottom:1px solid rgba(212,177,95,.25);max-width:340px}
+.hero-series img{height:92px;width:auto;opacity:1}
+.hero-series span{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);line-height:1.9}
 .hero-t1{font-family:var(--mono);font-size:clamp(2.4rem,5.4vw,4rem);font-weight:700;letter-spacing:.14em;color:var(--gold);line-height:1}
 .hero-t2{font-family:var(--mono);font-size:clamp(1.5rem,3.2vw,2.35rem);font-weight:400;letter-spacing:.05em;color:var(--gold);margin-top:.35rem}
 .hero-sub{font-family:var(--mono);font-size:.92rem;letter-spacing:.06em;color:var(--gold-dim);margin-top:1rem}
@@ -146,7 +148,10 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .card.no-tool h3,.card.no-tool p{color:#B34233}
 
 /* ── EVENT ── */
-.event-band{background:var(--navy-deep);position:relative}
+.event-band{background:var(--navy-deep);position:relative;overflow:hidden}
+.event-band::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(140.53deg,transparent 0 68%,rgba(240,237,228,.03) 68% 100%)}
+.event-band .wrap{position:relative;z-index:2}
 .event-top{display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:center}
 .event-when{border-left:3px solid var(--gold);padding-left:1.8rem}
 .event-date{font-family:var(--mono);font-size:1.55rem;font-weight:700;letter-spacing:.1em;color:var(--cream)}
@@ -187,11 +192,12 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .coffee a{font-weight:500;color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:2px}
 
 /* ── image bands ── */
-.band{position:relative;overflow:hidden}
-.band img{width:100%;height:clamp(300px,42vw,520px);object-fit:cover;display:block}
-.band::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,32,59,.85) 0%,rgba(12,32,59,.35) 45%,transparent 100%)}
-.band-txt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 3rem;z-index:2;max-width:640px}
-.band-txt h3{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.3rem);font-weight:900;line-height:1.2;margin-bottom:.9rem}
+.band{background:var(--navy-deep);padding:4.5rem 0}
+.band-in{max-width:1240px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:center}
+.band.rev .band-in{direction:rtl}
+.band.rev .band-in>*{direction:ltr}
+.band img{width:100%;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.band-txt h3{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;line-height:1.2;margin-bottom:1rem}
 .band-txt p{color:var(--cream-dim);font-size:1rem;line-height:1.8}
 
 /* ── series ── */
@@ -238,6 +244,8 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .author-wrap{grid-template-columns:1fr;gap:2.5rem}
   .author-photo img{max-width:340px;margin:0 auto}
   .sf{grid-template-columns:1fr;gap:2rem}
+  .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
+  .band.rev .band-in{direction:ltr}
   .sf img{margin:0 auto}
   .sec{padding:5rem 0}
 }
@@ -256,9 +264,9 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .prog-row{grid-template-columns:1fr;gap:.3rem}
   .spk-head{flex-direction:column;text-align:center;align-items:center}
   .foot-in{flex-direction:column;text-align:center}
-  .band-txt{padding:0 1.4rem}
-  .band::after{background:linear-gradient(to right,rgba(12,32,59,.92) 0%,rgba(12,32,59,.7) 70%,rgba(12,32,59,.5) 100%)}
   .series-cap{grid-template-columns:1fr;gap:1.5rem}
+  .hero-series{max-width:none}
+  .hero-series img{height:76px}
 }
 </style>
 </head>
@@ -398,11 +406,13 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
 </section>
 
 <!-- ═══════════ EDIT: IMAGE BAND ═══════════ -->
-<section class="band reveal">
-  <img src="images/ca-lifestyle.jpg" alt="Change Anesthesiology">
-  <div class="band-txt">
-    <h3>Not a framework to deploy.<br>A practice to keep.</h3>
-    <p>Fifteen chapters, five daily dimensions, and a diagnostic you can use on Monday morning.</p>
+<section class="band">
+  <div class="band-in">
+    <div class="reveal"><img src="images/ca-lifestyle.jpg" alt="Change Anesthesiology"></div>
+    <div class="band-txt reveal">
+      <h3>Not a framework to deploy.<br>A practice to keep.</h3>
+      <p>Fifteen chapters, five daily dimensions, and a diagnostic you can use on Monday morning. The work happens before the initiative arrives — not after resistance shows up.</p>
+    </div>
   </div>
 </section>
 
@@ -466,6 +476,7 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
         <p style="font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:1.5rem">Free registration</p>
         <a href="https://lu.ma/quantraz" target="_blank" class="btn btn-gold" style="font-size:.82rem;padding:1rem 2.4rem">Register on Luma</a>
         <p style="font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--slate);margin-top:1.2rem;line-height:1.9">Seats are limited<br>lu.ma/quantraz</p>
+        <p style="margin-top:2.2rem;padding-top:1.6rem;border-top:1px solid rgba(212,177,95,.2)"><a href="article.html" style="font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:3px">Read the article &rarr;</a></p>
       </div>
     </div>
 
@@ -557,11 +568,13 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
 </section>
 
 <!-- ═══════════ EDIT: CLOSING BAND ═══════════ -->
-<section class="band reveal">
-  <img src="images/sp-lifestyle.jpg" alt="The Mola Series">
-  <div class="band-txt">
-    <h3>Two books.<br>One ocean.</h3>
-    <p>The Mola Series — published by Systovation Publications, Saskatoon.</p>
+<section class="band rev">
+  <div class="band-in">
+    <div class="reveal"><img src="images/sp-lifestyle.jpg" alt="Sunfish Paradox"></div>
+    <div class="band-txt reveal">
+      <h3>Two books.<br>One ocean.</h3>
+      <p>The Mola Series — published by Systovation Publications, Saskatoon. Change Anesthesiology asks what to do before the change begins. Sunfish Paradox asks why knowing was never enough.</p>
+    </div>
   </div>
 </section>
 

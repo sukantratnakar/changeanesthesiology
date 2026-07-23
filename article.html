@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Change Anesthesiology: A Model That Treats the Cause, Not the Symptom — Sukant Ratnakar</title>
+<meta name="description" content="Resistance is not the problem. It is the fever. A model that treats the cause, not the symptom. By Sukant Ratnakar, CMC.">
+<meta property="og:title" content="A Model That Treats the Cause, Not the Symptom">
+<meta property="og:description" content="Resistance is not the problem — it is the fever. By Sukant Ratnakar, CMC.">
+<meta property="og:image" content="https://changeanesthesiology.com/og-image.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0C203B;--navy-deep:#071426;--gold:#D4B15F;--gold-dim:#A98D52;
+  --paper:#FBFAF7;--ink:#161719;--ink-2:#3A3D42;--ink-3:#6B7078;--line:#E4E1D9;
+  --serif:'Newsreader',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+::selection{background:var(--gold);color:var(--navy-deep)}
+
+/* ══ progress ══ */
+#bar{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0;z-index:200;transition:width .1s linear}
+
+/* ══ GATE ══ */
+#gate{position:fixed;inset:0;z-index:150;background:var(--navy);display:grid;grid-template-columns:1.1fr .9fr;overflow-y:auto}
+#gate.hide{opacity:0;pointer-events:none;transition:opacity .6s}
+.g-l{padding:4rem 4rem 3rem;display:flex;flex-direction:column;justify-content:center}
+.g-kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:1.6rem}
+.g-title{font-family:var(--serif);font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:500;line-height:1.18;color:#F2F0EA;letter-spacing:-.01em}
+.g-sub{font-family:var(--serif);font-size:1.12rem;font-style:italic;color:var(--gold);margin-top:1.2rem}
+.g-meta{display:flex;gap:1.6rem;margin-top:2rem;font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:#7C889C}
+.g-ex{margin-top:2.2rem;padding-left:1.4rem;border-left:2px solid rgba(212,177,95,.5);color:#B8BDC7;font-size:.97rem;line-height:1.8;max-width:480px}
+.g-form{margin-top:2.6rem;max-width:420px}
+.g-form label{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:#7C889C;margin-bottom:.5rem}
+.g-form input{width:100%;padding:.9rem 1rem;background:rgba(255,255,255,.05);border:1px solid rgba(212,177,95,.3);color:#F2F0EA;font-family:var(--sans);font-size:.97rem;margin-bottom:1.1rem;transition:border-color .25s}
+.g-form input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.08)}
+.g-form input::placeholder{color:#5C6675}
+.g-btn{width:100%;padding:1rem;background:var(--gold);color:var(--navy-deep);border:none;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:background .25s}
+.g-btn:hover{background:#F2F0EA}
+.g-btn:disabled{opacity:.5;cursor:wait}
+.g-note{font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;color:#5C6675;margin-top:1rem;line-height:1.9}
+.g-err{color:#E08070;font-size:.82rem;margin-top:.7rem;display:none}
+.g-r{background:var(--navy-deep);display:flex;align-items:center;justify-content:center;padding:3rem;position:relative}
+.g-r::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(212,177,95,.09),transparent 65%)}
+.g-r img{width:min(280px,70%);box-shadow:-14px 16px 50px rgba(0,0,0,.6);position:relative;z-index:2}
+
+/* ══ ARTICLE ══ */
+.top{border-bottom:1px solid var(--line);padding:1.1rem 0;position:sticky;top:0;background:rgba(251,250,247,.93);backdrop-filter:blur(12px);z-index:100}
+.top-in{max-width:1080px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center}
+.top a.home{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+.top a.home:hover{color:var(--ink)}
+.top .cta{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;background:var(--navy);color:#F2F0EA;padding:.5rem 1.1rem;text-decoration:none}
+
+article{max-width:680px;margin:0 auto;padding:5rem 2rem 4rem}
+.a-kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:1.5rem}
+h1{font-family:var(--serif);font-size:clamp(2rem,4.4vw,3rem);font-weight:500;line-height:1.15;letter-spacing:-.015em;margin-bottom:1.5rem}
+.a-meta{display:flex;gap:1.4rem;align-items:center;padding-bottom:2.5rem;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);flex-wrap:wrap}
+article p{font-family:var(--serif);font-size:1.19rem;line-height:1.78;color:var(--ink-2);margin:1.55rem 0;letter-spacing:-.003em}
+article p.first{margin-top:2.5rem}
+article p.first::first-letter{font-size:3.6rem;line-height:.85;float:left;padding:.28rem .6rem 0 0;color:var(--navy);font-weight:500}
+.pull{margin:3rem 0;padding:2rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pull p{font-size:1.5rem;line-height:1.42;color:var(--navy);margin:0;font-style:italic}
+
+/* zone diagram */
+.zd{margin:3.5rem 0;background:var(--navy);padding:2.5rem 2rem;color:#F2F0EA}
+.zd-h{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.8rem;text-align:center}
+.zd-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+.zd-c{padding:1.1rem .8rem;background:rgba(255,255,255,.05);border-top:2px solid var(--gold);text-align:center}
+.zd-c.empty{background:transparent;border-top:2px dashed #C4654A;border-left:1px dashed rgba(196,101,74,.4);border-right:1px dashed rgba(196,101,74,.4);border-bottom:1px dashed rgba(196,101,74,.4)}
+.zd-n{font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;color:var(--gold);margin-bottom:.5rem}
+.zd-c.empty .zd-n{color:#C4654A}
+.zd-t{font-family:var(--sans);font-size:.84rem;font-weight:500;line-height:1.35}
+.zd-s{font-family:var(--mono);font-size:.53rem;letter-spacing:.08em;color:#7C889C;margin-top:.5rem;text-transform:uppercase}
+.zd-c.empty .zd-s{color:#C4654A}
+.zd-cap{text-align:center;font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:#7C889C;margin-top:1.6rem;line-height:1.9}
+
+.a-end{margin-top:3.5rem;padding-top:2rem;border-top:1px solid var(--line)}
+.a-end p{font-size:.95rem;font-family:var(--sans);color:var(--ink-3);line-height:1.8;margin:0}
+.a-cta{margin-top:3rem;background:var(--navy);padding:2.5rem 2rem;text-align:center;color:#F2F0EA}
+.a-cta h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;margin-bottom:.8rem}
+.a-cta p{font-family:var(--sans);font-size:.95rem;color:#B8BDC7;margin:0 0 1.6rem;line-height:1.75}
+.a-cta a{display:inline-block;background:var(--gold);color:var(--navy-deep);padding:.85rem 2rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;text-decoration:none}
+footer{border-top:1px solid var(--line);padding:2.5rem 2rem;text-align:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--ink-3)}
+
+@media(max-width:900px){
+  #gate{grid-template-columns:1fr}
+  .g-r{order:-1;padding:2.5rem 2rem 1rem}
+  .g-r img{width:170px}
+  .g-l{padding:2rem 1.6rem 3rem}
+  article{padding:3rem 1.4rem}
+  article p{font-size:1.1rem}
+  .zd-row{grid-template-columns:1fr 1fr;gap:.6rem}
+  .pull p{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<!-- ══════════ GATE ══════════ -->
+<div id="gate">
+  <div class="g-l">
+    <p class="g-kicker">CMC · IMCI Newsletter · September 2026</p>
+    <h1 class="g-title">A Model That Treats the Cause, Not the Symptom</h1>
+    <p class="g-sub">Resistance is not the problem. It is the fever.</p>
+    <div class="g-meta"><span>1,100 words</span><span>·</span><span>6 min read</span><span>·</span><span>Sukant Ratnakar, CMC</span></div>
+    <p class="g-ex">Most of what we label resistance is not stubbornness but depletion: attention and energy already fully committed, with nothing left to take on one more thing. That is not a failure of character. It is a failure of conditions — and conditions can be changed.</p>
+    <form class="g-form" id="gf" onsubmit="return unlock(event)">
+      <label for="nm">Your name</label>
+      <input type="text" id="nm" name="name" placeholder="First and last name" required autocomplete="name">
+      <label for="em">Email</label>
+      <input type="email" id="em" name="email" placeholder="you@company.com" required autocomplete="email">
+      <button type="submit" class="g-btn" id="gb">Read the article</button>
+      <p class="g-err" id="ge"></p>
+      <p class="g-note">Sent once — no list, no follow-up sequence.<br>You'll also receive an invitation to the book launch.</p>
+    </form>
+  </div>
+  <div class="g-r"><img src="images/ca-cover-flat.jpg" alt="Change Anesthesiology"></div>
+</div>
+
+<!-- ══════════ ARTICLE ══════════ -->
+<div class="top">
+  <div class="top-in">
+    <a href="index.html" class="home">&larr; Change Anesthesiology</a>
+    <a href="https://lu.ma/quantraz" target="_blank" class="cta">Launch Event</a>
+  </div>
+</div>
+
+<article>
+  <p class="a-kicker">CMC · IMCI Newsletter · September 2026</p>
+  <h1>Change Anesthesiology: A Model That Treats the Cause, Not the Symptom</h1>
+  <div class="a-meta"><span>Sukant Ratnakar, CMC</span><span>6 min read</span><span>Quantraz Inc.</span></div>
+
+  <p class="first">Technologies are not invented from nothing. They are assembled from technologies that already exist — the smartphone from the telephone, the camera, GPS and the touchscreen, each of which arrived on its own first. W. Brian Arthur's point is deceptively simple: every new technology becomes a component available for the next combination, so the pool of what can be combined does not merely grow, it multiplies (Arthur 2009). That is why the curve of technological change is not steady but steepening — and why it will keep steepening.</p>
+
+  <p>For most of history the loop held in balance: technology advanced, people adapted, a new normal formed, and there was time to catch one's breath before the next shift. That balance is gone. Technology now evolves exponentially; human beings adapt at the speed of biology — learning, habit, emotion and culture move in months and years, not days. The pace and quantum of change asked of people is set directly by that widening gap. What we call resistance is, for the most part, its predictable result: people asked to absorb change faster than any human system can. And the standard response — more initiatives, more training, launched faster — does not close the gap. It deepens the overload that guarantees the initiatives fail.</p>
+
+  <p>You can watch it happen inside a single project. A team adopts a new platform and spends three months learning it; by the time they are fluent, a next-generation release has absorbed two of the functions they were trained to perform — so they are behind again, not for want of effort, but because the target moved faster than they could run.</p>
+
+  <div class="pull"><p>It is not the problem; it is the fever — a signal that something upstream has gone wrong.</p></div>
+
+  <p>This reframes resistance entirely. Most of what we label resistance is not stubbornness but depletion: attention and energy already fully committed, with nothing left to take on one more thing. That is not a failure of character. It is a failure of conditions — and conditions can be changed.</p>
+
+  <p>This is the premise of a model I call Change Anesthesiology™, and the name is deliberate. Anaesthesia did not make surgery better; it made surgery survivable. It works upstream, before the first incision, and is sustained throughout — not administered once and forgotten. Organisational change can operate on the same logic: rather than managing resistance after it forms, we create the conditions under which it largely does not form. Those conditions follow a sequence — four stages, applied in order.</p>
+
+  <div class="zd">
+    <p class="zd-h">The Four Stages — the third is deliberately empty</p>
+    <div class="zd-row">
+      <div class="zd-c"><p class="zd-n">01</p><p class="zd-t">Broaden Perspective</p><p class="zd-s">See it from more than one angle</p></div>
+      <div class="zd-c"><p class="zd-n">02</p><p class="zd-t">Widen Capacity</p><p class="zd-s">Restore attention and energy</p></div>
+      <div class="zd-c empty"><p class="zd-n">03</p><p class="zd-t">Resistance</p><p class="zd-s">No intervention</p></div>
+      <div class="zd-c"><p class="zd-n">04</p><p class="zd-t">Embed Durability</p><p class="zd-s">Make it automatic</p></div>
+    </div>
+    <p class="zd-cap">The order is not incidental. Each stage creates the conditions for the next.</p>
+  </div>
+
+  <p>The first stage addresses perspective. People resist what they can see from only one vantage point. Seen from that single angle — usually "more work and less control for me" — a change registers as a threat, and the threat response crowds out everything else. Broadening perspective is not persuasion and does not require agreement; it means helping people see the same change from more than one position — the pressure driving it, what it does for the customer, where it sits in the wider system. Held in that fuller view, the change remains unfamiliar but is no longer automatically threatening.</p>
+
+  <p>The second stage addresses capacity — and here the model departs from convention. We are often told to push people out of their comfort zone; this does the reverse and widens it. By capacity I mean the concrete resources adaptation actually draws on: attention and energy. The combinatorial curve is precisely what erodes them, multiplying the simultaneous demands each person carries until nothing is left for anything new. So the work is to restore range — protected time, a lighter load, energy that is not already spent. It is the least visible stage and the most often skipped, which is exactly why so many well-designed changes stall. Capacity cannot be added to a system that is already saturated.</p>
+
+  <p>The third stage is resistance itself — and in this model, nothing is assigned to it. That is not an omission; it is the central claim. When the first two stages are done well, resistance has already diminished. There is no workshop to run, no campaign to mount, no holdouts to convert, because the conditions producing the resistance are gone. The empty stage is the argument the model exists to make: resistance is not reduced by confronting it, but by removing what caused it.</p>
+
+  <p>The fourth stage concerns durability, and it is the one most often neglected. It explains why so many changes are declared successful and then quietly unwind: adoption rises, the metrics look healthy, the programme closes — and within months the old pattern returns. That is not a lapse of will but how habit works. Under fatigue, people revert to what is automatic, and if the new behaviour never became automatic, it gives way. This stage embeds the change in daily habit so it holds — and so the next change begins from a stronger position rather than from zero.</p>
+
+  <p>Two things follow. The order is not incidental — each stage creates the conditions for the next, and moving out of sequence backfires: a habit mechanism imposed on an overwhelmed workforce, or a perspective exercise run before anyone sees why the change matters, does not merely waste effort but confirms the sceptics' view that the initiative was never viable. And because the curve never stops rising, the model is not run once and completed. It is run again and again, each cycle leaving the organisation more able to absorb the next demand — until change is no longer a succession of crises but a capability. It does not conclude. It compounds.</p>
+
+  <div class="pull"><p>It is easier to blame people than to examine the conditions we have placed them in.</p></div>
+
+  <p>None of this is complex, which is part of why it is missed. But the curve that produced those conditions is not going to relent, and no amount of effort aimed at the symptom will meet it. Address the conditions upstream, in the right order, and most of the downstream difficulty resolves on its own. It is a straightforward shift. It is not an easy one. But in my experience, that is precisely where durable change begins.</p>
+
+  <div class="a-end">
+    <p>Sukant Ratnakar is Founder &amp; Principal Consultant at Quantraz Inc. and a Certified Management Consultant (CMC). He is the author of <em>Change Anesthesiology: Why Resistance Is Never the Problem</em>, and writes on why organisations so often know what to do yet struggle to do it.</p>
+  </div>
+
+  <div class="a-cta">
+    <h3>The book launches 13 August 2026</h3>
+    <p>Auditorium, Alice Turner Library, Saskatoon — with guest authors Tammy Martins and Ryan Myers.</p>
+    <a href="https://lu.ma/quantraz" target="_blank">Register Free</a>
+  </div>
+</article>
+
+<footer>© 2026 Sukant Ratnakar · Quantraz Inc. · changeanesthesiology.com</footer>
+
+<script>
+// ── reading progress ──
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('bar').style.width=pct+'%';
+});
+
+// ── gate ──
+const KEY='ca_article_unlocked';
+function reveal(){
+  const g=document.getElementById('gate');
+  g.classList.add('hide');
+  setTimeout(()=>g.style.display='none',600);
+  document.body.style.overflow='';
+}
+if(localStorage.getItem(KEY)==='1'){document.getElementById('gate').style.display='none'}
+else{document.body.style.overflow='hidden'}
+
+async function unlock(e){
+  e.preventDefault();
+  const name=document.getElementById('nm').value.trim();
+  const email=document.getElementById('em').value.trim();
+  const err=document.getElementById('ge');
+  const btn=document.getElementById('gb');
+  if(name.length<2||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    err.textContent='Please enter your name and a valid email address.';
+    err.style.display='block';return false;
+  }
+  err.style.display='none';
+  btn.disabled=true;btn.textContent='Opening…';
+
+  // Web3Forms endpoint — submissions arrive by email
+  try{
+    await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({
+        access_key:'cb2cc9ab-3d9a-4cb2-b6c4-ab3486da9973',
+        subject:'Article access — Change Anesthesiology (IMCI)',
+        name:name,email:email,
+        message:name+' ('+email+') opened the IMCI article.'
+      })
+    });
+  }catch(_){/* never block the reader on a network failure */}
+
+  localStorage.setItem(KEY,'1');
+  reveal();
+  return false;
+}
+</script>
+</body>
+</html>
