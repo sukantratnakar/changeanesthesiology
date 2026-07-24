@@ -37,6 +37,7 @@ a{color:inherit}
 .g-meta{display:flex;gap:1.6rem;margin-top:2rem;font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:#7C889C}
 .g-ex{margin-top:2.2rem;padding-left:1.4rem;border-left:2px solid rgba(212,177,95,.5);color:#B8BDC7;font-size:.97rem;line-height:1.8;max-width:480px}
 .g-form{margin-top:2.6rem;max-width:420px}
+.g-two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
 .g-form label{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:#7C889C;margin-bottom:.5rem}
 .g-form input{width:100%;padding:.9rem 1rem;background:rgba(255,255,255,.05);border:1px solid rgba(212,177,95,.3);color:#F2F0EA;font-family:var(--sans);font-size:.97rem;margin-bottom:1.1rem;transition:border-color .25s}
 .g-form input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.08)}
@@ -69,16 +70,17 @@ article p.first::first-letter{font-size:3.6rem;line-height:.85;float:left;paddin
 
 /* zone diagram */
 .zd{margin:3.5rem 0;background:var(--navy);padding:2.5rem 2rem;color:#F2F0EA}
-.zd-h{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.8rem;text-align:center}
+.zd .zd-h{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 1.8rem;text-align:center}
 .zd-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
-.zd-c{padding:1.1rem .8rem;background:rgba(255,255,255,.05);border-top:2px solid var(--gold);text-align:center}
+.zd-c{padding:1.5rem 1rem;background:rgba(255,255,255,.07);border-top:3px solid var(--gold);text-align:center}
 .zd-c.empty{background:transparent;border-top:2px dashed #C4654A;border-left:1px dashed rgba(196,101,74,.4);border-right:1px dashed rgba(196,101,74,.4);border-bottom:1px dashed rgba(196,101,74,.4)}
-.zd-n{font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;color:var(--gold);margin-bottom:.5rem}
+.zd .zd-n{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--gold);margin:0 0 .7rem;font-weight:700}
 .zd-c.empty .zd-n{color:#C4654A}
-.zd-t{font-family:var(--sans);font-size:.84rem;font-weight:500;line-height:1.35}
-.zd-s{font-family:var(--mono);font-size:.53rem;letter-spacing:.08em;color:#7C889C;margin-top:.5rem;text-transform:uppercase}
-.zd-c.empty .zd-s{color:#C4654A}
-.zd-cap{text-align:center;font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:#7C889C;margin-top:1.6rem;line-height:1.9}
+.zd .zd-t{font-family:var(--sans);font-size:.98rem;font-weight:700;line-height:1.3;color:#FFF;margin:0}
+.zd .zd-s{font-family:var(--sans);font-size:.75rem;letter-spacing:0;color:#AEB8C6;margin:.6rem 0 0;text-transform:none;line-height:1.5}
+.zd .zd-c.empty .zd-s{color:#E08B72}
+.zd .zd-c.empty .zd-t{color:#F0A88F}
+.zd .zd-cap{text-align:center;font-family:var(--sans);font-size:.8rem;letter-spacing:0;color:#AEB8C6;margin:1.7rem 0 0;line-height:1.7}
 
 .a-end{margin-top:3.5rem;padding-top:2rem;border-top:1px solid var(--line)}
 .a-end p{font-size:.95rem;font-family:var(--sans);color:var(--ink-3);line-height:1.8;margin:0}
@@ -86,6 +88,10 @@ article p.first::first-letter{font-size:3.6rem;line-height:.85;float:left;paddin
 .a-cta h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;margin-bottom:.8rem}
 .a-cta p{font-family:var(--sans);font-size:.95rem;color:#B8BDC7;margin:0 0 1.6rem;line-height:1.75}
 .a-cta a{display:inline-block;background:var(--gold);color:var(--navy-deep);padding:.85rem 2rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;text-decoration:none}
+figure.bookshot{margin:3.5rem 0 0;text-align:center;padding:3rem 1rem 2.5rem;
+  background:linear-gradient(170deg,#0C203B 0%,#071426 100%)}
+figure.bookshot img{width:min(300px,62%);margin:0 auto;filter:drop-shadow(0 22px 40px rgba(0,0,0,.5))}
+figure.bookshot figcaption{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#8E99A8;margin-top:1.8rem}
 footer{border-top:1px solid var(--line);padding:2.5rem 2rem;text-align:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--ink-3)}
 
 @media(max-width:900px){
@@ -96,6 +102,7 @@ footer{border-top:1px solid var(--line);padding:2.5rem 2rem;text-align:center;fo
   article{padding:3rem 1.4rem}
   article p{font-size:1.1rem}
   .zd-row{grid-template-columns:1fr 1fr;gap:.6rem}
+  .g-two{grid-template-columns:1fr;gap:0}
   .pull p{font-size:1.2rem}
 }
 </style>
@@ -112,8 +119,16 @@ footer{border-top:1px solid var(--line);padding:2.5rem 2rem;text-align:center;fo
     <div class="g-meta"><span>1,100 words</span><span>·</span><span>6 min read</span><span>·</span><span>Sukant Ratnakar</span></div>
     <p class="g-ex">Most of what we label resistance is not stubbornness but depletion: attention and energy already fully committed, with nothing left to take on one more thing. That is not a failure of character. It is a failure of conditions — and conditions can be changed.</p>
     <form class="g-form" id="gf" onsubmit="return unlock(event)">
-      <label for="nm">Your name</label>
-      <input type="text" id="nm" name="name" placeholder="First and last name" required autocomplete="name">
+      <div class="g-two">
+        <div>
+          <label for="fn">First name</label>
+          <input type="text" id="fn" name="first_name" placeholder="First" required autocomplete="given-name">
+        </div>
+        <div>
+          <label for="ln">Last name</label>
+          <input type="text" id="ln" name="last_name" placeholder="Last" required autocomplete="family-name">
+        </div>
+      </div>
       <label for="em">Email</label>
       <input type="email" id="em" name="email" placeholder="you@company.com" required autocomplete="email">
       <button type="submit" class="g-btn" id="gb">Read the article</button>
@@ -178,6 +193,11 @@ footer{border-top:1px solid var(--line);padding:2.5rem 2rem;text-align:center;fo
     <p>Sukant Ratnakar is Founder &amp; Principal Consultant at Quantraz Inc. and a Certified Management Consultant (CMC). He is the author of <em>Change Anesthesiology: Why Resistance Is Never the Problem</em>, and writes on why organisations so often know what to do yet struggle to do it.</p>
   </div>
 
+  <figure class="bookshot">
+    <img src="images/ca-book-3d.png" alt="Change Anesthesiology">
+    <figcaption>Change Anesthesiology — Why Resistance Is Never the Problem</figcaption>
+  </figure>
+
   <div class="a-cta">
     <h3>The book launches 13 August 2026</h3>
     <p>Auditorium, Alice Turner Library, Saskatoon — with guest authors Tammy Martins and Ryan Myers.</p>
@@ -208,12 +228,14 @@ else{document.body.style.overflow='hidden'}
 
 async function unlock(e){
   e.preventDefault();
-  const name=document.getElementById('nm').value.trim();
+  const fn=document.getElementById('fn').value.trim();
+  const ln=document.getElementById('ln').value.trim();
+  const name=(fn+' '+ln).trim();
   const email=document.getElementById('em').value.trim();
   const err=document.getElementById('ge');
   const btn=document.getElementById('gb');
-  if(name.length<2||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
-    err.textContent='Please enter your name and a valid email address.';
+  if(fn.length<1||ln.length<1||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    err.textContent='Please enter your first name, last name, and a valid email address.';
     err.style.display='block';return false;
   }
   err.style.display='none';
@@ -227,7 +249,7 @@ async function unlock(e){
       body:JSON.stringify({
         access_key:'cb2cc9ab-3d9a-4cb2-b6c4-ab3486da9973',
         subject:'Article access — Change Anesthesiology (IMCI)',
-        name:name,email:email,
+        name:name,first_name:fn,last_name:ln,email:email,
         message:name+' ('+email+') opened the IMCI article.'
       })
     });
