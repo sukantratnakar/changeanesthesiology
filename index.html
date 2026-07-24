@@ -174,12 +174,6 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .spk p{font-size:.87rem;line-height:1.8;color:var(--cream-dim);margin-bottom:1rem}
 .spk .divider{width:40px;height:1px;background:rgba(212,177,95,.4);margin:1.2rem 0}
 
-/* ── host ── */
-.host{display:flex;gap:1.8rem;align-items:center;background:var(--navy);padding:2rem 2.2rem;border-left:3px solid var(--gold);margin-top:1.5rem}
-.host img{width:124px;height:124px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex-shrink:0;border:2px solid rgba(212,177,95,.5);background:var(--navy-deep)}
-.host-p{font-size:.92rem;line-height:1.75;color:var(--cream-dim);margin-top:.8rem;max-width:520px}
-.host-p em{color:var(--gold);font-style:italic}
-
 /* ── partner ── */
 .partner{margin-top:3rem;padding:1.8rem 0 0;border-top:1px solid rgba(212,177,95,.2);
   display:flex;gap:1.7rem;align-items:center}
@@ -289,7 +283,6 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .author-photo img{max-width:340px;margin:0 auto}
   .sf{grid-template-columns:1fr;gap:2rem}
   .imp-grid{grid-template-columns:1fr;gap:2rem}
-  .host{flex-direction:column;text-align:center}
   .partner{flex-direction:column;text-align:center}
   .partner-p{margin-left:auto;margin-right:auto}
   .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
@@ -577,13 +570,20 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
     </div>
 
     <div class="speakers" style="margin-top:3.5rem">
-      <p class="tag reveal">Your Host</p>
-      <div class="host reveal">
-        <img src="images/sukant-portrait.png" alt="Sukant Ratnakar">
-        <div>
-          <p class="spk-name">Sukant Ratnakar</p>
-          <p class="spk-role">Author · Certified Management Consultant · Founder, Quantraz Inc.</p>
-          <p class="host-p">Presenting <em>Change Anesthesiology</em>, Book One of the Mola Series, and leading the evening's conversation.</p>
+      <p class="tag reveal">The Author</p>
+      <div class="spk-grid" style="grid-template-columns:1fr">
+        <div class="spk reveal">
+          <div class="spk-head">
+            <img src="images/sukant-portrait.png" alt="Sukant Ratnakar">
+            <div>
+              <p class="spk-name">Sukant Ratnakar</p>
+              <p class="spk-role">Certified Management Consultant &middot; Founder, Quantraz Inc.</p>
+            </div>
+          </div>
+          <p>Sukant Ratnakar works with leaders and organisations worldwide on evolution management &mdash; aligning organisations with continuous change rather than treating change as a one-time event. He holds an MSc in Strategic Planning from Edinburgh Business School and is the author of more than thirty books, including <em>Iknetix</em>, <em>ZERO</em>, and <em>White Space Thinking</em>.</p>
+          <div class="divider"></div>
+          <p class="spk-book">Change Anesthesiology</p>
+          <p>Why Resistance Is Never the Problem argues that the profession has been treating the wrong condition. Resistance is not the obstacle &mdash; it is the signal. The real work happens before any initiative arrives, dissolving the depleted energy, narrowed perspectives, and cognitive overload that make resistance inevitable.</p>
         </div>
       </div>
     </div>
