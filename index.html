@@ -209,6 +209,16 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .series-cap b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
 .series-cap p{font-size:.9rem;color:var(--cream-dim);line-height:1.75}
 
+/* ── imprint ── */
+.imprint{background:var(--navy);border-top:1px solid rgba(212,177,95,.18)}
+.imp-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:start}
+.imp-t{font-family:var(--serif);font-size:clamp(1.7rem,3.2vw,2.4rem);font-weight:900;line-height:1.14;margin-top:.3rem}
+.imp-p{font-size:1.02rem;line-height:1.85;color:var(--cream-dim);margin-bottom:1.2rem;max-width:600px}
+.imp-p em{color:var(--cream);font-style:normal;font-weight:500}
+.imp-note{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--gold);line-height:1.8;padding-left:1rem;border-left:2px solid rgba(212,177,95,.5);margin:1.6rem 0}
+.imp-link{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:3px;margin-top:.4rem}
+.imp-link:hover{color:var(--cream);border-color:var(--cream)}
+
 /* ── ocean panel ── */
 .ocean{position:relative;overflow:hidden;padding:7rem 0;text-align:center;
   background:linear-gradient(175deg,#071426 0%,#0C203B 38%,#123C4A 72%,#0A2230 100%)}
@@ -259,6 +269,7 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .author-wrap{grid-template-columns:1fr;gap:2.5rem}
   .author-photo img{max-width:340px;margin:0 auto}
   .sf{grid-template-columns:1fr;gap:2rem}
+  .imp-grid{grid-template-columns:1fr;gap:2rem}
   .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
   .band.rev .band-in{direction:ltr}
   .sf img{margin:0 auto}
@@ -525,7 +536,7 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
             <img src="images/speaker-ryan.jpg" alt="Ryan Myers">
             <div>
               <p class="spk-name">Ryan Myers</p>
-              <p class="spk-role">Author &amp; Craftsman · Cedar Fire Starters</p>
+              <p class="spk-role">Author &amp; Craftsman · Systovation Publications</p>
             </div>
           </div>
           <p>Ryan Myers is a Canadian author, husband, father, and craftsman based in Saskatoon. His writing grows from lived experience, quiet reflection, and the gradual work of understanding his own patterns. Alongside his professional role, he founded Cedar Fire Starters. He writes with honesty, restraint, and a strong focus on presence, responsibility, and alignment.</p>
@@ -592,6 +603,24 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
 </section>
 
 <!-- ═══════════ EDIT: CLOSING BAND ═══════════ -->
+<!-- ═══════════ EDIT: SYSTOVATION IMPRINT ═══════════ -->
+<section class="sec imprint">
+  <div class="wrap">
+    <div class="imp-grid">
+      <div class="reveal">
+        <p class="tag">The Publisher</p>
+        <h2 class="imp-t">Systovation<br>Publications</h2>
+      </div>
+      <div class="reveal">
+        <p class="imp-p">Systovation Publications is the publishing imprint of Quantraz Inc., based in Saskatoon. We work with authors across business, memoir, and legacy titles — from first manuscript to finished book.</p>
+        <p class="imp-p">Published authors include <em>Ryan Myers</em>, <em>Cris Black</em>, <em>Tanya Eklund</em>, and others.</p>
+        <p class="imp-note">Ryan Myers, speaking at the launch, is a Systovation author.</p>
+        <a href="https://systovation.com" target="_blank" class="imp-link">systovation.com &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="ocean">
   <div class="ocean-fish"><img src="images/mola-fish.png" alt=""></div>
   <div class="ocean-in">
