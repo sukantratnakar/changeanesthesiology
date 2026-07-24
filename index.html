@@ -181,12 +181,16 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .host-p em{color:var(--gold);font-style:italic}
 
 /* ── partner ── */
-.partner{margin-top:3rem;padding-top:1.8rem;border-top:1px solid rgba(212,177,95,.2);display:flex;gap:1.6rem;align-items:center}
-.partner-mark{width:78px;height:78px;flex-shrink:0}
-.partner-name{font-family:var(--sans);font-size:.92rem;color:var(--cream-dim);margin-top:.35rem}
-.partner-p{font-size:.88rem;line-height:1.7;color:var(--slate);margin-top:.5rem;max-width:520px}
+.partner{margin-top:3rem;padding:1.8rem 0 0;border-top:1px solid rgba(212,177,95,.2);
+  display:flex;gap:1.7rem;align-items:center}
+.partner-photo{width:108px;height:108px;border-radius:50%;object-fit:cover;object-position:50% 22%;
+  flex-shrink:0;border:2px solid rgba(212,177,95,.45);background:var(--navy-deep)}
+.partner-body{flex:1}
+.partner-mark{width:66px;height:66px;flex-shrink:0;opacity:.92}
 .partner-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:.5rem}
-.partner-n{font-family:var(--serif);font-size:1.1rem;color:var(--cream)}
+.partner-name{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--cream);line-height:1.2}
+.partner-role{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:.4rem}
+.partner-p{font-size:.88rem;line-height:1.7;color:var(--cream-dim);margin-top:.8rem;max-width:520px}
 
 /* ── author ── */
 .author-wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:4rem;align-items:start;margin-top:2.5rem}
@@ -287,6 +291,7 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
   .imp-grid{grid-template-columns:1fr;gap:2rem}
   .host{flex-direction:column;text-align:center}
   .partner{flex-direction:column;text-align:center}
+  .partner-p{margin-left:auto;margin-right:auto}
   .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
   .band.rev .band-in{direction:ltr}
   .sf img{margin:0 auto}
@@ -583,16 +588,6 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
       </div>
     </div>
 
-    <div class="partner reveal">
-      <img src="images/elc-logo.png" alt="Elite Leadership Club of Canada" class="partner-mark">
-      <div>
-        <p class="partner-l">Community Partner</p>
-        <p class="partner-n">Elite Leadership Club of Canada</p>
-        <p class="partner-name">Masud Alam &middot; President and Founder</p>
-        <p class="partner-p">Bringing together leaders from across business, public service, and community life in Saskatchewan for the evening.</p>
-      </div>
-    </div>
-
     <div class="speakers">
       <p class="tag reveal">Featuring Guest Authors</p>
       <div class="spk-grid">
@@ -623,6 +618,17 @@ footer{background:var(--navy-deep);padding:3.5rem 3rem 2rem;border-top:1px solid
           <p>A reflective personal story about how small choices, repeated over time, can quietly shape a life. Through Ryan's experiences with family, work, loss, recovery, and craftsmanship, the book invites readers to pause, notice their patterns, and understand how lasting change is built one brick at a time.</p>
         </div>
       </div>
+    </div>
+
+    <div class="partner reveal">
+      <img src="images/partner-masud.jpg" alt="Masud Alam" class="partner-photo">
+      <div class="partner-body">
+        <p class="partner-l">Community Partner</p>
+        <p class="partner-name">Masud Alam</p>
+        <p class="partner-role">President and Founder &middot; Elite Leadership Club of Canada</p>
+        <p class="partner-p">Bringing together leaders from across business, public service, and community life in Saskatchewan for the evening.</p>
+      </div>
+      <img src="images/elc-logo.png" alt="Elite Leadership Club of Canada" class="partner-mark">
     </div>
   </div>
 </section>
