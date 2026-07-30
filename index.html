@@ -253,6 +253,43 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .sf-s{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--cream);margin-top:1rem}
 .sf p{color:var(--cream-dim);margin-top:1.4rem;line-height:1.85;max-width:520px}
 
+/* ── PRE-ORDER ── */
+.po{background:var(--navy-deep);position:relative;overflow:hidden;border-top:1px solid rgba(212,177,95,.18)}
+.po::after{content:'';position:absolute;inset:0;pointer-events:none;
+  /* same 140.53deg perpendicular as the hero — keeps the taper parallel */
+  background:linear-gradient(140.53deg,transparent 0 66%,rgba(240,237,228,.035) 66% 100%)}
+.po .wrap{position:relative;z-index:2}
+.po-head{display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:end}
+.po-price{border-left:3px solid var(--gold);padding-left:1.8rem}
+.po-was{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;color:var(--slate)}
+.po-was s{text-decoration-thickness:1px}
+.po-now{font-family:var(--serif);font-size:3.6rem;font-weight:900;color:var(--gold);line-height:1;margin-top:.4rem}
+.po-now em{font-family:var(--mono);font-size:.9rem;font-style:normal;font-weight:400;letter-spacing:.14em;color:var(--gold-dim);display:block;margin-bottom:.3rem}
+.po-until{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);margin-top:1rem;line-height:2}
+.po-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:3.2rem}
+.po-opt{background:var(--navy);padding:2.2rem;border-top:2px solid var(--gold);display:flex;flex-direction:column}
+.po-opt.pickup{border-top-color:var(--gold-dim)}
+.po-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.po-opt h3{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.2;color:var(--cream)}
+.po-amt{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;color:var(--cream);margin-top:.9rem}
+.po-opt>p{font-size:.88rem;line-height:1.8;color:var(--cream-dim);margin-top:1rem}
+.po-opt ul{list-style:none;margin-top:1.1rem}
+.po-opt .po-stores{margin-top:1rem}
+.po-opt li{font-size:.84rem;line-height:1.9;color:var(--cream-dim);padding-left:1.3rem;position:relative}
+.po-opt li::before{content:'—';position:absolute;left:0;color:var(--gold-dim)}
+.po-opt ul{margin-bottom:1.9rem}
+.po-opt .btn{margin-top:auto;align-self:flex-start}
+.po-opt.amz{border-top-color:var(--slate)}
+.po-note{margin-top:1.8rem;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);line-height:2}
+.po-stores{margin-top:.9rem;display:flex;gap:1rem;flex-wrap:wrap}
+.po-stores a{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.4);padding-bottom:2px}
+.po-terms{margin-top:3.4rem;padding-top:2rem;border-top:1px solid rgba(212,177,95,.2);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2.4rem}
+.po-terms h4{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.po-terms p{font-size:.8rem;line-height:1.85;color:var(--slate)}
+.po-terms a{color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.45)}
+.btn.soon{opacity:.5;pointer-events:none;cursor:default}
+
 /* ── footer ── */
 footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid rgba(212,177,95,.2);text-align:center}
 .foot-in{max-width:900px;margin:2.8rem auto 0;padding-top:2.2rem;border-top:1px solid rgba(212,177,95,.16);display:flex;flex-direction:column;align-items:center;gap:1.1rem}
@@ -290,6 +327,9 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
   .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
   .band.rev .band-in{direction:ltr}
   .sf img{margin:0 auto}
+  .po-head{grid-template-columns:1fr;gap:2.2rem;align-items:start}
+  .po-opts{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .po-terms{grid-template-columns:1fr;gap:1.8rem}
   .sec{padding:5rem 0}
 }
 @media(max-width:680px){
@@ -307,6 +347,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
   .prog-row{grid-template-columns:1fr;gap:.3rem}
   .spk-head{flex-direction:column;text-align:center;align-items:center}
 
+  .po-opts{grid-template-columns:1fr}
   .series-cap{grid-template-columns:1fr;gap:1.5rem}
   .hero-series{max-width:none}
   .hero-series img{height:76px}
@@ -325,6 +366,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
     <a href="#inside">Inside</a>
     <a href="#author">Author</a>
     <a href="article.html">Article</a>
+    <a href="#preorder">Buy the Book</a>
     <a href="#event" class="nav-cta">Launch Event</a>
   </div>
 </nav>
@@ -342,8 +384,9 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
     <p class="hero-hook">Seventy percent of change initiatives fail. The number has not moved in twenty years. What if the profession has been fighting the wrong war?</p>
     <div class="hero-btns">
       <a href="#event" class="btn btn-gold">Register for the Launch</a>
-      <a href="#premise" class="btn btn-line">Read the Premise</a>
+      <a href="#preorder" class="btn btn-gold">Buy the Book</a>
     </div>
+    <p style="margin-top:1.3rem"><a href="#premise" style="font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);border-bottom:1px solid rgba(240,237,228,.3);padding-bottom:3px">Read the premise &darr;</a></p>
   </div>
   <div class="hero-r">
     <img src="images/ca-cover-flat.jpg" alt="Change Anesthesiology book cover" class="hero-cover">
@@ -377,6 +420,99 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
     <div class="series-cap">
       <div class="reveal"><b>Book One</b><p><strong style="color:var(--cream)">Change Anesthesiology</strong> — why resistance is never the problem, and what to do before the change begins.</p></div>
       <div class="reveal"><b>Book Two</b><p><strong style="color:var(--cream)">Sunfish Paradox</strong> — why organisations know what to do and still can't do it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: BUY THE BOOK ═══════════ -->
+<!--
+  THREE ways to buy. Cards 1 and 3 both open the SAME Stripe Payment Link;
+  the buyer picks "Shipped" or "Collect at the launch" in a dropdown there.
+  If you later create a second, dedicated link for launch pickup, swap the
+  href on card 3 only. Card 2 leaves the site for Amazon.
+  Amazon store links: test each one before launch and delete any that 404.
+  Any href containing "REPLACE_" disables its own button automatically.
+-->
+<section class="sec po" id="preorder">
+  <div class="wrap">
+    <p class="tag reveal">Buy the book</p>
+    <h2 class="head reveal">Three ways to get<br>your copy.</h2>
+
+    <div class="po-head">
+      <p class="lead reveal">Buy direct and it arrives at your door in Canada, buy it from Amazon wherever in the world you are, or collect a signed copy from the author at the launch on 13 August.</p>
+      <div class="po-price reveal">
+        <p class="po-was">Paperback &middot; Book One of the Mola Series</p>
+        <p class="po-now"><em>CAD</em>$79</p>
+        <p class="po-until">Shipping and taxes included<br>within Canada</p>
+      </div>
+    </div>
+
+    <div class="po-opts">
+
+      <div class="po-opt reveal">
+        <p class="po-l">Option one</p>
+        <h3>Buy online</h3>
+        <p class="po-amt">$79 &middot; nothing added at checkout</p>
+        <p>Ordered here, posted to your address anywhere in Canada.</p>
+        <ul>
+          <li>Shipping included</li>
+          <li>Taxes included</li>
+          <li>Posted from Saskatoon</li>
+        </ul>
+        <a href="https://buy.stripe.com/bJe00j3iC3FV1Vjerigw001" data-buy class="btn btn-gold">Buy &mdash; $79</a>
+      </div>
+
+      <div class="po-opt amz reveal">
+        <p class="po-l">Option two</p>
+        <h3>Buy on Amazon</h3>
+        <p class="po-amt">Price and delivery set by Amazon</p>
+        <p>The simplest route if you are outside Canada, or if you would rather use an account you already have.</p>
+        <ul>
+          <li>Amazon handles delivery and returns</li>
+          <li>Available in other Amazon stores</li>
+        </ul>
+        <a href="https://www.amazon.ca/dp/1998440575" target="_blank" rel="noopener" class="btn btn-line">Amazon.ca &rarr;</a>
+        <div class="po-stores">
+          <a href="https://www.amazon.com/dp/1998440575" target="_blank" rel="noopener">United States</a>
+          <a href="https://www.amazon.co.uk/dp/1998440575" target="_blank" rel="noopener">United Kingdom</a>
+          <a href="https://www.amazon.in/dp/1998440575" target="_blank" rel="noopener">India</a>
+        </div>
+      </div>
+
+      <div class="po-opt pickup reveal">
+        <p class="po-l">Option three</p>
+        <h3>Signed copy at the launch</h3>
+        <p class="po-amt">$79 &middot; signed and inscribed</p>
+        <p>Reserved under your name and signed for you in person. The only way to get a signed copy.</p>
+        <ul>
+          <li>Thursday 13 August 2026, 5:30&ndash;7:00 pm</li>
+          <li>Alice Turner Library, Saskatoon</li>
+          <li>Register for the event separately &mdash; it&rsquo;s free</li>
+        </ul>
+        <a href="https://buy.stripe.com/bJe00j3iC3FV1Vjerigw001" data-buy class="btn btn-gold">Reserve &mdash; $79</a>
+      </div>
+
+    </div>
+
+    <p class="po-note reveal">Buying direct? Choose shipped or collect at the launch during checkout.</p>
+
+    <div class="po-terms reveal" id="po-terms">
+      <div>
+        <h4>Shipping</h4>
+        <p>Included in the $79 price for any address in Canada, posted from Saskatoon. Outside Canada, buy from your local Amazon store &mdash; it costs you less than we could post it for.</p>
+      </div>
+      <div>
+        <h4>Tax</h4>
+        <p>The $79 includes GST. Saskatchewan charges no PST on books.</p>
+      </div>
+      <div>
+        <h4>Refunds</h4>
+        <p>Cancel any time before your copy is posted for a full refund. Damaged in transit &mdash; send a photo and we replace it, no cost to you. Amazon orders follow Amazon&rsquo;s own returns policy.</p>
+      </div>
+      <div>
+        <h4>Payment &amp; privacy</h4>
+        <p>Card payments handled by Stripe; card details never reach this site. Checkout asks for your name, email, mobile, and address &mdash; used to dispatch the book and reach you about the order, nothing else. Sold by Quantraz Inc., Saskatoon. Questions: <a href="mailto:sukant@quantraz.com">sukant@quantraz.com</a>.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -560,6 +696,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
         <a href="https://luma.com/ygmx2yww" target="_blank" class="btn btn-gold" style="font-size:.82rem;padding:1rem 2.4rem">Register for This Event</a>
         <p style="font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--slate);margin-top:1.2rem;line-height:1.9">Free · Seats are limited</p>
         <p style="margin-top:1rem"><a href="https://lu.ma/quantraz" target="_blank" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--slate);border-bottom:1px solid rgba(135,146,166,.35);padding-bottom:2px">All Quantraz events &rarr;</a></p>
+        <p style="margin-top:1.6rem;font-size:.86rem;color:var(--cream-dim);line-height:1.8">Want a signed copy on the night? <a href="#preorder" style="color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:2px">Reserve one now</a> and we&rsquo;ll hold it under your name, inscribed.</p>
         <div style="margin-top:2.4rem;padding-top:1.8rem;border-top:1px solid rgba(212,177,95,.22)">
           <p style="font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:.7rem">Read first</p>
           <p style="font-family:var(--serif);font-size:1.02rem;font-style:italic;color:var(--cream);line-height:1.5;margin-bottom:.9rem">A Model That Treats the Cause,<br>Not the Symptom</p>
@@ -687,6 +824,8 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
       <a href="https://systovation.com" target="_blank">systovation.com</a>
       <a href="https://quantraz.com" target="_blank">quantraz.com</a>
       <a href="https://lu.ma/quantraz" target="_blank">Events</a>
+      <a href="#preorder">Buy the book</a>
+      <a href="#po-terms">Shipping &amp; refunds</a>
     </div>
     <div class="foot-l">&copy; 2026 Sukant Ratnakar &middot; Quantraz Inc. &middot; Saskatoon, Canada</div>
   </div>
@@ -696,6 +835,13 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60)});
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%6*70)+'ms';io.observe(el)});
+/* Guard: until the Stripe Payment Links are pasted in, the buy buttons stay inert. */
+document.querySelectorAll('a[data-buy]').forEach(a=>{
+  if((a.getAttribute('href')||'').indexOf('REPLACE_')>-1){
+    a.classList.add('soon');a.textContent='Checkout opens shortly';a.removeAttribute('href');
+    console.warn('Stripe Payment Link not set yet — see the PRE-ORDER comment in index.html');
+  }else{a.setAttribute('target','_blank');a.setAttribute('rel','noopener')}
+});
 </script>
 </body>
 </html>
