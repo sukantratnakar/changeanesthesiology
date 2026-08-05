@@ -85,8 +85,8 @@ nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85
 .btn-line{border-color:rgba(240,237,228,.4);color:var(--cream)}
 .btn-line:hover{border-color:var(--gold);color:var(--gold)}
 .hero-r{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:6rem 4rem}
-.hero-cover{width:330px;box-shadow:-16px 18px 60px rgba(0,0,0,.55);transform:perspective(900px) rotateY(-6deg);transition:transform .6s}
-.hero-cover:hover{transform:perspective(900px) rotateY(0)}
+.hero-cover{width:340px;filter:drop-shadow(-12px 18px 34px rgba(0,0,0,.5));transition:transform .5s}
+.hero-cover:hover{transform:translateY(-6px)}
 .hero-date{position:absolute;right:2.2rem;bottom:3rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--slate);writing-mode:vertical-rl}
 
 /* ── premise ── */
@@ -389,7 +389,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
     <p style="margin-top:1.3rem"><a href="#premise" style="font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);border-bottom:1px solid rgba(240,237,228,.3);padding-bottom:3px">Read the premise &darr;</a></p>
   </div>
   <div class="hero-r">
-    <img src="images/ca-cover-flat.jpg" alt="Change Anesthesiology book cover" class="hero-cover">
+    <img src="images/ca-book-3d-spine.png" alt="Change Anesthesiology book cover" class="hero-cover">
     <p class="hero-date">13 August 2026</p>
   </div>
 </section>
@@ -625,7 +625,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 <!-- ═══════════ EDIT: IMAGE BAND ═══════════ -->
 <section class="band">
   <div class="band-in">
-    <div class="reveal"><img src="images/ca-cover-mockup.jpg" alt="Change Anesthesiology"></div>
+    <div class="reveal" style="text-align:center"><img src="images/ca-book-3d-spine.png" alt="Change Anesthesiology" style="max-width:330px;margin:0 auto;box-shadow:none;filter:drop-shadow(0 18px 40px rgba(0,0,0,.45))"></div>
     <div class="band-txt reveal">
       <h3>Not a framework to deploy.<br>A practice to keep.</h3>
       <p>Fifteen chapters, five daily dimensions, and a diagnostic you can use on Monday morning. The work happens before the initiative arrives — not after resistance shows up.</p>
