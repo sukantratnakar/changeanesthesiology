@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L34Y86TXXP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-L34Y86TXXP');
+</script>
 <title>The Mola Series — Sukant Ratnakar</title>
 <meta name="description" content="Change Anesthesiology: Why Resistance Is Never the Problem. Book One of the Mola Series by Sukant Ratnakar. Launching 13 August 2026, Saskatoon.">
 <meta name="author" content="Sukant Ratnakar">
@@ -840,6 +848,15 @@ document.querySelectorAll('a[data-buy]').forEach(a=>{
     a.classList.add('soon');a.textContent='Checkout opens shortly';a.removeAttribute('href');
     console.warn('Stripe Payment Link not set yet — see the PRE-ORDER comment in index.html');
   }else{a.setAttribute('target','_blank');a.setAttribute('rel','noopener')}
+});
+/* GA4 custom events — guarded so a blocked/absent gtag never throws */
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a'); if(!a||!window.gtag) return;
+  if(a.hasAttribute('data-buy')){
+    gtag('event','begin_checkout',{option:a.textContent.trim(),link_url:a.href});
+  }else if(a.href&&a.href.indexOf('luma.com/ygmx2yww')>-1){
+    gtag('event','register_click',{link_url:a.href});
+  }
 });
 </script>
 </body>

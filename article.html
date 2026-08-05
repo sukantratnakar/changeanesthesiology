@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L34Y86TXXP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-L34Y86TXXP');
+</script>
 <title>Change Anesthesiology: A Model That Treats the Cause, Not the Symptom — Sukant Ratnakar</title>
 <meta name="description" content="Resistance is not the problem. It is the fever. A model that treats the cause, not the symptom. By Sukant Ratnakar, CMC.">
 <meta property="og:title" content="A Model That Treats the Cause, Not the Symptom">
@@ -255,6 +263,7 @@ async function unlock(e){
     });
   }catch(_){/* never block the reader on a network failure */}
 
+  if(window.gtag){gtag('event','article_unlock',{method:'gate_form'});}
   localStorage.setItem(KEY,'1');
   reveal();
   return false;
