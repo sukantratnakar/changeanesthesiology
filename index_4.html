@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mola Series — Sukant Ratnakar</title>
+<meta name="description" content="Change Anesthesiology: Why Resistance Is Never the Problem. Book One of the Mola Series by Sukant Ratnakar. Launching 13 August 2026, Saskatoon.">
+<meta name="author" content="Sukant Ratnakar">
+<meta name="keywords" content="change management, change anesthesiology, resistance to change, Morphosis, Sukant Ratnakar, Quantraz, Mola Series, Sunfish Paradox, organisational change, evolution management">
+<meta property="og:title" content="Change Anesthesiology — Why Resistance Is Never the Problem">
+<meta property="og:description" content="You never fight resistance. You dissolve the conditions that create it. Book One of the Mola Series. Launching 13 August 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://changeanesthesiology.com">
+<meta property="og:image" content="https://changeanesthesiology.com/og-image.png">
+<meta property="og:site_name" content="The Mola Series">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Change Anesthesiology — Sukant Ratnakar">
+<meta name="twitter:description" content="What if resistance was never the problem? Launching 13 August 2026 in Saskatoon.">
+<meta name="twitter:image" content="https://changeanesthesiology.com/og-image.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0C203B; --navy-deep:#071426; --navy-mid:#12294A;
+  --cream:#F0EDE4; --cream-2:#E6E2D6; --cream-dim:#C8C6BE;
+  --gold:#D4B15F; --gold-dim:#A98D52;
+  --slate:#8792A6; --ink:#0A0A0C;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--navy);color:var(--cream);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--gold);color:var(--navy-deep)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ── shared ── */
+.wrap{max-width:1240px;margin:0 auto;padding:0 3rem}
+.tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem}
+.sec{padding:7rem 0}
+.sec-dark{background:var(--navy)}
+.sec-deep{background:var(--navy-deep)}
+.sec-light{background:var(--cream);color:var(--ink)}
+.sec-light .tag{color:var(--gold-dim)}
+h2.head{font-family:var(--serif);font-size:2.7rem;font-weight:900;line-height:1.15;margin-bottom:1.4rem}
+.lead{font-size:1.08rem;max-width:640px;color:var(--cream-dim)}
+.sec-light .lead{color:#4A4845}
+.rule{width:64px;height:2px;background:var(--gold);margin:1.6rem 0}
+
+/* ── nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.3rem 3rem;display:flex;justify-content:space-between;align-items:center;transition:all .35s}
+nav.scrolled{background:rgba(7,20,38,.94);backdrop-filter:blur(14px);padding:.85rem 3rem;border-bottom:1px solid rgba(212,177,95,.18)}
+.brand{font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,228,.72);transition:color .25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--navy-deep)!important;padding:.55rem 1.3rem;font-weight:700}
+.nav-cta:hover{background:var(--cream);color:var(--navy-deep)!important}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+.burger span{width:24px;height:2px;background:var(--gold);display:block}
+
+/* ── hero ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;background:var(--navy);overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  /* 140.53deg = perpendicular to the cover's 39.47° diagonal — the two tapers now run parallel */
+  background:linear-gradient(140.53deg,transparent 0 61%,rgba(240,237,228,.055) 61% 100%)}
+.hero-l{padding:8rem 3rem 5rem 4rem;position:relative;z-index:2}
+.hero-series{display:flex;align-items:center;gap:1.3rem;margin-bottom:2.4rem;padding-bottom:1.6rem;border-bottom:1px solid rgba(212,177,95,.25);max-width:340px}
+.hero-series img{height:92px;width:auto;opacity:1}
+.hero-series span{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);line-height:1.9}
+.hero-t1{font-family:var(--mono);font-size:clamp(2.4rem,5.4vw,4rem);font-weight:700;letter-spacing:.14em;color:var(--gold);line-height:1}
+.hero-t2{font-family:var(--mono);font-size:clamp(1.5rem,3.2vw,2.35rem);font-weight:400;letter-spacing:.05em;color:var(--gold);margin-top:.35rem}
+.hero-sub{font-family:var(--mono);font-size:.92rem;letter-spacing:.06em;color:var(--gold-dim);margin-top:1rem}
+.hero-hook{font-family:var(--sans);font-size:1.02rem;color:var(--cream);margin-top:2.2rem;max-width:440px;line-height:1.75}
+.hero-btns{display:flex;gap:1rem;margin-top:2.4rem;flex-wrap:wrap}
+.btn{display:inline-block;padding:.85rem 1.9rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;transition:all .28s;border:1px solid transparent;cursor:pointer}
+.btn-gold{background:var(--gold);color:var(--navy-deep)}
+.btn-gold:hover{background:var(--cream)}
+.btn-line{border-color:rgba(240,237,228,.4);color:var(--cream)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold)}
+.hero-r{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:6rem 4rem}
+.hero-cover{width:340px;filter:drop-shadow(-12px 18px 34px rgba(0,0,0,.5));transition:transform .5s}
+.hero-cover:hover{transform:translateY(-6px)}
+.hero-date{position:absolute;right:2.2rem;bottom:3rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--slate);writing-mode:vertical-rl}
+
+/* ── premise ── */
+.premise{text-align:center;max-width:820px;margin:0 auto}
+.premise q{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.5rem);font-style:italic;line-height:1.3;display:block;margin-bottom:2rem;quotes:none}
+.premise p{font-size:1.05rem;color:var(--cream-dim);line-height:1.85}
+.premise b{color:var(--gold);font-weight:500}
+
+/* ── stats ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;border-top:1px solid rgba(212,177,95,.22);border-bottom:1px solid rgba(212,177,95,.22);padding:3rem 0}
+.stat{text-align:center}
+.stat b{display:block;font-family:var(--serif);font-size:2.7rem;color:var(--gold);line-height:1}
+.stat span{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#B6BECC;margin-top:.75rem;display:block;line-height:1.6}
+
+/* ── prose ── */
+.prose{max-width:720px}
+.prose p{margin-bottom:1.3rem;font-size:1.02rem;line-height:1.85}
+.sec-light .prose p{color:#3E3C39}
+.prose .emph{font-weight:500;color:var(--ink)}
+
+/* ── quote ── */
+.quote{text-align:center;padding:5rem 0;border-top:1px solid rgba(212,177,95,.25);border-bottom:1px solid rgba(212,177,95,.25)}
+.quote p{font-family:var(--serif);font-size:clamp(1.4rem,2.8vw,2rem);font-style:italic;line-height:1.4;max-width:820px;margin:0 auto}
+.quote cite{display:block;margin-top:1.5rem;font-family:var(--mono);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);font-style:normal}
+
+/* ── zones ── */
+.zones{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem}
+.zone{background:#fff;padding:2rem 1.7rem;border-top:3px solid var(--gold)}
+.zone.z3{background:rgba(179,66,51,.05);border-top-style:dashed;border-top-color:#B34233;border-left:1px dashed rgba(179,66,51,.4);border-right:1px dashed rgba(179,66,51,.4);border-bottom:1px dashed rgba(179,66,51,.4)}
+.zone-n{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:var(--gold-dim);margin-bottom:.7rem}
+.zone.z3 .zone-n{color:#B34233}
+.zone h3{font-family:var(--serif);font-size:1.22rem;font-weight:700;margin-bottom:.8rem;color:var(--ink)}
+.zone p{font-size:.87rem;line-height:1.7;color:#55524E}
+.zone-note{margin-top:1rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#B34233}
+.flow{text-align:center;margin-top:3rem;font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--ink)}
+.flow i{color:var(--gold-dim);font-style:normal;margin:0 .5rem}
+.flow .r{color:#B34233}
+
+/* ── morphosis ── */
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(212,177,95,.2);margin-top:3rem}
+.dim{background:var(--navy);padding:2.2rem}
+.dim.full{grid-column:1/-1}
+.dim-z{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.dim h3{font-family:var(--serif);font-size:1.32rem;font-weight:700;margin-bottom:.35rem}
+.dim-ch{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--slate);margin-bottom:.9rem}
+.dim p{font-size:.9rem;line-height:1.75;color:var(--cream-dim)}
+
+/* ── toc / toolkit ── */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.card{background:#fff;padding:1.9rem}
+.card-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.6rem}
+.card h3{font-family:var(--serif);font-size:1.2rem;font-weight:700;margin-bottom:.8rem;color:var(--ink)}
+.card p,.card li{font-size:.86rem;line-height:1.8;color:#55524E;list-style:none}
+.card li{padding-left:4.25em;text-indent:-4.25em}
+.card.dark{background:var(--navy);color:var(--cream)}
+.card.dark h3{color:var(--cream)}
+.card.dark p{color:var(--cream-dim)}
+.card.dark .card-l{color:var(--gold)}
+.card.no-tool{background:rgba(179,66,51,.06);border:1px dashed rgba(179,66,51,.35)}
+.card.no-tool h3,.card.no-tool p{color:#B34233}
+
+/* ── EVENT ── */
+.event-band{background:var(--navy-deep);position:relative;overflow:hidden}
+.event-band::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(140.53deg,transparent 0 68%,rgba(240,237,228,.03) 68% 100%)}
+.event-band .wrap{position:relative;z-index:2}
+.event-top{display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:center}
+.event-when{border-left:3px solid var(--gold);padding-left:1.8rem}
+.event-date{font-family:var(--mono);font-size:1.55rem;font-weight:700;letter-spacing:.1em;color:var(--cream)}
+.event-time{font-size:1.05rem;color:var(--gold);margin-top:.5rem}
+.event-place{color:var(--cream-dim);margin-top:1.1rem;line-height:1.8;font-size:.98rem}
+.prog{margin-top:2.6rem;border-top:1px solid rgba(212,177,95,.22)}
+.prog-row{display:grid;grid-template-columns:132px 1fr;gap:1.4rem;padding:1rem 0;border-bottom:1px solid rgba(212,177,95,.12)}
+.prog-row b{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--gold);font-weight:400;padding-top:.2rem}
+.prog-row div{font-size:.94rem;color:var(--cream-dim);line-height:1.7}
+.prog-row div em{color:var(--cream);font-style:normal;font-weight:500;display:block}
+.speakers{margin-top:4.5rem}
+.spk-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:2.5rem}
+.spk{background:var(--navy);padding:2.2rem;border-top:2px solid var(--gold)}
+.spk-head{display:flex;gap:1.4rem;align-items:center;margin-bottom:1.5rem}
+.spk-head img{width:92px;height:92px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(212,177,95,.45)}
+.spk-name{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.2}
+.spk-role{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:.4rem}
+.spk-book{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--gold);margin:1.2rem 0 .7rem}
+.spk p{font-size:.87rem;line-height:1.8;color:var(--cream-dim);margin-bottom:1rem}
+.spk .divider{width:40px;height:1px;background:rgba(212,177,95,.4);margin:1.2rem 0}
+
+/* ── partner ── */
+.partner{margin-top:3rem;padding:1.8rem 0 0;border-top:1px solid rgba(212,177,95,.2);
+  display:flex;gap:1.7rem;align-items:center}
+.partner-photo{width:108px;height:108px;border-radius:50%;object-fit:cover;object-position:50% 22%;
+  flex-shrink:0;border:2px solid rgba(212,177,95,.45);background:var(--navy-deep)}
+.partner-body{flex:1}
+.partner-mark{width:66px;height:66px;flex-shrink:0;opacity:.92}
+.partner-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:.5rem}
+.partner-name{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--cream);line-height:1.2}
+.partner-role{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:.4rem}
+.partner-p{font-size:.88rem;line-height:1.7;color:var(--cream-dim);margin-top:.8rem;max-width:520px}
+
+/* ── author ── */
+.author-wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:4rem;align-items:start;margin-top:2.5rem}
+.author-photo{position:relative}
+.author-photo img{width:100%;background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);display:block}
+.author-photo::after{content:'';position:absolute;inset:0;border:1px solid rgba(212,177,95,.45);pointer-events:none}
+.author-photo::before{content:'';position:absolute;left:-10px;top:-10px;width:70px;height:70px;border-left:3px solid var(--gold);border-top:3px solid var(--gold)}
+.author-meta{margin-top:1.6rem}
+.author-meta h3{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--ink)}
+.author-meta .role{font-family:var(--mono);font-size:.65rem;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-dim);margin-top:.5rem}
+.author-links{display:flex;gap:1.3rem;flex-wrap:wrap;margin-top:1.2rem}
+.author-links a{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.4);padding-bottom:2px}
+.author-links a:hover{color:var(--ink);border-color:var(--ink)}
+.author-content h3{font-family:var(--serif);font-size:1.4rem;font-weight:700;margin:0 0 1rem;color:var(--ink)}
+.author-content h3+p{margin-bottom:1.6rem}
+.author-content p{font-size:1rem;line-height:1.85;color:#3E3C39;margin-bottom:1.2rem}
+.coffee{margin-top:2.5rem;padding-top:1.8rem;border-top:1px solid rgba(169,141,82,.4)}
+.coffee .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.8rem}
+.coffee a{font-weight:500;color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:2px}
+
+/* ── image bands ── */
+.band{background:var(--navy-deep);padding:4.5rem 0}
+.band-in{max-width:1240px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:center}
+.band.rev .band-in{direction:rtl}
+.band.rev .band-in>*{direction:ltr}
+.band img{width:100%;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.band-txt h3{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;line-height:1.2;margin-bottom:1rem}
+.band-txt p{color:var(--cream-dim);font-size:1rem;line-height:1.8}
+
+/* ── series ── */
+.series{text-align:center}
+.series-img{max-width:960px;margin:2.8rem auto 0}
+.series-img img{width:100%}
+.series-cap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:820px;margin:2.5rem auto 0;text-align:left}
+.series-cap b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.series-cap p{font-size:.9rem;color:var(--cream-dim);line-height:1.75}
+
+/* ── imprint ── */
+.imprint{background:var(--navy);border-top:1px solid rgba(212,177,95,.18)}
+.imp-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:start}
+.imp-t{font-family:var(--serif);font-size:clamp(1.7rem,3.2vw,2.4rem);font-weight:900;line-height:1.14;margin-top:.3rem}
+.imp-p{font-size:1.02rem;line-height:1.85;color:var(--cream-dim);margin-bottom:1.2rem;max-width:600px}
+.imp-p em{color:var(--cream);font-style:normal;font-weight:500}
+.imp-note{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--gold);line-height:1.8;padding-left:1rem;border-left:2px solid rgba(212,177,95,.5);margin:1.6rem 0}
+.imp-link{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:3px;margin-top:.4rem}
+.imp-link:hover{color:var(--cream);border-color:var(--cream)}
+
+/* ── ocean panel ── */
+.ocean{position:relative;overflow:hidden;padding:7rem 0;text-align:center;
+  background:linear-gradient(175deg,#071426 0%,#0C203B 38%,#123C4A 72%,#0A2230 100%)}
+.ocean::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 42%,rgba(120,200,190,.10),transparent 62%)}
+.ocean-fish{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:1;
+  width:min(430px,62vw);opacity:.14;animation:drift 16s ease-in-out infinite}
+.ocean-fish img{width:100%}
+@keyframes drift{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,-56%)}}
+.ocean-in{position:relative;z-index:2;max-width:640px;margin:0 auto;padding:0 2rem}
+.ocean-t{font-family:var(--serif);font-size:clamp(2rem,4.4vw,3rem);font-weight:900;line-height:1.14;margin:.4rem 0 1.4rem}
+.ocean-p{font-size:1.05rem;line-height:2;color:var(--cream-dim)}
+.ocean-p em{color:var(--gold);font-style:italic}
+
+/* ── sunfish ── 
+.sf{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:center}
+.sf img{width:100%;max-width:300px;box-shadow:-12px 14px 46px rgba(0,0,0,.5)}
+.sf-t{font-family:var(--mono);font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:700;letter-spacing:.08em;color:var(--gold);line-height:1.15}
+.sf-s{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--cream);margin-top:1rem}
+.sf p{color:var(--cream-dim);margin-top:1.4rem;line-height:1.85;max-width:520px}
+
+/* ── PRE-ORDER ── */
+.po{background:var(--navy-deep);position:relative;overflow:hidden;border-top:1px solid rgba(212,177,95,.18)}
+.po::after{content:'';position:absolute;inset:0;pointer-events:none;
+  /* same 140.53deg perpendicular as the hero — keeps the taper parallel */
+  background:linear-gradient(140.53deg,transparent 0 66%,rgba(240,237,228,.035) 66% 100%)}
+.po .wrap{position:relative;z-index:2}
+.po-head{display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:end}
+.po-price{border-left:3px solid var(--gold);padding-left:1.8rem}
+.po-was{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;color:var(--slate)}
+.po-was s{text-decoration-thickness:1px}
+.po-now{font-family:var(--serif);font-size:3.6rem;font-weight:900;color:var(--gold);line-height:1;margin-top:.4rem}
+.po-now em{font-family:var(--mono);font-size:.9rem;font-style:normal;font-weight:400;letter-spacing:.14em;color:var(--gold-dim);display:block;margin-bottom:.3rem}
+.po-until{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);margin-top:1rem;line-height:2}
+.po-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:3.2rem}
+.po-opt{background:var(--navy);padding:2.2rem;border-top:2px solid var(--gold);display:flex;flex-direction:column}
+.po-opt.pickup{border-top-color:var(--gold-dim)}
+.po-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.po-opt h3{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.2;color:var(--cream)}
+.po-amt{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;color:var(--cream);margin-top:.9rem}
+.po-opt>p{font-size:.88rem;line-height:1.8;color:var(--cream-dim);margin-top:1rem}
+.po-opt ul{list-style:none;margin-top:1.1rem}
+.po-opt .po-stores{margin-top:1rem}
+.po-opt li{font-size:.84rem;line-height:1.9;color:var(--cream-dim);padding-left:1.3rem;position:relative}
+.po-opt li::before{content:'—';position:absolute;left:0;color:var(--gold-dim)}
+.po-opt ul{margin-bottom:1.9rem}
+.po-opt .btn{margin-top:auto;align-self:flex-start}
+.po-opt.amz{border-top-color:var(--slate)}
+.po-note{margin-top:1.8rem;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);line-height:2}
+.po-stores{margin-top:.9rem;display:flex;gap:1rem;flex-wrap:wrap}
+.po-stores a{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.4);padding-bottom:2px}
+.po-terms{margin-top:3.4rem;padding-top:2rem;border-top:1px solid rgba(212,177,95,.2);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2.4rem}
+.po-terms h4{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.po-terms p{font-size:.8rem;line-height:1.85;color:var(--slate)}
+.po-terms a{color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.45)}
+.btn.soon{opacity:.5;pointer-events:none;cursor:default}
+
+/* ── footer ── */
+footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid rgba(212,177,95,.2);text-align:center}
+.foot-in{max-width:900px;margin:2.8rem auto 0;padding-top:2.2rem;border-top:1px solid rgba(212,177,95,.16);display:flex;flex-direction:column;align-items:center;gap:1.1rem}
+.foot-l{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:#5F6A7C}
+.foot-r{display:flex;gap:1.8rem;flex-wrap:wrap;justify-content:center}
+.foot-r a{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:rgba(240,237,228,.6)}
+.foot-r a:hover{color:var(--gold)}
+.foot-end{text-align:center;padding:0 1rem;font-family:var(--serif);
+  font-size:clamp(1.4rem,3vw,2.15rem);font-style:italic;font-weight:400;
+  color:var(--gold);letter-spacing:.01em;line-height:1.45;margin:0 auto}
+
+/* ── reveal ── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:none}
+
+/* ── responsive ── */
+@media(max-width:1024px){
+  .wrap{padding:0 2rem}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-l{padding:7rem 2rem 3rem}
+  .hero-r{padding:1rem 2rem 5rem}
+  .hero-cover{width:260px}
+  .hero-date{display:none}
+  .hero::after{display:none}
+  .zones{grid-template-columns:1fr 1fr}
+  .dims{grid-template-columns:1fr}
+  .event-top{grid-template-columns:1fr;gap:2.5rem}
+  .spk-grid{grid-template-columns:1fr}
+  .author-wrap{grid-template-columns:1fr;gap:2.5rem}
+  .author-photo img{max-width:340px;margin:0 auto}
+  .sf{grid-template-columns:1fr;gap:2rem}
+  .imp-grid{grid-template-columns:1fr;gap:2rem}
+  .partner{flex-direction:column;text-align:center}
+  .partner-p{margin-left:auto;margin-right:auto}
+  .band-in{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
+  .band.rev .band-in{direction:ltr}
+  .sf img{margin:0 auto}
+  .po-head{grid-template-columns:1fr;gap:2.2rem;align-items:start}
+  .po-opts{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .po-terms{grid-template-columns:1fr;gap:1.8rem}
+  .sec{padding:5rem 0}
+}
+@media(max-width:680px){
+  nav{padding:1rem 1.4rem}
+  nav.scrolled{padding:.8rem 1.4rem}
+  .burger{display:flex}
+  .nav-links{position:fixed;inset:0;background:var(--navy-deep);flex-direction:column;justify-content:center;gap:2rem;transform:translateX(100%);transition:transform .4s}
+  .nav-links.open{transform:none}
+  .nav-links a{font-size:.9rem}
+  .wrap{padding:0 1.4rem}
+  .sec{padding:4rem 0}
+  h2.head{font-size:1.9rem}
+  .stats{grid-template-columns:1fr 1fr;gap:2rem 1rem}
+  .zones{grid-template-columns:1fr}
+  .prog-row{grid-template-columns:1fr;gap:.3rem}
+  .spk-head{flex-direction:column;text-align:center;align-items:center}
+
+  .po-opts{grid-template-columns:1fr}
+  .series-cap{grid-template-columns:1fr;gap:1.5rem}
+  .hero-series{max-width:none}
+  .hero-series img{height:76px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#top" class="brand">Mola Series</a>
+  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links" id="nl" onclick="this.classList.remove('open')">
+    <a href="#premise">Premise</a>
+    <a href="#model">The Model</a>
+    <a href="#morphosis">Morphosis</a>
+    <a href="#inside">Inside</a>
+    <a href="#author">Author</a>
+    <a href="article.html">Article</a>
+    <a href="#preorder">Buy the Book</a>
+    <a href="#event" class="nav-cta">Launch Event</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top">
+  <div class="hero-l">
+    <div class="hero-series">
+      <img src="images/mola-series.png" alt="Mola Series">
+      <span>The Mola Series<br>Book One</span>
+    </div>
+    <h1 class="hero-t1">CHANGE</h1>
+    <div class="hero-t2">Anesthesiology</div>
+    <p class="hero-sub">Why Resistance Is Never the Problem</p>
+    <p class="hero-hook">Seventy percent of change initiatives fail. The number has not moved in twenty years. What if the profession has been fighting the wrong war?</p>
+    <div class="hero-btns">
+      <a href="#event" class="btn btn-gold">Register for the Launch</a>
+      <a href="#preorder" class="btn btn-gold">Buy the Book</a>
+    </div>
+    <p style="margin-top:1.3rem"><a href="#premise" style="font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);border-bottom:1px solid rgba(240,237,228,.3);padding-bottom:3px">Read the premise &darr;</a></p>
+  </div>
+  <div class="hero-r">
+    <img src="images/ca-book-3d-spine.png" alt="Change Anesthesiology book cover" class="hero-cover">
+    <p class="hero-date">13 August 2026</p>
+  </div>
+</section>
+
+<!-- ═══ PREMISE ═══ -->
+<section class="sec sec-deep" id="premise">
+  <div class="wrap">
+    <div class="premise reveal">
+      <q>What if resistance was never the problem?</q>
+      <p>What if instead of building ever more sophisticated strategies to overcome resistance, we could <b>dissolve the conditions that create it</b> — so resistance never forms in the first place? Not by persuading people or training them or pressuring them. By addressing the upstream conditions — perspective, energy, capacity, habit — that determine whether a human system resists or adapts.</p>
+    </div>
+    <div class="stats reveal" style="margin-top:4rem">
+      <div class="stat"><b>70%</b><span>Change initiatives fail</span></div>
+      <div class="stat"><b>20+</b><span>Years unchanged</span></div>
+      <div class="stat"><b>$2.3T</b><span>Annual cost of failure</span></div>
+      <div class="stat"><b>12%</b><span>Sustain beyond 3 years</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: MOLA SERIES ═══════════ -->
+<section class="sec sec-dark">
+  <div class="wrap series">
+    <p class="tag reveal" style="text-align:center">The Mola Series</p>
+    <h2 class="head reveal">Two books. One ocean.</h2>
+    <p class="lead reveal" style="margin:0 auto">The mola — the ocean sunfish — is the heaviest bony fish alive, and it drifts. It looks unfinished, almost impossible. It survives anyway. Two books on why organisations struggle to move, and what makes movement possible.</p>
+    <div class="series-img reveal"><img src="images/both-books.jpg" alt="Change Anesthesiology and Sunfish Paradox"></div>
+    <div class="series-cap">
+      <div class="reveal"><b>Book One</b><p><strong style="color:var(--cream)">Change Anesthesiology</strong> — why resistance is never the problem, and what to do before the change begins.</p></div>
+      <div class="reveal"><b>Book Two</b><p><strong style="color:var(--cream)">Sunfish Paradox</strong> — why organisations know what to do and still can't do it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: BUY THE BOOK ═══════════ -->
+<!--
+  THREE ways to buy. Cards 1 and 3 both open the SAME Stripe Payment Link;
+  the buyer picks "Shipped" or "Collect at the launch" in a dropdown there.
+  If you later create a second, dedicated link for launch pickup, swap the
+  href on card 3 only. Card 2 leaves the site for Amazon.
+  Amazon store links: test each one before launch and delete any that 404.
+  Any href containing "REPLACE_" disables its own button automatically.
+-->
+<section class="sec po" id="preorder">
+  <div class="wrap">
+    <p class="tag reveal">Buy the book</p>
+    <h2 class="head reveal">Three ways to get<br>your copy.</h2>
+
+    <div class="po-head">
+      <p class="lead reveal">Buy direct and it arrives at your door in Canada, buy it from Amazon wherever in the world you are, or collect a signed copy from the author at the launch on 13 August.</p>
+      <div class="po-price reveal">
+        <p class="po-was">Signed copy, pre-ordered for the launch</p>
+        <p class="po-now"><em>CAD</em>$39</p>
+        <p class="po-until">Available to reserve until midnight, 13 August 2026</p>
+      </div>
+    </div>
+
+    <div class="po-opts">
+
+      <div class="po-opt reveal">
+        <p class="po-l">Option one</p>
+        <h3>Buy online</h3>
+        <p class="po-amt">$79 &middot; nothing added at checkout</p>
+        <p>Ordered here, posted to your address anywhere in Canada.</p>
+        <ul>
+          <li>Shipping included</li>
+          <li>Taxes included</li>
+        </ul>
+        <a href="https://buy.stripe.com/bJe00j3iC3FV1Vjerigw001" data-buy class="btn btn-gold">Buy &mdash; $79</a>
+      </div>
+
+      <div class="po-opt amz reveal">
+        <p class="po-l">Option two</p>
+        <h3>Buy on Amazon</h3>
+        <p class="po-amt">Price and delivery set by Amazon</p>
+        <p>The simplest route if you are outside Canada, or if you would rather use an account you already have.</p>
+        <ul>
+          <li>Amazon handles delivery and returns</li>
+          <li>Available in other Amazon stores</li>
+        </ul>
+        <a href="https://www.amazon.ca/dp/1998440575" target="_blank" rel="noopener" class="btn btn-line" style="order:2">Amazon.ca &rarr;</a>
+        <div class="po-stores">
+          <a href="https://www.amazon.com/dp/1998440575" target="_blank" rel="noopener">United States</a>
+          <a href="https://www.amazon.co.uk/dp/1998440575" target="_blank" rel="noopener">United Kingdom</a>
+          <a href="https://www.amazon.in/dp/1998440575" target="_blank" rel="noopener">India</a>
+        </div>
+      </div>
+
+      <div class="po-opt pickup reveal" style="border:1px solid rgba(212,177,95,.55);border-top:3px solid var(--gold)">
+        <p class="po-l">Option three</p>
+        <h3>Signed copy at the launch</h3>
+        <p class="po-amt">$39 &middot; signed and inscribed<br><span style="color:var(--gold-dim)">Pre-order price, held until midnight on 13 August 2026</span></p>
+        <p>Reserved under your name and signed for you in person. The only way to get a signed copy.</p>
+        <ul>
+          <li>Thursday 13 August 2026, 5:30&ndash;7:00 pm</li>
+          <li>Alice Turner Library, Saskatoon</li>
+          <li>Register for the event separately &mdash; it&rsquo;s free</li>
+        </ul>
+        <a href="https://buy.stripe.com/dRmaEXaL4foDeI56YQgw002" data-buy class="btn btn-gold">Reserve &mdash; $39</a>
+      </div>
+
+    </div>
+
+    <p class="po-note reveal">Option one ships anywhere in Canada &middot; the signed copy is collected at the launch</p>
+
+    <div class="po-terms reveal" id="po-terms">
+      <div>
+        <h4>Shipping</h4>
+        <p>Included in the $79 price for any address in Canada, posted from Saskatoon. Outside Canada, buy from your local Amazon store &mdash; it costs you less than we could post it for.</p>
+      </div>
+      <div>
+        <h4>Tax</h4>
+        <p>The $79 includes GST. Saskatchewan charges no PST on books.</p>
+      </div>
+      <div>
+        <h4>Refunds</h4>
+        <p>Cancel any time before your copy is posted for a full refund. Damaged in transit &mdash; send a photo and we replace it, no cost to you. Amazon orders follow Amazon&rsquo;s own returns policy.</p>
+      </div>
+      <div>
+        <h4>Payment &amp; privacy</h4>
+        <p>Card payments handled by Stripe; card details never reach this site. Checkout asks for your name, email, mobile, and address &mdash; used to dispatch the book and reach you about the order, nothing else. Sold by Quantraz Inc., Saskatoon. Questions: <a href="mailto:sukant@quantraz.com">sukant@quantraz.com</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AUTHOR ═══ -->
+<section class="sec sec-light" id="author">
+  <div class="wrap">
+    <p class="tag reveal">The Author</p>
+    <h2 class="head reveal">Sukant Ratnakar</h2>
+    <p class="lead reveal" style="margin-bottom:.5rem">Certified Management Consultant · Founder, Quantraz Inc. · Author of more than thirty books</p>
+    <div class="author-wrap">
+      <div class="reveal">
+        <div class="author-photo"><img src="images/sukant-portrait.png" alt="Sukant Ratnakar"></div>
+        <div class="author-meta">
+          <h3>Sukant Ratnakar</h3>
+          <p class="role">CMC · Founder, Quantraz Inc.</p>
+          <div class="author-links">
+            <a href="https://sukantratnakar.com" target="_blank">sukantratnakar.com</a>
+            <a href="https://systovation.com" target="_blank">systovation.com</a>
+            <a href="https://quantraz.com" target="_blank">quantraz.com</a>
+          </div>
+          <p style="font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;color:#8A857A;margin-top:.7rem;line-height:1.9">Author &nbsp;·&nbsp; Systovation Publications &nbsp;·&nbsp; Quantraz Store</p>
+        </div>
+      </div>
+      <div class="author-content">
+        <p class="reveal">Sukant Ratnakar, CMC, works with leaders and organisations worldwide on evolution management — aligning organisations with continuous change rather than treating change as a one-time event. He holds an MSc in Strategic Planning from Edinburgh Business School (Heriot-Watt University, UK) and is a Certified Management Consultant. Author of over thirty books, including <em>Iknetix</em>, <em>ZERO</em>, <em>White Space Thinking</em>, and <em>Tinergy</em>.</p>
+        <h3 class="reveal">The synthesis of a larger body of work</h3>
+        <p class="reveal"><em>Iknetix</em> demonstrated that ideas carry kinetic energy — and that sharing between humans increases that energy exponentially. <em>ZERO</em> argued that Lewin's refreeze is dead and organisations must learn to stay liquid permanently. <em>White Space Thinking</em> revealed how the cognitive gaps essential for reflection have been structurally eliminated from modern work.</p>
+        <p class="reveal">This book is the synthesis — a single philosophy, model, and methodology designed for a world where change is no longer an event to be managed but a permanent condition to be navigated. Daily. Individually. Without trauma.</p>
+        <h3 class="reveal">Who this book is for</h3>
+        <p class="reveal">Leaders who sense that pushing harder is not working but don't yet have a framework for what to do instead. Change professionals who feel the gap between what their discipline offers and what the world now demands. And every individual navigating continuous disruption who is looking for a way to stay adaptive without burning out.</p>
+        <!-- EDIT: COFFEE CONVERSATIONS -->
+        <div class="coffee reveal">
+          <p class="l">Open to conversation</p>
+          <p style="margin-bottom:1rem">I keep time each week for conversations with people working on change, writing a book, or thinking about their next chapter.</p>
+          <a href="https://cal.com/sukantratnakar/coffee-conversations" target="_blank">Book a Coffee Conversation &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ANALOGY ═══ -->
+<section class="sec sec-light">
+  <div class="wrap">
+    <p class="tag reveal">The Analogy</p>
+    <h2 class="head reveal">Before 1846,<br>surgery was torture.</h2>
+    <div class="rule reveal"></div>
+    <div class="prose">
+      <p class="reveal">Surgeons operated on patients who were fully conscious. Patients screamed. They thrashed. Some chose death over a follow-up procedure. The resistance was total — and entirely rational.</p>
+      <p class="reveal">Then, on October 16, 1846, ether was administered before a surgical procedure at Massachusetts General Hospital. The patient lost consciousness. The surgeon operated in silence. Everything changed that day.</p>
+      <p class="reveal">But the surgery did not change. The incisions were the same. The instruments were the same. What changed was the patient's relationship to the procedure. Anesthesia did not make surgery better. It made surgery survivable.</p>
+      <p class="reveal emph">Change Anesthesiology applies this same principle to organisations: you never fight resistance. You dissolve the conditions that create it — so change happens without trauma.</p>
+    </div>
+    <div class="quote reveal" style="margin-top:4rem">
+      <p>The war is over. Not because it was won.<br>Because it was the wrong war.</p>
+      <cite>— Change Anesthesiology</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODEL ═══ -->
+<section class="sec sec-light" id="model" style="padding-top:0">
+  <div class="wrap">
+    <p class="tag reveal">The Model</p>
+    <h2 class="head reveal">Four zones. One causal sequence.<br>One empty zone that changes everything.</h2>
+    <p class="lead reveal">Not a cycle. Not a matrix. A sequence — one zone feeding the next, each creating the conditions that make the next one possible. Skip a zone, and the model does not work.</p>
+    <div class="zones">
+      <div class="zone reveal">
+        <p class="zone-n">Zone 01</p><h3>Broaden Perspectives</h3>
+        <p>A person with narrow perspectives sees change from one angle: their own. From that single vantage point, change looks like loss. Broaden the perspective, and the unfamiliar becomes navigable — not because it changed, but because the person can now see it differently.</p>
+      </div>
+      <div class="zone reveal">
+        <p class="zone-n">Zone 02</p><h3>Expand Comfort Zone</h3>
+        <p>Seeing differently is not enough if the system is depleted. OmniMeta Mindfulness maintains cognitive coherence. Tinergy manages the energy resource. Together they shift comfort from static external anchors to dynamic internal ones that travel with the person through transition.</p>
+      </div>
+      <div class="zone z3 reveal">
+        <p class="zone-n">Zone 03</p><h3>Reduce Resistance</h3>
+        <p>No tool. No workshop. No framework. This zone has no intervention. Resistance dissolves when the upstream conditions are addressed. The empty zone is not a gap in the methodology. It is the methodology.</p>
+        <p class="zone-note">The result — not the target</p>
+      </div>
+      <div class="zone reveal">
+        <p class="zone-n">Zone 04</p><h3>Increase Pace of Change</h3>
+        <p>Acceleration without stabilisation is a spike, not a shift. The Habit Machine locks new behaviour into daily identity through visible, tangible, repeated action. Each coin dropped is not a task completed. It is a vote for a new identity.</p>
+      </div>
+    </div>
+    <p class="flow reveal">Broaden <i>→</i> Expand <i>→</i> <span class="r">Reduce</span> <i>→</i> Increase</p>
+  </div>
+</section>
+
+<!-- ═══ MORPHOSIS ═══ -->
+<section class="sec sec-dark" id="morphosis">
+  <div class="wrap">
+    <p class="tag reveal">The Methodology</p>
+    <h2 class="head reveal">Morphosis: Five Dimensions</h2>
+    <p class="lead reveal">Five capabilities that, when practiced daily, expand the human system's capacity to absorb continuous change without resistance. Not workshops that happen once and fade. Embedded, daily, self-administered practices.</p>
+    <div class="dims">
+      <div class="dim reveal"><p class="dim-z">Zone 1 · Broaden</p><h3>White Space Thinking</h3><p class="dim-ch">Chapter 6 — The Pause That Makes Everything Possible</p><p>Creates the cognitive gap — the pause where reflection becomes possible. Without the gap, there is no room for a new perspective to enter. Modern work has not just eliminated these gaps. It has structurally damaged the brain's ability to think.</p></div>
+      <div class="dim reveal"><p class="dim-z">Zone 1 · Broaden</p><h3>Perspective Thinking</h3><p class="dim-ch">Chapter 7 — Seeing What You Haven't Seen</p><p>Fills the gap with new ways of seeing — through illustrated insights, books, card decks, conversation starters, and video subscriptions embedded in the environment. Passive perspective exposure at organisational scale.</p></div>
+      <div class="dim reveal"><p class="dim-z">Zone 2 · Expand</p><h3>OmniMeta Mindfulness</h3><p class="dim-ch">Chapter 8 — Expanding What You Can Handle</p><p>Maintains cognitive coherence under complexity through the BOSE Framework (Body, Observations, Senses, Energy) and the MetaCycle — a structured rhythm for transitioning between demands with intention rather than reaction.</p></div>
+      <div class="dim reveal"><p class="dim-z">Zone 2 · Expand</p><h3>Tinergy &amp; Energy</h3><p class="dim-ch">Chapter 9 — The Resource Nobody Manages</p><p>Tinergy = Time × Energy. Time is fixed; energy is the variable. The system tracks energy across five dimensions — physical, mental, emotional, spiritual, social — and provides a daily diagnostic for individuals and teams.</p></div>
+      <div class="dim full reveal"><p class="dim-z">Zone 4 · Increase</p><h3>The Habit Machine</h3><p class="dim-ch">Chapter 10 — The Lock That Holds the Door Open</p><p>A physical, screen-free, 3D-printed daily habit tracker. Each day, the user drops a coin to mark the completion of a specific behaviour. Made in Canada. Because 45% of daily behaviour is habitual — and habits determine whether gains persist or decay.</p></div>
+    </div>
+    <div class="quote reveal" style="margin-top:4.5rem">
+      <p>She is not resistant. She is full.</p>
+      <cite>— Chapter 6, White Space Thinking</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: IMAGE BAND ═══════════ -->
+<section class="band">
+  <div class="band-in">
+    <div class="reveal" style="text-align:center"><img src="images/ca-book-3d-spine.png" alt="Change Anesthesiology" style="max-width:330px;margin:0 auto;box-shadow:none;filter:drop-shadow(0 18px 40px rgba(0,0,0,.45))"></div>
+    <div class="band-txt reveal">
+      <h3>Not a framework to deploy.<br>A practice to keep.</h3>
+      <p>Fifteen chapters, five daily dimensions, and a diagnostic you can use on Monday morning. The work happens before the initiative arrives — not after resistance shows up.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSIDE ═══ -->
+<section class="sec sec-light" id="inside">
+  <div class="wrap">
+    <p class="tag reveal">What's Inside</p>
+    <h2 class="head reveal">Fifteen chapters. Five parts.<br>From acceleration to application.</h2>
+    <div class="grid3">
+      <div class="card reveal"><p class="card-l">Part One</p><h3>The Acceleration</h3><ul><li>Ch 1 — The Circle of Life</li><li>Ch 2 — The Breaking Point</li></ul></div>
+      <div class="card reveal"><p class="card-l">Part Two</p><h3>The Philosophy</h3><ul><li>Ch 3 — The Wrong War</li><li>Ch 4 — What Anesthesiology Actually Does</li><li>Ch 5 — The Change Anesthesiology Model</li></ul></div>
+      <div class="card reveal"><p class="card-l">Part Three</p><h3>The Five Dimensions</h3><ul><li>Ch 6 — White Space Thinking</li><li>Ch 7 — Perspective Thinking</li><li>Ch 8 — OmniMeta and Mindfulness</li><li>Ch 9 — Tinergy and Energy</li><li>Ch 10 — The Habit Machine</li></ul></div>
+      <div class="card reveal"><p class="card-l">Part Four</p><h3>The System</h3><ul><li>Ch 11 — The Reinforcing Loops</li><li>Ch 12 — The Zone With No Intervention</li></ul></div>
+      <div class="card reveal"><p class="card-l">Part Five</p><h3>From Here</h3><ul><li>Ch 13 — Reading the Model</li><li>Ch 14 — What Changes When Change Becomes Daily</li><li>Ch 15 — What Becomes Possible</li></ul></div>
+      <div class="card dark reveal"><p class="card-l">Plus</p><h3>The Morphosis Toolkit</h3><p>A complete guide to every tool, product, and resource mapped to the four zones.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOOLKIT ═══ -->
+<section class="sec sec-light" style="background:var(--cream-2);padding-top:5rem">
+  <div class="wrap">
+    <p class="tag reveal">The Ecosystem</p>
+    <h2 class="head reveal">Morphosis Toolkit</h2>
+    <p class="lead reveal">Self-administered tools for individuals, teams, and organisations — no facilitator required.</p>
+    <div class="grid3">
+      <div class="card reveal"><p class="card-l">Zone 1 · Broaden</p><h3>Quillustrations</h3><p>500+ illustrated insight posters across nine themes. Perspective shifts delivered through walls, not workshops.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 1 · Broaden</p><h3>Qucards</h3><p>Decks of 100 insight cards. Daily draw or facilitated team conversation. Physical, tactile, screen-free.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 1 · Broaden</p><h3>Quchat</h3><p>100 conversation-starter prompts for meetings and check-ins. Triggers for conversation, not substitutes for it.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 1 · Broaden</p><h3>Qustream</h3><p>Weekly animated video insights delivered to screens in offices and common areas. Passive exposure at scale.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 2 · Expand</p><h3>OmniMeta Practice</h3><p>BOSE Framework + MetaCycle. Workshops, audio guided journeys, and trainer certification badges.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 2 · Expand</p><h3>Tinergy System</h3><p>Time × Energy. 5-day workshops with the Qudo 4X Energy System. Cards, stands, organiser packs.</p></div>
+      <div class="card no-tool reveal"><p class="card-l" style="color:#B34233">Zone 3 · Reduce</p><h3>No Tool</h3><p>The philosophy in practice. Resistance dissolves when upstream conditions are addressed.</p></div>
+      <div class="card reveal"><p class="card-l">Zone 4 · Increase</p><h3>The Habit Machine</h3><p>Physical, screen-free, 3D-printed daily tracker. Classic, Pro, and system configurations. Made in Canada.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: LAUNCH EVENT ═══════════ -->
+<section class="sec event-band" id="event">
+  <div class="wrap">
+    <p class="tag reveal">The Launch</p>
+    <h2 class="head reveal">An evening of conversation,<br>ideas, and connection.</h2>
+
+    <div class="event-top" style="margin-top:2.5rem">
+      <div>
+        <div class="event-when reveal">
+          <p class="event-date">THURSDAY 13 AUGUST 2026</p>
+          <p class="event-time">5:30 – 7:00 pm</p>
+          <p class="event-place">Auditorium, Alice Turner Library<br>Saskatoon, Saskatchewan</p>
+        </div>
+        <div class="prog">
+          <div class="prog-row reveal"><b>5:30</b><div><em>Welcome &amp; Networking</em>Arrive, connect, evening snacks</div></div>
+          <div class="prog-row reveal"><b>5:45</b><div><em>Book Launch</em>Sukant Ratnakar presents Change Anesthesiology</div></div>
+          <div class="prog-row reveal"><b>6:05</b><div><em>Guest Author Talks</em>Tammy Martins and Ryan Myers</div></div>
+          <div class="prog-row reveal"><b>6:25</b><div><em>Q&amp;A</em>Open questions with all three authors</div></div>
+          <div class="prog-row reveal"><b>6:45 – 7:00</b><div><em>Closing</em>Conversations, book signing, networking</div></div>
+          <div class="prog-row reveal" style="border-bottom:none;padding-top:1.3rem"><b style="color:var(--cream)">7:00</b><div style="color:var(--gold)">Event ends</div></div>
+        </div>
+      </div>
+      <div class="reveal" style="text-align:center">
+        <p style="font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:1.5rem">Free registration</p>
+        <a href="https://luma.com/ygmx2yww" target="_blank" class="btn btn-gold" style="font-size:.82rem;padding:1rem 2.4rem">Register for This Event</a>
+        <p style="font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--slate);margin-top:1.2rem;line-height:1.9">Free · Seats are limited</p>
+        <p style="margin-top:1rem"><a href="https://lu.ma/quantraz" target="_blank" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--slate);border-bottom:1px solid rgba(135,146,166,.35);padding-bottom:2px">All Quantraz events &rarr;</a></p>
+        <p style="margin-top:1.6rem;font-size:.86rem;color:var(--cream-dim);line-height:1.8">Want a signed copy on the night? <a href="#preorder" style="color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:2px">Reserve one now</a> and we&rsquo;ll hold it under your name, inscribed.</p>
+        <div style="margin-top:2.4rem;padding-top:1.8rem;border-top:1px solid rgba(212,177,95,.22)">
+          <p style="font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:.7rem">Read first</p>
+          <p style="font-family:var(--serif);font-size:1.02rem;font-style:italic;color:var(--cream);line-height:1.5;margin-bottom:.9rem">A Model That Treats the Cause,<br>Not the Symptom</p>
+          <a href="article.html" class="btn btn-line" style="font-size:.66rem;padding:.7rem 1.5rem">Read the Article &rarr;</a>
+        </div>
+        <div class="reveal" style="margin-top:2.6rem">
+          <img src="images/ca-lifestyle.jpg" alt="Change Anesthesiology" style="width:100%;box-shadow:0 16px 44px rgba(0,0,0,.45)">
+        </div>
+      </div>
+    </div>
+
+    <div class="speakers" style="margin-top:3.5rem">
+      <p class="tag reveal">The Author</p>
+      <div class="spk-grid" style="grid-template-columns:1fr">
+        <div class="spk reveal">
+          <div class="spk-head">
+            <img src="images/sukant-portrait.png" alt="Sukant Ratnakar">
+            <div>
+              <p class="spk-name">Sukant Ratnakar</p>
+              <p class="spk-role">Certified Management Consultant &middot; Founder, Quantraz Inc.</p>
+            </div>
+          </div>
+          <p>Sukant Ratnakar works with leaders and organisations worldwide on evolution management &mdash; aligning organisations with continuous change rather than treating change as a one-time event. He holds an MSc in Strategic Planning from Edinburgh Business School and is the author of more than thirty books, including <em>Iknetix</em>, <em>ZERO</em>, and <em>White Space Thinking</em>.</p>
+          <div class="divider"></div>
+          <p class="spk-book">Change Anesthesiology</p>
+          <p>Why Resistance Is Never the Problem argues that the profession has been treating the wrong condition. Resistance is not the obstacle &mdash; it is the signal. The real work happens before any initiative arrives, dissolving the depleted energy, narrowed perspectives, and cognitive overload that make resistance inevitable.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="speakers">
+      <p class="tag reveal">Featuring Guest Authors</p>
+      <div class="spk-grid">
+        <div class="spk reveal">
+          <div class="spk-head">
+            <img src="images/speaker-tammy.jpg" alt="Tammy Martins">
+            <div>
+              <p class="spk-name">Tammy Martins</p>
+              <p class="spk-role">Founder, Next Chapter Life Design</p>
+            </div>
+          </div>
+          <p>Tammy Martins is a senior executive, strategist, and writer based in Saskatoon, Saskatchewan, with more than two decades of experience guiding organizations through complex change. A Certified Lean Leader and Six Sigma Black Belt, she asked why the tools that build resilient organizations are rarely applied to life's own transitions.</p>
+          <div class="divider"></div>
+          <p class="spk-book">Designing Your Second Act</p>
+          <p>Creating Meaning and Confidence in Retirement offers a practical, human-centered path for professionals facing retirement's mix of relief and unease. Drawing on design thinking, Lean principles, and adult development research, it shows how fulfilling second acts are built through reflection, small experiments, and intentional choice.</p>
+        </div>
+        <div class="spk reveal">
+          <div class="spk-head">
+            <img src="images/speaker-ryan.jpg" alt="Ryan Myers">
+            <div>
+              <p class="spk-name">Ryan Myers</p>
+              <p class="spk-role">Author &amp; Craftsman · Systovation Publications</p>
+            </div>
+          </div>
+          <p>Ryan Myers is a Canadian author, husband, father, and craftsman based in Saskatoon. His writing grows from lived experience, quiet reflection, and the gradual work of understanding his own patterns. Alongside his professional role, he founded Cedar Fire Starters. He writes with honesty, restraint, and a strong focus on presence, responsibility, and alignment.</p>
+          <div class="divider"></div>
+          <p class="spk-book">One Match, One Brick, One Life</p>
+          <p>A reflective personal story about how small choices, repeated over time, can quietly shape a life. Through Ryan's experiences with family, work, loss, recovery, and craftsmanship, the book invites readers to pause, notice their patterns, and understand how lasting change is built one brick at a time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="partner reveal">
+      <img src="images/partner-masud.jpg" alt="Masud Alam" class="partner-photo">
+      <div class="partner-body">
+        <p class="partner-l">Community Partner</p>
+        <p class="partner-name">Masud Alam</p>
+        <p class="partner-role">President and Founder &middot; Elite Leadership Club of Canada</p>
+        <p class="partner-p">Bringing together leaders from across business, public service, and community life in Saskatchewan for the evening.</p>
+      </div>
+      <img src="images/elc-logo.png" alt="Elite Leadership Club of Canada" class="partner-mark">
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: SYSTOVATION IMPRINT ═══════════ -->
+<section class="sec imprint">
+  <div class="wrap">
+    <div class="imp-grid">
+      <div class="reveal">
+        <p class="tag">The Publisher</p>
+        <h2 class="imp-t">Systovation<br>Publications</h2>
+      </div>
+      <div class="reveal">
+        <p class="imp-p">Systovation Publications is the publishing imprint of Quantraz Inc., based in Saskatoon. We work with authors across business, memoir, and legacy titles — from first manuscript to finished book.</p>
+        <p class="imp-p">Published authors include <em>Ryan Myers</em>, <em>Cris Black</em>, <em>Tanya Eklund</em>, and others.</p>
+        <p class="imp-note">Ryan Myers, speaking at the launch, is a Systovation author.</p>
+        <a href="https://systovation.com" target="_blank" class="imp-link">systovation.com &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: SUNFISH TEASER ═══════════ -->
+<section class="sec sec-dark">
+  <div class="wrap">
+    <div class="sf">
+      <div class="reveal"><img src="images/sp-cover-mockup.jpg" alt="Sunfish Paradox book cover" style="max-width:none;width:100%;box-shadow:none"></div>
+      <div>
+        <p class="tag reveal">The Mola Series · Book Two</p>
+        <p class="sf-t reveal">SUNFISH<br>PARADOX</p>
+        <p class="sf-s reveal">Knowing what to do was never the hard part.</p>
+        <p class="reveal">Why organisations know what to do and still can't do it. The gap between knowing and doing is not a strategy problem, a communication problem, or a resistance problem. It is a conditions problem — depleted energy, fractured attention, frozen processes, and goals disconnected from execution capacity.</p>
+        <p class="reveal" style="font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:1.8rem">Coming soon</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EDIT: CLOSING BAND ═══════════ -->
+<section class="ocean">
+  <div class="ocean-fish"><img src="images/mola-fish.png" alt=""></div>
+  <div class="ocean-in">
+    <p class="tag reveal" style="color:var(--gold)">Systovation Publications</p>
+    <h2 class="ocean-t reveal">Two books.<br>One ocean.</h2>
+    <p class="ocean-p reveal"><em>Change Anesthesiology</em> asks what to do before the change begins.<br><em>Sunfish Paradox</em> asks why knowing was never enough.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="foot-end">Unfreeze &mdash; and stay liquid.<br>Permanently.</p>
+  <div class="foot-in">
+    <div class="foot-r">
+      <a href="https://sukantratnakar.com" target="_blank">sukantratnakar.com</a>
+      <a href="https://systovation.com" target="_blank">systovation.com</a>
+      <a href="https://quantraz.com" target="_blank">quantraz.com</a>
+      <a href="https://lu.ma/quantraz" target="_blank">Events</a>
+      <a href="#preorder">Buy the book</a>
+      <a href="#po-terms">Shipping &amp; refunds</a>
+    </div>
+    <div class="foot-l">&copy; 2026 Sukant Ratnakar &middot; Quantraz Inc. &middot; Saskatoon, Canada</div>
+  </div>
+</footer>
+
+<script>
+addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60)});
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%6*70)+'ms';io.observe(el)});
+/* Guard: until the Stripe Payment Links are pasted in, the buy buttons stay inert. */
+document.querySelectorAll('a[data-buy]').forEach(a=>{
+  if((a.getAttribute('href')||'').indexOf('REPLACE_')>-1){
+    a.classList.add('soon');a.textContent='Checkout opens shortly';a.removeAttribute('href');
+    console.warn('Stripe Payment Link not set yet — see the PRE-ORDER comment in index.html');
+  }else{a.setAttribute('target','_blank');a.setAttribute('rel','noopener')}
+});
+</script>
+</body>
+</html>
