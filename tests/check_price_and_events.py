@@ -353,6 +353,20 @@ def check_pr04(pages):
                 if i1 not in ALLOWED[path] and (i1 + 1) not in ALLOWED[path]:
                     stray.append(f"insert after main line {i1}: {new[j1][:60]!r}")
                 continue
+            if op == "delete":
+                # A removed block next to identical lines (e.g. "</div>") can be
+                # placed several ways with the same result; accept any placement
+                # that falls on approved lines, as git's diff slider would.
+                spots, a, b = [(i1, i2)], i1, i2
+                while a > 0 and old[a - 1] == old[b - 1]:
+                    a, b = a - 1, b - 1
+                    spots.append((a, b))
+                a, b = i1, i2
+                while b < len(old) and old[a] == old[b]:
+                    a, b = a + 1, b + 1
+                    spots.append((a, b))
+                if any(all(ln in ALLOWED[path] for ln in range(s + 1, e + 1)) for s, e in spots):
+                    continue
             for ln in range(i1 + 1, i2 + 1):
                 if ln not in ALLOWED[path]:
                     stray.append(f"main line {ln}: {old[ln - 1].strip()[:60]!r}")
