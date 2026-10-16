@@ -1,0 +1,20 @@
+# Files in this repo that must never be served on the website.
+# wrangler.jsonc serves the whole repo folder, so anything not listed here
+# is public. Same syntax as .gitignore; a leading "/" means top level only.
+# Checked by tests/check_public_files.sh.
+
+# Git and repo settings
+.git
+.gitignore
+/.assetsignore
+/wrangler.jsonc
+
+# Tests
+/tests/
+
+# Local tool and secret files, in case they ever appear
+.DS_Store
+.wrangler
+.dev.vars*
+.env*
+node_modules
