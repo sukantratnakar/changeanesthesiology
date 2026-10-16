@@ -11,7 +11,7 @@ check. Exits 1 if any check fails, 2 if the test itself can't run.
 Fetches pages with urllib only (no browser), so it does not trigger Google
 Analytics; the TL-06 layout checks use headless Chrome with analytics blocked.
 TL-05 compares the served pages with BASE_REF (default 4deca4e, main before
-this change) from the git checkout this script lives in, and runs the Q04 and
+this change) plus exactly the approved edits from the git checkout this script lives in, and runs the Q04 and
 Q06 tests against the same base URL: all of their checks must pass except
 Q06's PR-04, which TL-05 replaces. Node and Chrome must be installed.
 """
@@ -87,15 +87,15 @@ BAND_TAG = "Where this fits"
 BAND_HEAD = "Three layers. One system."
 ONE_SENTENCE = ("Prechange names the stage. Change Anesthesiology explains why it matters. "
                 "Morphosis builds the conditions, every day.")
-LAYERS = [  # role, role note, name, text, small line
-    ("When", "The stage", "Prechange",
+LAYERS = [  # label, name, text, small line
+    ("When · The stage", "Prechange",
      "The stage before each change, and its measure, the Check.",
      "Energy · Headroom · Perspective · Routines"),
-    ("Why", "The philosophy and the model", "Change Anesthesiology",
+    ("Why · The philosophy and the model", "Change Anesthesiology",
      "People adapt when the conditions around them let them. Resistance is often a signal that "
      "those conditions are missing.",
      "Four zones · Broaden · Expand · Reduce · Increase"),
-    ("How", "The practice", "Morphosis",
+    ("How · The practice", "Morphosis",
      "Five daily practices designed to build the four conditions.",
      "White Space Thinking · Perspective Thinking · OmniMeta Mindfulness · Tinergy · The Habit Machine"),
 ]
@@ -110,6 +110,15 @@ EVIDENCE = ("The evidence supports each of these mechanisms on its own. Whether 
             "conditions before a change improves adoption still needs independent research.")
 PRECHANGE_URL = "https://prechangeway.com"
 LINK_TEXT = "Read about Prechange at prechangeway.com →"
+FIG_DESC = ("Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change "
+            "Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for "
+            "depth. Iknetix and ZERO lie underneath as the foundation.")
+# Everything the band says, in order: nothing more, nothing less (TL-02, TL-05).
+BAND_TEXT = norm(" ".join(
+    [BAND_TAG, BAND_HEAD, ONE_SENTENCE, FIG_DESC]
+    + [w for label, name, body, small in LAYERS
+       for w in (label, name) + ((THIS_BOOK,) if name == "Change Anesthesiology" else ()) + (body, small)]
+    + list(SF_BOX) + list(FOUNDATION) + [TEMPOS, EVIDENCE, LINK_TEXT]))
 
 # TL-04: claims that must not appear anywhere in either page (meta tags included).
 BANNED = ["70%", "Seventy percent", "$2.3", "trillion", "12%", "ego depletion", "Lewin",
@@ -119,25 +128,57 @@ BANNED = ["70%", "Seventy percent", "$2.3", "trillion", "12%", "ego depletion", 
 CONDITIONS = [("energy", r"\benerg(?:y|ies)\b"), ("headroom", r"\bheadroom\b"),
               ("perspective", r"\bperspectives?\b"), ("routines", r"\broutines?\b")]
 HABIT_OK = [r"\bhabit machine\b", r"\bdone out of habit\b", r"\bdaily habit tracker\b"]
+NOT_ALWAYS = r"\balways a signal\b|\bis the signal\b|\bresistance is always\b"
 
-# TL-05: lines of BASE_REF's index.html that this change may touch. Everything
-# else must be the same, apart from two blocks this change adds whole: the
-# band's CSS (just before "reveal") and the band itself (right after #morphosis).
-APPROVED_LINES = {
-    395,                     # hero line (item 1)
-    413,                     # premise: the conditions (item 2)
-    415, 416, 417, 418, 419,  # stats band (item 3)
-    537,                     # author bio (item 4)
-    592,                     # Model, Zone 3 card (item 10)
-    609,                     # Morphosis lead (item 5)
-    611, 612, 613, 614, 615,  # Morphosis cards (items 6 to 8)
-    664,                     # Toolkit, Zone 3 card (item 10)
-    723,                     # author paragraph in the event band (item 9)
-}
+# TL-05: the only edits this change may make to BASE_REF's index.html, as
+# (source before, source after). Apart from these, the page must be the same,
+# plus two blocks this change adds whole: the new CSS (just before "reveal")
+# and the band itself (right after #morphosis), whose text must be BAND_TEXT.
+APPROVED_EDITS = [
+    ('Seventy percent of change initiatives fail. The number has not moved in twenty years. '
+     'What if the profession has been fighting the wrong war?', HERO),                       # item 1
+    ("perspective, energy, capacity, habit — that determine whether",
+     "energy, headroom, perspective and routines — that shape whether"),                    # item 2
+    ('<div class="stats reveal" style="margin-top:4rem">\n'
+     '      <div class="stat"><b>70%</b><span>Change initiatives fail</span></div>\n'
+     '      <div class="stat"><b>20+</b><span>Years unchanged</span></div>\n'
+     '      <div class="stat"><b>$2.3T</b><span>Annual cost of failure</span></div>\n'
+     '      <div class="stat"><b>12%</b><span>Sustain beyond 3 years</span></div>',
+     '<div class="stats words reveal" style="margin-top:4rem">\n'
+     + "\n".join(f'      <div class="stat"><b>{a}</b><span>{b}</span></div>' for a, b in STATS)),  # item 3
+    ("<em>Iknetix</em> demonstrated that", "<em>Iknetix</em> proposed that"),               # item 4
+    ("<em>ZERO</em> argued that Lewin's refreeze is dead and organisations must learn to stay liquid permanently.",
+     "<em>ZERO</em> argued that organisations can no longer refreeze after each change; "
+     "they must learn to stay liquid permanently."),
+    ("<em>White Space Thinking</em> revealed how", "<em>White Space Thinking</em> examined how"),
+    ("Five capabilities that, when practiced daily, expand the human system's capacity to absorb continuous "
+     "change without resistance. Not workshops that happen once and fade. Embedded, daily, self-administered "
+     "practices.", MORPH_LEAD),                                                                # item 5
+] + [(f'<p class="dim-z">{zone}</p><h3>{name}</h3>',
+      f'<p class="dim-z">{zone} <span class="cond">· {label.split(" · ", 2)[2]}</span></p><h3>{name}</h3>')
+     for (name, label), zone in zip([(n.replace("&", "&amp;"), l) for n, l in MORPH_CARDS],
+                                    ["Zone 1 · Broaden", "Zone 1 · Broaden", "Zone 2 · Expand",
+                                     "Zone 2 · Expand", "Zone 4 · Increase"])] + [               # item 6
+    ("Creates the cognitive gap — the pause where reflection becomes possible. Without the gap, there is no "
+     "room for a new perspective to enter. Modern work has not just eliminated these gaps. It has "
+     "structurally damaged the brain's ability to think.", WST),                               # item 7
+    ("Made in Canada. Because 45% of daily behaviour is habitual — and habits determine whether gains "
+     "persist or decay.", HABIT_END),                                                          # item 8
+    ("Resistance is not the obstacle &mdash; it is the signal. The real work happens before any initiative "
+     "arrives, dissolving the depleted energy, narrowed perspectives, and cognitive overload that make "
+     "resistance inevitable.", SPEAKER.split("condition. ", 1)[1].replace(" — ", " &mdash; ")),  # item 9
+    ("Resistance dissolves when the upstream conditions are addressed.",
+     "When the upstream conditions are in place, much of the resistance never forms. Disagreement that "
+     "remains may be informed dissent, and worth hearing."),                                   # item 10
+    ("<p>The philosophy in practice. Resistance dissolves when upstream conditions are addressed.</p>",
+     f"<p>{TOOLKIT3}</p>"),
+]
 CSS_START, CSS_END = "/* ── three layers ── */", "/* ── reveal ── */"
 BAND_START = "<!-- ═══ WHERE THIS FITS ═══ -->"
 # Selectors the new CSS may style; nothing that already exists on the page.
 CSS_PREFIXES = (".fit", "#where-this-fits", ".sr-only", ".stats.words", ".dim-z .cond")
+BAND_FORBIDDEN = [r"<style", r"\sstyle=", r"<script", r"<link", r"<iframe", r"<img", r"<svg", r"<canvas",
+                  r"<picture", r"<object", r"<embed", r"\son[a-z]+="]
 FILES_ALLOWED_TO_CHANGE = {"index.html", "images/sp-cover-flat.jpg"}
 REMOVED_IMAGE = "images/sp-cover-flat.jpg"
 WIDTHS = (360, 390, 820, 1440)
@@ -263,7 +304,7 @@ def check_tl02(pages):
     report(got == ONE_SENTENCE, "TL-02", "The one sentence, word for word", same(got, ONE_SENTENCE))
     fig = first(b, lambda n: n.tag == "figure")
     layers = fig.find_all(has_class("fit-layer")) if fig else []
-    report(len(layers) == 3 and [direct(first(l, lambda n: n.tag == "h3")) for l in layers] == [x[2] for x in LAYERS],
+    report(len(layers) == 3 and [direct(first(l, lambda n: n.tag == "h3")) for l in layers] == [x[1] for x in LAYERS],
            "TL-02", "Three layers: Prechange, Change Anesthesiology, Morphosis",
            ", ".join(text(first(l, lambda n: n.tag == "h3") or l) for l in layers) or "none")
     side = first(fig, has_class("fit-side")) if fig else None
@@ -284,6 +325,9 @@ def check_tl02(pages):
     figs = b.find_all(lambda n: n.tag == "figure")
     report(len(figs) == 1 and not b.find_all(has_class("tempo")), "TL-02", "No tempo diagram (one figure only)",
            f"{len(figs)} figures")
+    got = text(b)
+    report(got == BAND_TEXT, "TL-02", "The band says exactly the approved text, nothing more",
+           "ok" if got == BAND_TEXT else f"{len(got)} characters, expected {len(BAND_TEXT)}")
 
 
 # --- TL-03: the four conditions, in order; "habit" is never a condition ----------
@@ -317,14 +361,16 @@ def check_tl03(pages):
         got = text(el) if el else ""
         report(got == want, "TL-03", what, same(got, want))
     words = wording(root)
+    allowed = [m.span() for ok in HABIT_OK for m in re.finditer(ok, words, re.I)]
     stray = []
     for m in re.finditer(r"\bhabit\w*", words, re.I):
-        ctx = words[max(0, m.start() - 25):m.end() + 25]
-        if not any(re.search(ok, words[max(0, m.start() - 20):m.end() + 20], re.I) for ok in HABIT_OK):
-            stray.append(f"'…{ctx}…'")
+        if not any(a <= m.start() and m.end() <= b for a, b in allowed):
+            stray.append(f"'…{words[max(0, m.start() - 25):m.end() + 25]}…'")
     report(not stray, "TL-03", "'habit' only in Habit Machine, 'done out of habit', habit tracker",
            "; ".join(stray[:3]) or "ok")
     report(not re.search(r"cognitive space", words, re.I), "TL-03", "No 'cognitive space'")
+    found = re.findall(NOT_ALWAYS, words, re.I)
+    report(not found, "TL-03", "Resistance is 'often a signal', never 'always'", ", ".join(found) or "ok")
 
 
 # --- TL-04: no banned claim ---------------------------------------------------------
@@ -335,9 +381,11 @@ def check_tl04(pages):
         found = [b for b in BANNED if b.lower() in html.lower()]
         report(not found, "TL-04", f"{name}.html (text, meta tags, source): no banned claim",
                ", ".join(found) or "ok")
-    idx = pages["index"]["html"] + pages["article"]["html"]
-    n = len(re.findall(r"refreeze", idx, re.I))
-    report(n == 1 and "refreeze" in BIO, "TL-04", "'refreeze' only in the ZERO line", f"{n} found")
+    both = pages["index"]["html"] + pages["article"]["html"]
+    n = len(re.findall(r"re-?freez", both, re.I))
+    bio = first(pages["index"]["root"], lambda x: x.tag == "p" and tx(x).startswith("Iknetix"))
+    report(n == 1 and "can no longer refreeze after each change" in tx(bio), "TL-04",
+           "'refreeze' only in the ZERO line", f"{n} found")
     hook = first(pages["index"]["root"], has_class("hero-hook"))
     got = text(hook) if hook else ""
     report(got == HERO, "TL-04", "Hero line (item 1)", same(got, HERO))
@@ -393,24 +441,37 @@ def fixed_parts(html):
 def tl05_problems(old_html, new_html):
     """Every way new_html differs from BASE_REF beyond the approved change; [] if none."""
     problems = []
-    old = old_html.split("\n")
-    rest, blocks = without_new_blocks(new_html.split("\n"))
-    for tag, i1, i2, j1, j2 in SequenceMatcher(None, old, rest, autojunk=False).get_opcodes():
-        if tag == "equal":
+    want = old_html
+    for before, after in APPROVED_EDITS:
+        if want.count(before) != 1:
+            problems.append(f"approved edit not found once in {BASE_REF}: {before[:40]!r}")
             continue
-        lines = range(i1 + 1, i2 + 1)
-        if tag != "replace" or i2 - i1 != j2 - j1:
-            problems.append(f"{tag} at main line {i1 + 1}: {(rest[j1] if j1 < len(rest) else old[i1]).strip()[:50]!r}")
-        else:
-            problems += [f"main line {ln} changed: {old[ln - 1].strip()[:50]!r}" for ln in lines
-                         if ln not in APPROVED_LINES]
+        want = want.replace(before, after)
+    want = want.split("\n")
+    rest, blocks = without_new_blocks(new_html.split("\n"))
+    for tag, i1, i2, j1, j2 in SequenceMatcher(None, want, rest, autojunk=False).get_opcodes():
+        if tag != "equal":
+            got = rest[j1].strip()[:50] if j1 < len(rest) else "(nothing)"
+            problems.append(f"{tag} near approved line {i1 + 1}: {got!r}")
+    if "band" in blocks:
+        src = "\n".join(blocks["band"])
+        bad = [rx.replace("\\s", " ") for rx in BAND_FORBIDDEN if re.search(rx, src, re.I)]
+        if bad:
+            problems.append(f"band contains {', '.join(bad)}")
+        got = text(parse(src))
+        if got != BAND_TEXT:
+            k = next((i for i, (a, b) in enumerate(zip(got, BAND_TEXT)) if a != b), min(len(got), len(BAND_TEXT)))
+            problems.append(f"band text differs at '{got[max(0, k - 20):k + 40]}'")
     if "css" in blocks:
         stray = [s for s in css_selectors("\n".join(blocks["css"])) if not s.startswith(CSS_PREFIXES)]
         if stray:
             problems.append(f"new CSS styles existing selectors: {stray[:3]}")
-        fonts = set(re.findall(r"font-family:([^;}]+)", "\n".join(blocks["css"])))
+        css = "\n".join(blocks["css"])
+        fonts = set(re.findall(r"font-family:([^;}]+)", css))
         if fonts - {"var(--serif)", "var(--sans)", "var(--mono)"}:
             problems.append(f"new CSS uses another font: {sorted(fonts)}")
+        if re.search(r"@import|url\(|@font-face|(?<![-\w])font:", css, re.I):
+            problems.append("new CSS loads a file or uses the font shorthand")
     o, n = fixed_parts(old_html), fixed_parts(new_html)
     for k in o:
         if o[k] != n[k]:
@@ -443,6 +504,18 @@ PLANTED = {
     "new CSS loads another font": _after(re.escape(CSS_START), ".fit-x{font-family:Arial}"),
     "page description changed": lambda h: h.replace("Why Resistance Is Never the Problem. Book One",
                                                     "Why Resistance Is Rarely the Problem. Book One", 1),
+    "price added on an approved line": lambda h: h.replace(
+        "with intention rather than reaction.</p>", "with intention rather than reaction. From USD 49.</p>", 1),
+    "card text reworded on an approved line": lambda h: h.replace(
+        "Passive perspective exposure at organisational scale.", "Passive perspective exposure at scale.", 1),
+    "chapter line changed on an approved line": lambda h: h.replace(
+        "Chapter 7 — Seeing What You Haven't Seen", "Chapter 7 — Seeing More", 1),
+    "'always a signal' added in the band": _after(r'class="fit-note', "    <p>Resistance is always a signal.</p>"),
+    "style element in the band": _after(r'class="fit-line', "<style>.zone{display:none}</style>"),
+    "style attribute in the band": lambda h: h.replace('<p class="fit-note reveal">',
+                                                       '<p class="fit-note reveal" style="display:none">', 1),
+    "band label reworded": lambda h: h.replace("<small>The practice</small>", "<small>The method</small>", 1),
+    "new CSS loads a file": _after(re.escape(CSS_START), "@import url(https://example.com/f.css);"),
 }
 
 
@@ -521,7 +594,7 @@ def check_tl06(pages, base):
            "Diagram is a <figure> with a screen-reader description", capt[:60] or "missing")
     media = [n.tag for n in fig.walk() if n.tag in ("img", "svg", "canvas", "picture", "iframe", "object")] if fig else []
     words = text(fig) if fig else ""
-    real = fig is not None and all(x[2] in words and x[3] in words for x in LAYERS)
+    real = fig is not None and all(x[1] in words and x[2] in words for x in LAYERS)
     report(real and not media, "TL-06", "Real text, no image or embedded picture", ", ".join(media) or ("ok" if real else "text missing"))
     rule = re.search(r"\.sr-only\{[^}]*clip:rect\(0,\s*0,\s*0,\s*0\)", pages["index"]["html"].replace(" ", ""))
     report(bool(rule), "TL-06", "The description is hidden visually, not from screen readers")
@@ -563,9 +636,11 @@ def check_tl08(pages):
     every = " ".join(p["wording"] for p in pages.values())
     found = re.findall(r"\bhonest(?:ly)?\b", every, re.I)
     report(not found, "TL-08", "No 'honest' or 'honestly' on either page", ", ".join(found) or "ok")
+    new_words = " ".join([BAND_TEXT] + [after for _, after in APPROVED_EDITS])
+    found = re.findall(r"\bhonest\w*", new_words, re.I)
+    report(not found, "TL-08", "No 'honest…' word in any new text", ", ".join(found) or "ok")
     b = band(pages)
-    new = [wording(b) if b else "", HERO, PREMISE_END, BIO, MORPH_LEAD, WST, HABIT_END, SPEAKER, ZONE3, TOOLKIT3,
-           " ".join(f"{a} {b}" for a, b in STATS), " ".join(l for _, l in MORPH_CARDS)]
+    new = [wording(b) if b else "", BAND_TEXT] + [after for _, after in APPROVED_EDITS]
     money = re.findall(r"(?:US\$|CA\$|C\$|\bCAD\b|\bUSD\b|\$|€|£)\s?\d|\b\d+(?:\.\d\d)?\s?(?:dollars|USD|CAD)\b",
                        " ".join(new), re.I)
     report(b is not None and not money, "TL-08", "No price in the new text", ", ".join(money) or ("ok" if b else "band missing"))
@@ -599,18 +674,17 @@ def check_tl09(pages):
     report(got == (BAND_TAG, BAND_HEAD), "TL-09", "Item 11: tag and heading", " / ".join(got))
     for want, layer in zip(LAYERS, b.find_all(has_class("fit-layer")) + [None] * 3):
         if layer is None:
-            report(False, "TL-09", f"Item 11: {want[2]} box", "missing")
+            report(False, "TL-09", f"Item 11: {want[1]} box", "missing")
             continue
         role = first(layer, has_class("fit-role"))
-        note = first(role, lambda n: n.tag == "small") if role else None
         h3 = first(layer, lambda n: n.tag == "h3")
         tagged = first(layer, has_class("fit-here"))
         body = [text(p) for p in layer.find_all(lambda n: n.tag == "p" and not n.classes())]
         sub = first(layer, has_class("fit-sub"))
-        got = (direct(role), tx(note), direct(h3), body[0] if body else "", tx(sub))
-        is_ca = want[2] == "Change Anesthesiology"
+        got = (tx(role), direct(h3), body[0] if body else "", tx(sub))
+        is_ca = want[1] == "Change Anesthesiology"
         ok = got == want and (text(tagged) == THIS_BOOK if (is_ca and tagged) else (tagged is None and not is_ca))
-        report(ok, "TL-09", f"Item 11: {want[2]} box",
+        report(ok, "TL-09", f"Item 11: {want[1]} box",
                "ok" if ok else " | ".join(got)[:90] + (f" | tag {text(tagged) if tagged else 'missing'}" if is_ca else ""))
     side = first(b, has_class("fit-side"))
     got = (tx(first(side, has_class("fit-k"))), tx(first(side, lambda n: n.tag == "h3")),
