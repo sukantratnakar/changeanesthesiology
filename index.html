@@ -323,6 +323,53 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
   .stats.words .stat b{font-size:1.75rem}
 }
 .dim-z .cond{color:var(--cream)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.fit-line{font-family:var(--serif);font-size:clamp(1.3rem,2.5vw,1.8rem);font-style:italic;line-height:1.45;color:var(--ink);max-width:880px}
+.fit{display:grid;grid-template-columns:1fr 270px;gap:1.5rem;margin-top:3rem}
+.fit-stack{display:grid;gap:.9rem}
+.fit-layer{display:grid;grid-template-columns:128px 1fr;gap:1.8rem;background:#fff;padding:1.8rem 2rem;border-top:3px solid var(--gold)}
+.fit .fit-role{font-family:var(--serif);font-size:1.75rem;font-style:italic;color:var(--gold-dim);line-height:1.1}
+.fit .fit-role small{display:block;font-family:var(--mono);font-size:.56rem;font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:#8A857A;margin-top:.6rem;line-height:1.7}
+.fit h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;line-height:1.25}
+.fit p{font-size:.88rem;line-height:1.7;color:#55524E}
+.fit .fit-sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-top:.8rem;line-height:1.9}
+.fit-here{display:inline-block;vertical-align:middle;margin-left:.7rem;font-family:var(--mono);font-size:.52rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,177,95,.6);padding:.2rem .5rem;position:relative;top:-2px}
+.fit-layer.here{background:var(--navy)}
+.fit-layer.here h3{color:var(--cream)}
+.fit-layer.here p{color:var(--cream-dim)}
+.fit-layer.here .fit-role{color:var(--gold)}
+.fit-layer.here .fit-role small{color:var(--slate)}
+.fit-layer.here .fit-sub{color:var(--gold)}
+.fit-side{position:relative;border:1px solid rgba(169,141,82,.55);padding:1.8rem 1.7rem;display:flex;flex-direction:column;justify-content:center}
+.fit-side::before{content:'';position:absolute;right:100%;top:50%;width:1.5rem;border-top:1px solid var(--gold-dim)}
+.fit-side h3{font-style:italic}
+.fit .fit-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.8rem}
+.fit-base{grid-column:1/-1;background:var(--navy-deep);padding:1.4rem 2rem;display:grid;grid-template-columns:128px 1fr;gap:1.8rem;align-items:baseline}
+.fit .fit-base .fit-k{color:var(--gold);margin:0}
+.fit-base p{color:var(--cream-dim)}
+.fit-base b{font-family:var(--serif);font-size:1.15rem;color:var(--cream);font-weight:700;margin-right:.7rem}
+.fit-tempo{margin-top:2.8rem;padding:1.3rem 0;border-top:1px solid rgba(169,141,82,.4);border-bottom:1px solid rgba(169,141,82,.4);font-size:.95rem;line-height:1.9;color:#3E3C39}
+.fit-tempo b{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim);margin-right:.55rem}
+.fit-tempo i{font-style:normal;color:var(--gold-dim);margin:0 .8rem}
+.fit-note{font-size:.9rem;line-height:1.8;color:#4A4845;max-width:720px;margin-top:1.6rem}
+.fit-link{display:inline-block;margin-top:1.3rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.45);padding-bottom:3px}
+.fit-link:hover{color:var(--ink);border-color:var(--ink)}
+@media(max-width:1024px){
+  .fit{grid-template-columns:1fr}
+  .fit-side::before{display:none}
+}
+@media(max-width:680px){
+  .fit-layer{grid-template-columns:1fr;gap:.7rem;padding:1.5rem 1.4rem}
+  .fit .fit-role{font-size:1.35rem}
+  .fit .fit-role small{display:inline;margin:0 0 0 .6rem}
+  .fit-here{display:table;margin:.5rem 0 0;top:0}
+  .fit-side{padding:1.5rem 1.4rem}
+  .fit-base{grid-template-columns:1fr;gap:.4rem;padding:1.3rem 1.4rem}
+  .fit-tempo span{display:block}
+  .fit-tempo b{display:block;margin:0}
+  .fit-tempo span+i+span{margin-top:.7rem}
+  .fit-tempo i{display:none}
+}
 /* ── reveal ── */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
 .reveal.vis{opacity:1;transform:none}
@@ -629,6 +676,57 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
       <p>She is not resistant. She is full.</p>
       <cite>— Chapter 6, White Space Thinking</cite>
     </div>
+  </div>
+</section>
+
+<!-- ═══ WHERE THIS FITS ═══ -->
+<section class="sec sec-light" id="where-this-fits">
+  <div class="wrap">
+    <p class="tag reveal">Where this fits</p>
+    <h2 class="head reveal">Three layers.<br>One system.</h2>
+    <p class="fit-line reveal">Prechange names the stage. Change Anesthesiology explains why it matters. Morphosis builds the conditions, every day.</p>
+    <figure class="fit reveal" aria-describedby="fit-desc">
+      <figcaption class="sr-only" id="fit-desc">Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for depth. Iknetix and ZERO lie underneath as the foundation.</figcaption>
+      <div class="fit-stack">
+        <div class="fit-layer">
+          <p class="fit-role">When<small>The stage</small></p>
+          <div>
+            <h3>Prechange</h3>
+            <p>The stage before each change, and its measure, the Check.</p>
+            <p class="fit-sub">Energy · Headroom · Perspective · Routines</p>
+          </div>
+        </div>
+        <div class="fit-layer here">
+          <p class="fit-role">Why<small>The philosophy and the model</small></p>
+          <div>
+            <h3>Change Anesthesiology<span class="fit-here">This book</span></h3>
+            <p>People adapt when the conditions around them let them. Resistance is often a signal that those conditions are missing.</p>
+            <p class="fit-sub">Four zones · Broaden · Expand · Reduce · Increase</p>
+          </div>
+        </div>
+        <div class="fit-layer">
+          <p class="fit-role">How<small>The practice</small></p>
+          <div>
+            <h3>Morphosis</h3>
+            <p>Five daily practices designed to build the four conditions.</p>
+            <p class="fit-sub">White Space Thinking · Perspective Thinking · OmniMeta Mindfulness · Tinergy · The Habit Machine</p>
+          </div>
+        </div>
+      </div>
+      <div class="fit-side">
+        <p class="fit-k">Depth · beside the three layers</p>
+        <h3>The Sunfish Paradox</h3>
+        <p>The book on carrying out change, and keeping it from slipping back after launch.</p>
+        <p class="fit-sub">The Mola Series · Book Two</p>
+      </div>
+      <div class="fit-base">
+        <p class="fit-k">Foundation</p>
+        <p><b>Iknetix and ZERO</b>The author's earlier books.</p>
+      </div>
+    </figure>
+    <p class="fit-tempo reveal"><span><b>Every day</b>Morphosis</span><i aria-hidden="true">/</i><span><b>Before each change</b>the Prechange Check, then a boost on the weakest condition</span><i aria-hidden="true">/</i><span><b>During and after launch</b>sustaining, through Zone 4 and <em>The Sunfish Paradox</em></span></p>
+    <p class="fit-note reveal">The evidence supports each of these mechanisms on its own. Whether building all four conditions before a change improves adoption still needs independent research.</p>
+    <a href="https://prechangeway.com" target="_blank" rel="noopener" class="fit-link reveal">Read about Prechange at prechangeway.com &rarr;</a>
   </div>
 </section>
 
