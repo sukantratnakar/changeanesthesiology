@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "changeanesthesiology",
   "compatibility_date": "2026-07-23",
+  "previews": {},
   "assets": {
     "directory": ".",
     "not_found_handling": "404-page"
