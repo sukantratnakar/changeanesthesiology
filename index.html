@@ -321,6 +321,7 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 @media(max-width:680px){
   .stats.words{grid-template-columns:1fr;gap:1.8rem}
   .stats.words .stat b{font-size:1.75rem}
+  .stats.words .stat span{font-size:.8rem;letter-spacing:.06em;max-width:300px}
 }
 .dim-z .cond{color:var(--cream)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -333,7 +334,9 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 .fit h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;line-height:1.25}
 .fit p{font-size:.88rem;line-height:1.7;color:#55524E}
 .fit .fit-sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-top:.8rem;line-height:1.9}
-.fit-here{display:inline-block;vertical-align:middle;margin-left:.7rem;font-family:var(--mono);font-size:.52rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,177,95,.6);padding:.2rem .5rem;position:relative;top:-2px}
+.fit-name{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .7rem;margin-bottom:.4rem}
+.fit .fit-name h3{margin:0}
+.fit-here{font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,177,95,.6);padding:.2rem .5rem}
 .fit-layer.here{background:var(--navy)}
 .fit-layer.here h3{color:var(--cream)}
 .fit-layer.here p{color:var(--cream-dim)}
@@ -347,9 +350,9 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 .fit-base{grid-column:1/-1;background:var(--navy-deep);padding:1.4rem 2rem;display:grid;grid-template-columns:128px 1fr;gap:1.8rem;align-items:baseline}
 .fit .fit-base .fit-k{color:var(--gold);margin:0}
 .fit-base p{color:var(--cream-dim)}
-.fit-base b{font-family:var(--serif);font-size:1.15rem;color:var(--cream);font-weight:700;margin-right:.7rem}
+.fit-base b{font-family:var(--serif);font-size:1.15rem;color:var(--cream);font-weight:700;margin-right:.4rem}
 .fit-tempo{margin-top:2.8rem;padding:1.3rem 0;border-top:1px solid rgba(169,141,82,.4);border-bottom:1px solid rgba(169,141,82,.4);font-size:.95rem;line-height:1.9;color:#3E3C39}
-.fit-tempo b{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim);margin-right:.55rem}
+.fit-tempo b{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dim);margin-right:.3rem}
 .fit-tempo i{font-style:normal;color:var(--gold-dim);margin:0 .8rem}
 .fit-note{font-size:.9rem;line-height:1.8;color:#4A4845;max-width:720px;margin-top:1.6rem}
 .fit-link{display:inline-block;margin-top:1.3rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dim);border-bottom:1px solid rgba(169,141,82,.45);padding-bottom:3px}
@@ -361,8 +364,8 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
 @media(max-width:680px){
   .fit-layer{grid-template-columns:1fr;gap:.7rem;padding:1.5rem 1.4rem}
   .fit .fit-role{font-size:1.35rem}
-  .fit .fit-role small{display:inline;margin:0 0 0 .6rem}
-  .fit-here{display:table;margin:.5rem 0 0;top:0}
+  .fit .fit-role small{display:inline;margin:0}
+  .fit .fit-sep{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;font-family:var(--mono);font-style:normal;font-size:.7rem;color:#8A857A;vertical-align:middle}
   .fit-side{padding:1.5rem 1.4rem}
   .fit-base{grid-template-columns:1fr;gap:.4rem;padding:1.3rem 1.4rem}
   .fit-tempo span{display:block}
@@ -685,11 +688,11 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
     <p class="tag reveal">Where this fits</p>
     <h2 class="head reveal">Three layers.<br>One system.</h2>
     <p class="fit-line reveal">Prechange names the stage. Change Anesthesiology explains why it matters. Morphosis builds the conditions, every day.</p>
-    <figure class="fit reveal" aria-describedby="fit-desc">
-      <figcaption class="sr-only" id="fit-desc">Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for depth. Iknetix and ZERO lie underneath as the foundation.</figcaption>
+    <figure class="fit reveal">
+      <figcaption class="sr-only">Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for depth. Iknetix and ZERO lie underneath as the foundation.</figcaption>
       <div class="fit-stack">
         <div class="fit-layer">
-          <p class="fit-role">When<small>The stage</small></p>
+          <p class="fit-role">When <span class="sr-only fit-sep">·</span> <small>The stage</small></p>
           <div>
             <h3>Prechange</h3>
             <p>The stage before each change, and its measure, the Check.</p>
@@ -697,15 +700,15 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
           </div>
         </div>
         <div class="fit-layer here">
-          <p class="fit-role">Why<small>The philosophy and the model</small></p>
+          <p class="fit-role">Why <span class="sr-only fit-sep">·</span> <small>The philosophy and the model</small></p>
           <div>
-            <h3>Change Anesthesiology<span class="fit-here">This book</span></h3>
+            <div class="fit-name"><h3>Change Anesthesiology</h3><span class="fit-here">This book</span></div>
             <p>People adapt when the conditions around them let them. Resistance is often a signal that those conditions are missing.</p>
             <p class="fit-sub">Four zones · Broaden · Expand · Reduce · Increase</p>
           </div>
         </div>
         <div class="fit-layer">
-          <p class="fit-role">How<small>The practice</small></p>
+          <p class="fit-role">How <span class="sr-only fit-sep">·</span> <small>The practice</small></p>
           <div>
             <h3>Morphosis</h3>
             <p>Five daily practices designed to build the four conditions.</p>
@@ -721,10 +724,10 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
       </div>
       <div class="fit-base">
         <p class="fit-k">Foundation</p>
-        <p><b>Iknetix and ZERO</b>The author's earlier books.</p>
+        <p><b>Iknetix and ZERO</b> The author's earlier books.</p>
       </div>
     </figure>
-    <p class="fit-tempo reveal"><span><b>Every day</b>Morphosis</span><i aria-hidden="true">/</i><span><b>Before each change</b>the Prechange Check, then a boost on the weakest condition</span><i aria-hidden="true">/</i><span><b>During and after launch</b>sustaining, through Zone 4 and <em>The Sunfish Paradox</em></span></p>
+    <p class="fit-tempo reveal"><span><b>Every day</b> Morphosis</span><i aria-hidden="true">/</i><span><b>Before each change</b> the Prechange Check, then a boost on the weakest condition</span><i aria-hidden="true">/</i><span><b>During and after launch</b> sustaining, through Zone 4 and <em>The Sunfish Paradox</em></span></p>
     <p class="fit-note reveal">The evidence supports each of these mechanisms on its own. Whether building all four conditions before a change improves adoption still needs independent research.</p>
     <a href="https://prechangeway.com" target="_blank" rel="noopener" class="fit-link reveal">Read about Prechange at prechangeway.com &rarr;</a>
   </div>
