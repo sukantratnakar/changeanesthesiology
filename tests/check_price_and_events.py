@@ -227,8 +227,8 @@ def check_pr01(pages):
                 bad.append(f"{name}: '{amount}'")
     report(not bad, "PR-01", "Every price on the site is USD 79", ", ".join(bad) or "ok")
 
-    gone = [r"\bCAD\b", r"\bGST\b", r"\bPST\b", r"Taxes included", r"nothing added at checkout",
-            r"includes GST", r"\$\s?39\b", r"\$\s?79\b"]
+    gone = [r"\bCAD\b", r"\bGST\b", r"\bPST\b", r"\bHST\b", r"\bVAT\b", r"\btax(?:es)? included",
+            r"\bincl\.? tax", r"nothing added at checkout", r"includes GST", r"\$\s?39\b", r"\$\s?79\b"]
     bad = [f"{name}: /{g}/" for name, p in pages.items() for g in gone
            if re.search(g, p["wording"], re.I)]
     report(not bad, "PR-01", "No CAD, $39, $79 without USD, or GST-included wording",
@@ -332,52 +332,165 @@ def check_pr03(pages):
            f"found {len(photos)}")
 
 
+EXTRA_HREFS = {EVENTS_URL, PHOTOS_URL, NEW_STRIPE_URL}  # link targets this change adds
+REMOVED_HREFS = {"index.html": ["https://www.amazon.in/dp/1998440575", OLD_STRIPE_URLS[1]],
+                 "article.html": []}
+CSS_CHANGE = (".po-opts{display:grid;grid-template-columns:repeat(3,1fr);",
+              ".po-opts{display:grid;grid-template-columns:repeat(2,1fr);")
+JS_CHANGE = ("a.href&&a.href.indexOf('luma.com/ygmx2yww')>-1",
+             "a.href==='https://prechangeway.com/events'")
+DESCRIPTIONS = {"description", "og:description", "twitter:description"}
+FORM_TAGS = {"form", "input", "button", "textarea", "select", "iframe", "object", "embed",
+             "video", "audio", "source"}
+
+
+def _fixed_parts(html):
+    """Parts of a page that this change may not touch, apart from the approved edits."""
+    root = parse(html)
+
+    def raw(n):
+        return "".join(c for c in n.children if isinstance(c, str))
+
+    def meta_key(n):
+        named = n.attrs.get("name") or n.attrs.get("property")
+        return tuple(sorted((k, v) for k, v in n.attrs.items()
+                            if not (k == "content" and named in DESCRIPTIONS)))
+
+    return {
+        "CSS": [raw(n) for n in root.find_all(lambda n: n.tag == "style")],
+        "inline scripts": [raw(n) for n in root.find_all(
+            lambda n: n.tag == "script" and "src" not in n.attrs)],
+        "external scripts": [n.attrs["src"] for n in root.find_all(
+            lambda n: n.tag == "script" and "src" in n.attrs)],
+        "images": [(n.attrs.get("src"), n.attrs.get("alt")) for n in root.find_all(lambda n: n.tag == "img")],
+        "head links": [tuple(sorted(n.attrs.items())) for n in root.find_all(lambda n: n.tag == "link")],
+        "meta tags": [meta_key(n) for n in root.find_all(lambda n: n.tag == "meta")],
+        "forms and embeds": [(n.tag, tuple(sorted(n.attrs.items())))
+                             for n in root.find_all(lambda n: n.tag in FORM_TAGS)],
+        "hrefs": [n.attrs.get("href") for n in root.find_all(lambda n: n.tag == "a" and "href" in n.attrs)],
+    }
+
+
+def pr04_problems(path, old_html, new_html):
+    """Every way new_html differs from main beyond the approved change; [] if none."""
+    problems = []
+    old, new = old_html.splitlines(), new_html.splitlines()
+    sm = difflib.SequenceMatcher(None, old, new, autojunk=False)
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == "equal":
+            continue
+        if op == "insert":  # this change only rewrites or removes lines, never adds them
+            problems.append(f"line added after main line {i1}: {new[j1].strip()[:50]!r}")
+            continue
+        if op == "replace" and j2 - j1 > i2 - i1:
+            problems.append(f"main lines {i1 + 1}-{i2} grew from {i2 - i1} to {j2 - j1} lines")
+        if op == "delete":
+            # A removed block next to identical lines (e.g. "</div>") can be
+            # placed several ways with the same result; accept any placement
+            # that falls on approved lines, as git's diff slider would.
+            spots, a, b = [(i1, i2)], i1, i2
+            while a > 0 and old[a - 1] == old[b - 1]:
+                a, b = a - 1, b - 1
+                spots.append((a, b))
+            a, b = i1, i2
+            while b < len(old) and old[a] == old[b]:
+                a, b = a + 1, b + 1
+                spots.append((a, b))
+            if any(all(ln in ALLOWED[path] for ln in range(s + 1, e + 1)) for s, e in spots):
+                continue
+        for ln in range(i1 + 1, i2 + 1):
+            if ln not in ALLOWED[path]:
+                problems.append(f"main line {ln} changed: {old[ln - 1].strip()[:50]!r}")
+
+    o, n = _fixed_parts(old_html), _fixed_parts(new_html)
+    want_css, want_js = o["CSS"], o["inline scripts"]
+    if path == "index.html":
+        want_css = [c.replace(*CSS_CHANGE) for c in o["CSS"]]
+        want_js = [s.replace(*JS_CHANGE) for s in o["inline scripts"]]
+        if want_css == o["CSS"] or want_js == o["inline scripts"]:
+            problems.append("main's grid rule or register_click match not found")
+    if n["CSS"] != want_css:
+        problems.append("CSS differs from main beyond the buy-grid value")
+    if n["inline scripts"] != want_js:
+        problems.append("inline scripts differ from main beyond the register_click match")
+    for k in ("external scripts", "images", "head links", "meta tags", "forms and embeds"):
+        if n[k] != o[k]:
+            problems.append(f"{k} differ from main")
+    extra = [h for h in n["hrefs"] if h not in set(o["hrefs"]) | EXTRA_HREFS]
+    if extra:
+        problems.append(f"new link targets: {extra[:3]}")
+    want = len(o["hrefs"]) - sum(1 for h in REMOVED_HREFS[path] if h in o["hrefs"])
+    if len(n["hrefs"]) != want:
+        problems.append(f"{len(n['hrefs'])} links, expected {want}")
+    return problems
+
+
+def _after_line(pattern, line):
+    def plant(html):
+        lines = html.split("\n")
+        for i, l in enumerate(lines):
+            if re.search(pattern, l):
+                return "\n".join(lines[:i + 1] + [line] + lines[i + 1:])
+        return html
+    return plant
+
+
+# Edits that must never get past PR-04; the self-test plants each one.
+PLANTED = {
+    "script after the meta description": _after_line(
+        r'<meta name="description"', '<script src="https://example.com/x.js"></script>'),
+    "second CSS rule after the grid": _after_line(r"^\.po-opts\{", ".po-opt{padding:0}"),
+    "extra gtag event after register_click": _after_line(
+        r"gtag\('event','register_click'", "    gtag('event','purchase',{});"),
+    "new link after a footer link": _after_line(
+        r'href="#po-terms"', '      <a href="https://example.com/">Example</a>'),
+    "image added on an approved line": lambda h: re.sub(
+        r'(<p class="hero-date">[^<]*</p>)', r'\1<img src="https://example.com/p.gif" alt="">', h, count=1),
+    "extra link on an approved line": lambda h: h.replace(
+        "Upcoming Events</a>", 'Upcoming Events</a> <a href="#preorder">Buy</a>', 1),
+    "edit on an unapproved line": lambda h: h.replace("Annual cost of failure", "Annual cost of failures", 1),
+    "#preorder anchor renamed": lambda h: h.replace('id="preorder"', 'id="buy"', 1),
+}
+
+
 def check_pr04(pages):
     try:
         changed = set(git("diff", "--name-only", MAIN_REF, "HEAD").split())
+        dirty = git("status", "--porcelain").strip()
     except subprocess.CalledProcessError as e:
-        die(f"git diff against {MAIN_REF} failed: {e.stderr.strip()}")
+        die(f"git failed: {e.stderr.strip()}")
     extra = sorted(f for f in changed if not f.startswith("tests/") and f not in FILES_ALLOWED_TO_CHANGE)
-    report(not extra, "PR-04", f"Only index.html, article.html and tests/ changed since {MAIN_REF}",
+    report(not extra, "PR-04", f"Checkout: only index.html, article.html, tests/ changed since {MAIN_REF}",
            ", ".join(extra) or f"{len(changed)} files changed")
+    report(not dirty, "PR-04", "Checkout: no uncommitted changes",
+           dirty.replace("\n", ", ")[:80] or "clean")
 
+    mains = {}
     for name, path in (("index", "index.html"), ("article", "article.html")):
-        old = git("show", f"{MAIN_REF}:{path}").splitlines()
-        new = pages[name]["html"].splitlines()
-        sm = difflib.SequenceMatcher(None, old, new, autojunk=False)
-        stray = []
-        for op, i1, i2, j1, j2 in sm.get_opcodes():
-            if op == "equal":
-                continue
-            if op == "insert":  # new lines between main lines i1 and i1+1
-                if i1 not in ALLOWED[path] and (i1 + 1) not in ALLOWED[path]:
-                    stray.append(f"insert after main line {i1}: {new[j1][:60]!r}")
-                continue
-            if op == "delete":
-                # A removed block next to identical lines (e.g. "</div>") can be
-                # placed several ways with the same result; accept any placement
-                # that falls on approved lines, as git's diff slider would.
-                spots, a, b = [(i1, i2)], i1, i2
-                while a > 0 and old[a - 1] == old[b - 1]:
-                    a, b = a - 1, b - 1
-                    spots.append((a, b))
-                a, b = i1, i2
-                while b < len(old) and old[a] == old[b]:
-                    a, b = a + 1, b + 1
-                    spots.append((a, b))
-                if any(all(ln in ALLOWED[path] for ln in range(s + 1, e + 1)) for s, e in spots):
-                    continue
-            for ln in range(i1 + 1, i2 + 1):
-                if ln not in ALLOWED[path]:
-                    stray.append(f"main line {ln}: {old[ln - 1].strip()[:60]!r}")
-        report(not stray, "PR-04", f"{path}: only the approved lines differ from main",
-               "; ".join(stray[:5]) or "ok")
+        mains[path] = git("show", f"{MAIN_REF}:{path}")
+        probs = pr04_problems(path, mains[path], pages[name]["html"])
+        report(not probs, "PR-04", f"{path}: nothing differs from main but approved edits",
+               "; ".join(probs[:4]) or "ok")
 
-    old_css = git("show", f"{MAIN_REF}:index.html").splitlines()[279]
+    old_css = mains["index.html"].splitlines()[279]
     want = old_css.replace("repeat(3,1fr)", "repeat(2,1fr)")
     served = [l for l in pages["index"]["html"].splitlines() if l.startswith(".po-opts{")]
     report(want != old_css and served == [want], "PR-04", "Buy grid is 2 columns (the one CSS change)",
            served[0][:70] if served else "rule missing")
+
+    html = pages["index"]["html"]
+    if pr04_problems("index.html", mains["index.html"], html):
+        report(False, "PR-04", "Self-test: planted edits are caught", "needs a page that passes first")
+        return
+    missed = []
+    for label, plant in PLANTED.items():
+        planted = plant(html)
+        if planted == html:
+            missed.append(f"{label} (could not plant)")
+        elif not pr04_problems("index.html", mains["index.html"], planted):
+            missed.append(label)
+    report(not missed, "PR-04", f"Self-test: all {len(PLANTED)} planted edits are caught",
+           ", ".join(missed) or "ok")
 
 
 def check_pr05(pages):
