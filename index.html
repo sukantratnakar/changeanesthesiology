@@ -845,7 +845,7 @@ document.addEventListener('click',function(e){
   var a=e.target.closest('a'); if(!a||!window.gtag) return;
   if(a.hasAttribute('data-buy')){
     gtag('event','begin_checkout',{option:a.textContent.trim(),link_url:a.href});
-  }else if(a.href&&a.href.indexOf('luma.com/ygmx2yww')>-1){
+  }else if(a.href==='https://prechangeway.com/events'){
     gtag('event','register_click',{link_url:a.href});
   }
 });
