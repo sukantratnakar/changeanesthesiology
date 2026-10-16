@@ -47,6 +47,8 @@ PHOTOS_TEXT = "Photos from the launch →"
 BOX_LABEL = "Paperback · posted anywhere in the world"
 ONLINE_LINE = "Online and in person · on prechangeway.com"
 ARTICLE_SESSIONS = "Free sessions online and in person, listed on prechangeway.com."
+# Q08 (TL-02) adds one link to the Prechange home page, not to events; PR-03 skips it.
+PRECHANGE_HOME = ("https://prechangeway.com", "Read about Prechange at prechangeway.com →")
 # The launch record, in past tense, with no book signing (Sukant, 16 Oct 2026).
 LAUNCH_RECORD = [
     "Guests arrived and connected over evening snacks",
@@ -328,7 +330,7 @@ def check_pr03(pages):
             host = u.netloc.lower()
             is_event = host in ("luma.com", "lu.ma", "www.luma.com", "prechangeway.com",
                                 "www.prechangeway.com") or a["raw"] == "#event"
-            if not is_event:
+            if not is_event or (a["href"], a["text"]) == PRECHANGE_HOME:
                 continue
             if a["href"] == PHOTOS_URL:
                 if a["text"] != PHOTOS_TEXT:
