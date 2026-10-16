@@ -18,10 +18,6 @@ if [ $# -ne 1 ]; then
 fi
 BASE="${1%/}"
 
-# "/" must stay byte-for-byte the same as index.html on 15 Oct 2026.
-EXPECTED_INDEX_BYTES="${EXPECTED_INDEX_BYTES:-61004}"
-EXPECTED_INDEX_SHA256="${EXPECTED_INDEX_SHA256:-af166836376af2c4e597cd6c30fee09eb718ca90981f245129a417c6e0ab0263}"
-
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 UA="check_public_files.sh (changeanesthesiology repo test)"
 PASSED=0
@@ -36,6 +32,13 @@ sha256() {
   else shasum -a 256 "$1" | cut -d' ' -f1
   fi
 }
+
+# "/" must be byte-for-byte this checkout's index.html, as /article is checked
+# against article.html. To check against a fixed copy instead, set
+# EXPECTED_INDEX_BYTES and EXPECTED_INDEX_SHA256 (Q04 pinned the 15 Oct 2026
+# file: 61004 bytes, sha256 af166836376af2c4e597cd6c30fee09eb718ca90981f245129a417c6e0ab0263).
+EXPECTED_INDEX_BYTES="$(printf '%s' "${EXPECTED_INDEX_BYTES:-$(wc -c < "$REPO_ROOT/index.html")}" | tr -d '[:space:]')"
+EXPECTED_INDEX_SHA256="${EXPECTED_INDEX_SHA256:-$(sha256 "$REPO_ROOT/index.html")}"
 
 # Fetch a path without following redirects; prints "<status> <content-type>".
 fetch() {
