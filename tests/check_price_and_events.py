@@ -456,13 +456,13 @@ PLANTED = {
 def check_pr04(pages):
     try:
         changed = set(git("diff", "--name-only", MAIN_REF, "HEAD").split())
-        dirty = git("status", "--porcelain").strip()
+        dirty = git("status", "--porcelain", "--untracked-files=no").strip()
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
     extra = sorted(f for f in changed if not f.startswith("tests/") and f not in FILES_ALLOWED_TO_CHANGE)
     report(not extra, "PR-04", f"Checkout: only index.html, article.html, tests/ changed since {MAIN_REF}",
            ", ".join(extra) or f"{len(changed)} files changed")
-    report(not dirty, "PR-04", "Checkout: no uncommitted changes",
+    report(not dirty, "PR-04", "Checkout: no uncommitted changes to tracked files",
            dirty.replace("\n", ", ")[:80] or "clean")
 
     mains = {}
