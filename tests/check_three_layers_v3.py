@@ -51,8 +51,202 @@ GONE = ["Broaden · Expand · Reduce · Increase", "Broaden", "Mola Series", "Bo
 ORDER = [".tl3-why", ".tl3-pc", ".tl3-launch", ".tl3-sf", ".tl3-ribbon", ".tl3-found"]
 ORDER_NAMES = ["arch (why)", "Prechange", "launch", "after launch", "ribbon (how)", "foundation"]
 
-# Q12's edits to BASE_REF's index.html, as (before, after), filled in with the change itself.
-APPROVED_EDITS = None
+# Q12's edits to BASE_REF's index.html, as (before, after), word for word: the old figure and its
+# CSS (including .sr-only, which only it used) give way to design v3 and its CSS, scoped to .tl3.
+OLD_SR = r'''.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+'''
+OLD_CSS = r'''.fit{display:grid;grid-template-columns:1fr 270px;gap:1.5rem;margin-top:3rem}
+.fit-stack{display:grid;gap:.9rem}
+.fit-layer{display:grid;grid-template-columns:128px 1fr;gap:1.8rem;background:#fff;padding:1.8rem 2rem;border-top:3px solid var(--gold)}
+.fit .fit-role{font-family:var(--serif);font-size:1.75rem;font-style:italic;color:var(--gold-dim);line-height:1.1}
+.fit .fit-role small{display:block;font-family:var(--mono);font-size:.56rem;font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:#8A857A;margin-top:.6rem;line-height:1.7}
+.fit h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;line-height:1.25}
+.fit p{font-size:.88rem;line-height:1.7;color:#55524E}
+.fit .fit-sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-top:.8rem;line-height:1.9}
+.fit-name{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .7rem;margin-bottom:.4rem}
+.fit .fit-name h3{margin:0}
+.fit-here{font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,177,95,.6);padding:.2rem .5rem}
+.fit-layer.here{background:var(--navy)}
+.fit-layer.here h3{color:var(--cream)}
+.fit-layer.here p{color:var(--cream-dim)}
+.fit-layer.here .fit-role{color:var(--gold)}
+.fit-layer.here .fit-role small{color:var(--slate)}
+.fit-layer.here .fit-sub{color:var(--gold)}
+.fit-side{position:relative;border:1px solid rgba(169,141,82,.55);padding:1.8rem 1.7rem;display:flex;flex-direction:column;justify-content:center}
+.fit-side::before{content:'';position:absolute;right:100%;top:50%;width:1.5rem;border-top:1px solid var(--gold-dim)}
+.fit-side h3{font-style:italic}
+.fit .fit-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:.8rem}
+.fit-base{grid-column:1/-1;background:var(--navy-deep);padding:1.4rem 2rem;display:grid;grid-template-columns:128px 1fr;gap:1.8rem;align-items:baseline}
+.fit .fit-base .fit-k{color:var(--gold);margin:0}
+.fit-base p{color:var(--cream-dim)}
+.fit-base b{font-family:var(--serif);font-size:1.15rem;color:var(--cream);font-weight:700;margin-right:.4rem}
+'''
+V3_CSS = r'''/* Three layers, one system: design v3 (Sukant, 17 Oct 2026, D56). A picture of time around one
+   change. Scoped to .tl3, so nothing else on the page changes; CA's own fonts. */
+.tl3{--ink:#0C203B;--navy-deep:#071426;--text:#1F2530;--grey:#535B68;--pale:#C8C6BE;--line:#D9D6CC;--accent:#2E6B66;--gold:#D4B15F;--gold-ln:#B8995A;--num:#735A26;--energy:#7A2E2A;--slate:#5C7385;--sage:#687B5A;--routines:#B07A3B;--fs-label:11px;--track-caps:.18em;--e:var(--energy);--h:var(--slate);--p:var(--sage);--r:var(--routines);--teal:var(--accent);color:var(--text);font-size:15px;line-height:1.65}
+.tl3 *{box-sizing:border-box}
+.tl3-cap{display:block;font-family:var(--mono);font-size:var(--fs-label);font-weight:500;letter-spacing:var(--track-caps);text-transform:uppercase}
+.tl3-q{font-family:var(--serif);font-style:italic;font-size:30px;line-height:1}
+.tl3-name{font-family:var(--serif);font-weight:500;font-size:23px;line-height:1.15;color:var(--ink)}
+.tl3-txt{font-size:14px;line-height:1.5;margin-top:4px}
+.tl3-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tl3-fig{margin-top:34px;display:grid;gap:0;max-width:956px}
+.tl3-why{position:relative;text-align:center;padding:26px 22px 22px;border:2px solid var(--gold);border-bottom:0;border-radius:50% 50% 0 0/ 60px 60px 0 0;background:linear-gradient(#FBF6EA,rgba(251,246,234,0))}
+.tl3-why .tl3-q,.tl3-why .tl3-cap{color:var(--num)}
+.tl3-why .tl3-head{display:flex;justify-content:center;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tl3-why .tl3-txt{color:var(--text);max-width:34em;margin:6px auto 0}
+.tl3-time{display:grid;gap:0;padding:0 0 0}
+.tl3-seg{padding:20px 20px 22px;position:relative}
+.tl3-pc{background:var(--ink);color:#E9E6DD}
+.tl3-pc .tl3-q{color:var(--gold)}
+.tl3-pc .tl3-cap{color:var(--pale)}
+.tl3-pc .tl3-name{color:#fff}
+.tl3-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:var(--track-caps);text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:2px 7px;margin-left:8px;vertical-align:4px}
+.tl3-why .tl3-tag{border-color:var(--num);color:var(--num);margin-left:0;align-self:center}
+.tl3-bars{display:flex;align-items:flex-end;gap:10px;height:62px;margin-top:16px}
+.tl3-bar{flex:1;max-width:58px;background:var(--c);border-radius:2px 2px 0 0;position:relative}
+.tl3-bar.weak{outline:2px dashed var(--gold);outline-offset:3px}
+.tl3-barlab{display:flex;gap:10px;margin-top:6px}
+.tl3-barlab span{flex:1;max-width:58px;font-family:var(--mono);font-size:8.5px;letter-spacing:0;text-transform:uppercase;color:#C9C6BC;text-align:center}
+.tl3-pc .tl3-note{font-size:13px;color:var(--gold);margin-top:10px}
+.tl3-launch{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:var(--gold);color:var(--ink)}
+.tl3-launch .tl3-cap{font-weight:600}
+.tl3-flag{width:0;height:0;border-left:9px solid var(--ink);border-top:6px solid transparent;border-bottom:6px solid transparent}
+.tl3-sf{background:#EFE7D6}
+.tl3-sf .tl3-q{color:var(--num)}
+.tl3-sf .tl3-cap{color:var(--num)}
+.tl3-sf .tl3-name{font-style:italic}
+.tl3-slip{margin-top:14px;height:46px;position:relative}
+.tl3-slip svg{width:100%;height:100%;display:block}
+.tl3-how{position:relative;padding:18px 20px 18px;background:#fff;border:1px solid var(--line);border-top:0}
+.tl3-ribbon{height:10px;border-radius:5px;background:repeating-linear-gradient(90deg,var(--e) 0 40px,var(--h) 40px 80px,var(--p) 80px 120px,var(--r) 120px 160px);position:relative;margin-bottom:14px}
+.tl3-ribbon::after{content:"";position:absolute;right:-10px;top:-5px;border-left:12px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent}
+.tl3-how .tl3-q{color:var(--teal)}
+.tl3-how .tl3-cap{color:var(--teal)}
+.tl3-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tl3-prac{display:flex;flex-wrap:wrap;gap:8px 16px;list-style:none;padding:0;margin-top:10px}
+.tl3-prac li{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.tl3-prac .d{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.tl3-found{background:var(--navy-deep);color:#D8D5CC;padding:16px 20px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;position:relative}
+.tl3-found::before{content:"";position:absolute;left:0;right:0;top:-6px;height:6px;background:repeating-linear-gradient(90deg,var(--navy-deep) 0 6px,transparent 6px 12px)}
+.tl3-found .tl3-cap{color:var(--gold)}
+.tl3-found .tl3-name{color:#fff;font-size:20px}
+.tl3-found .tl3-txt{margin:0;color:var(--pale)}
+.tl3-legend{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:6px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.tl3-legend i{display:inline-block;width:18px;vertical-align:middle;margin-right:6px;border-top:2.5px solid var(--ink)}
+.tl3-legend i.dash{border-top:1.5px dashed var(--gold-ln)}
+@media(max-width:759px){
+  .tl3-why .tl3-name{font-size:20px}
+}
+@media(min-width:760px){
+  .tl3-why{padding:30px 40px 24px}
+  .tl3-time{grid-template-columns:minmax(0,1.25fr) 44px minmax(0,1fr)}
+  .tl3-seg{padding:24px 26px 26px}
+  .tl3-launch{flex-direction:column;padding:12px 0}
+  .tl3-launch .tl3-cap{writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.22em}
+  .tl3-flag{border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid var(--ink);border-bottom:0}
+  .tl3-how{padding:20px 26px}
+  .tl3-found{padding:16px 26px}
+  .tl3-q{font-size:34px}
+}
+'''
+OLD_MEDIA_1024 = r'''@media(max-width:1024px){
+  .fit{grid-template-columns:1fr}
+  .fit-side::before{display:none}
+}
+'''
+OLD_MEDIA_680 = r'''  .fit-layer{grid-template-columns:1fr;gap:.7rem;padding:1.5rem 1.4rem}
+  .fit .fit-role{font-size:1.35rem}
+  .fit .fit-role small{display:inline;margin:0}
+  .fit .fit-sep{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;font-family:var(--mono);font-style:normal;font-size:.7rem;color:#8A857A;vertical-align:middle}
+  .fit-side{padding:1.5rem 1.4rem}
+  .fit-base{grid-template-columns:1fr;gap:.4rem;padding:1.3rem 1.4rem}
+'''
+OLD_FIGURE = r'''    <figure class="fit reveal">
+      <figcaption class="sr-only">Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for depth. Iknetix and ZERO lie underneath as the foundation.</figcaption>
+      <div class="fit-stack">
+        <div class="fit-layer">
+          <p class="fit-role">When <span class="sr-only fit-sep">·</span> <small>The stage</small></p>
+          <div>
+            <h3>Prechange</h3>
+            <p>The stage before each change, and its measure, the Check.</p>
+            <p class="fit-sub">Energy · Headroom · Perspective · Routines</p>
+          </div>
+        </div>
+        <div class="fit-layer here">
+          <p class="fit-role">Why <span class="sr-only fit-sep">·</span> <small>The philosophy and the model</small></p>
+          <div>
+            <div class="fit-name"><h3>Change Anesthesiology</h3><span class="fit-here">This book</span></div>
+            <p>People adapt when the conditions around them let them. Resistance is often a signal that those conditions are missing.</p>
+            <p class="fit-sub">Four zones · Broaden · Expand · Reduce · Increase</p>
+          </div>
+        </div>
+        <div class="fit-layer">
+          <p class="fit-role">How <span class="sr-only fit-sep">·</span> <small>The practice</small></p>
+          <div>
+            <h3>Morphosis</h3>
+            <p>Five daily practices designed to build the four conditions.</p>
+            <p class="fit-sub">White Space Thinking · Perspective Thinking · OmniMeta Mindfulness · Tinergy · The Habit Machine</p>
+          </div>
+        </div>
+      </div>
+      <div class="fit-side">
+        <p class="fit-k">Depth · beside the three layers</p>
+        <h3>The Sunfish Paradox</h3>
+        <p>The book on carrying out change, and keeping it from slipping back after launch.</p>
+        <p class="fit-sub">The Mola Series · Book Two</p>
+      </div>
+      <div class="fit-base">
+        <p class="fit-k">Foundation</p>
+        <p><b>Iknetix and ZERO</b> The author's earlier books.</p>
+      </div>
+    </figure>
+'''
+V3_FIGURE = r'''    <figure class="tl3 tl3-fig reveal" aria-describedby="tl3-desc">
+     <div class="tl3-why">
+      <div class="tl3-head"><span class="tl3-q">Why</span><span class="tl3-name">Change Anesthesiology</span><span class="tl3-tag">This book</span></div>
+      <span class="tl3-cap" style="margin-top:6px">The philosophy and the model · four zones</span>
+      <p class="tl3-txt">People adapt when the conditions around them let them. Resistance is often a signal that those conditions are missing.</p>
+     </div>
+     <div class="tl3-time">
+      <div class="tl3-seg tl3-pc">
+       <div class="tl3-head"><span class="tl3-q">When</span><span class="tl3-cap">Before each change</span></div>
+       <div class="tl3-name" style="margin-top:8px">Prechange</div>
+       <p class="tl3-txt">The stage before each change, and its measure, the Check.</p>
+       <div class="tl3-bars" aria-hidden="true">
+        <div class="tl3-bar" style="--c:var(--e);height:78%"></div><div class="tl3-bar weak" style="--c:var(--h);height:38%"></div><div class="tl3-bar" style="--c:var(--p);height:90%"></div><div class="tl3-bar" style="--c:var(--r);height:66%"></div>
+       </div>
+       <div class="tl3-barlab" aria-hidden="true"><span>Energy</span><span>Headroom</span><span>Perspective</span><span>Routines</span></div>
+       <p class="tl3-note">The Check finds the weakest condition; a focused boost builds it before launch.</p>
+      </div>
+      <div class="tl3-launch"><span class="tl3-flag" aria-hidden="true"></span><span class="tl3-cap">Change launches</span></div>
+      <div class="tl3-seg tl3-sf">
+       <div class="tl3-head"><span class="tl3-q">Depth</span><span class="tl3-cap">During and after launch</span></div>
+       <div class="tl3-name" style="margin-top:8px">The Sunfish Paradox</div>
+       <p class="tl3-txt">Carrying out change, and keeping it from slipping back after launch.</p>
+       <div class="tl3-slip" aria-hidden="true"><svg viewBox="0 0 300 40" preserveAspectRatio="none">
+        <path d="M0 10 C60 10 90 34 150 34 S240 14 300 12" fill="none" stroke="#B8995A" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <path d="M0 10 L300 10" fill="none" stroke="#0C203B" stroke-width="2.5"/>
+       </svg></div>
+       <div class="tl3-legend" aria-hidden="true"><span><i></i>The change holds</span><span><i class="dash"></i>Without it, it slips back</span></div>
+      </div>
+     </div>
+     <div class="tl3-how">
+      <div class="tl3-ribbon" aria-hidden="true"></div>
+      <div class="tl3-head"><span class="tl3-q">How</span><span class="tl3-name">Morphosis</span><span class="tl3-cap">Every day, before, during and after</span></div>
+      <p class="tl3-txt">Five daily practices designed to build the four conditions.</p>
+      <ul class="tl3-prac">
+       <li style="--c:var(--e)"><span class="d"></span>Tinergy</li><li style="--c:var(--h)"><span class="d"></span>White Space Thinking</li><li style="--c:var(--h)"><span class="d"></span>OmniMeta Mindfulness</li><li style="--c:var(--p)"><span class="d"></span>Perspective Thinking</li><li style="--c:var(--r)"><span class="d"></span>Habit Machine</li>
+      </ul>
+     </div>
+     <div class="tl3-found">
+      <span class="tl3-cap">Foundation</span><span class="tl3-name"><em>Iknetix</em> and <em>ZERO</em></span>
+      <p class="tl3-txt">The author's earlier books. <em>Iknetix</em> also feeds the perspective tools.</p>
+     </div>
+     <p class="tl3-sr" id="tl3-desc">A picture of time around one change. Over everything, the why: Change Anesthesiology, the philosophy and the model. On the timeline, before the change launches: Prechange, the stage before each change, where the Check measures energy, headroom, perspective and routines, finds the weakest, and a focused boost builds it. After the change launches: The Sunfish Paradox, on carrying out change and keeping it from slipping back. Running underneath the whole timeline, every day: Morphosis, five daily practices, each designed to build one of the four conditions. At the base, the foundation: Iknetix and ZERO, the author's earlier books.</p>
+    </figure>
+'''
+APPROVED_EDITS = [(OLD_SR, ""), (OLD_CSS, V3_CSS), (OLD_MEDIA_1024, ""), (OLD_MEDIA_680, ""), (OLD_FIGURE, V3_FIGURE)]
 
 RESULTS = []
 
@@ -234,8 +428,11 @@ def main():
     words = text(band) if band else ""
     why = first(fig.find_all(lambda n: "tl3-why" in n.classes())) if fig else None
     tagged = first(why.find_all(lambda n: "tl3-tag" in n.classes())) if why else None
-    report(tagged is not None and text(tagged) == "This book"
-           and any("tl3-name" in a.classes() for a in tagged.ancestors()), "TV-06", "'This book' beside Change Anesthesiology")
+    head = tagged.parent if tagged is not None else None
+    sibs = [c for c in head.children if not isinstance(c, str)] if head is not None else []
+    beside = (tagged in sibs and sibs.index(tagged) > 0 and "tl3-name" in sibs[sibs.index(tagged) - 1].classes()
+              and text(sibs[sibs.index(tagged) - 1]) == "Change Anesthesiology")
+    report(tagged is not None and text(tagged) == "This book" and beside, "TV-06", "'This book' beside Change Anesthesiology")
     found = [g for g in GONE if g.lower() in words.lower()]
     report(not found, "TV-06", "No 'This site', zone names, Mola Series line or file heading", ", ".join(found) or "ok")
     bad = [n.tag for n in fig.walk() if n.tag in ("img", "script", "canvas", "picture", "iframe", "object", "link", "style")] if fig else ["no figure"]
