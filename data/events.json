@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "generated": "2026-10-16T17:40:00-06:00",
+  "upcoming": [
+    {
+      "id": "live-online-2026-09",
+      "series": "live",
+      "title": "FIXTURE · Prechange Live · Online (already ended)",
+      "start": "2026-09-15T11:00:00-06:00",
+      "end": "2026-09-15T12:30:00-06:00",
+      "date_precision": "day",
+      "city": "Online",
+      "venue": null,
+      "url": "https://prechangeway.com/events#live-online-2026-09",
+      "register_url": null
+    },
+    {
+      "id": "live-online-2026-11",
+      "series": "live",
+      "title": "FIXTURE · Prechange Live · Online",
+      "start": "2026-11-17T11:00:00-06:00",
+      "end": "2026-11-17T12:30:00-06:00",
+      "date_precision": "day",
+      "city": "Online",
+      "venue": null,
+      "url": "https://prechangeway.com/events#live-online-2026-11",
+      "register_url": "https://lu.ma/fixture-live-online"
+    },
+    {
+      "id": "live-saskatoon-2026-11",
+      "series": "live",
+      "title": "FIXTURE · Prechange Live · Saskatoon",
+      "start": "2026-11-25T16:00:00-06:00",
+      "end": "2026-11-25T17:30:00-06:00",
+      "date_precision": "day",
+      "city": "Saskatoon",
+      "venue": "Fixture venue",
+      "url": "https://prechangeway.com/events#live-saskatoon-2026-11",
+      "register_url": null
+    },
+    {
+      "id": "live-regina-2027-01",
+      "series": "live",
+      "title": "FIXTURE · Prechange Live · Regina",
+      "start": "2027-01-01T00:00:00-06:00",
+      "end": null,
+      "date_precision": "month",
+      "city": "Regina",
+      "venue": null,
+      "url": "https://prechangeway.com/events#live-regina-2027-01",
+      "register_url": null
+    },
+    {
+      "id": "spotlight-fixture-2026-12",
+      "series": "spotlight",
+      "title": "FIXTURE · Prechange Spotlight · Saskatoon",
+      "start": "2026-12-03T18:00:00-06:00",
+      "end": "2026-12-03T19:30:00-06:00",
+      "date_precision": "day",
+      "city": "Saskatoon",
+      "venue": null,
+      "url": "https://prechangeway.com/events#spotlight-fixture-2026-12",
+      "register_url": null
+    },
+    {
+      "id": "spotlight-fixture-2027-02",
+      "series": "spotlight",
+      "title": "FIXTURE · Prechange Spotlight · Online",
+      "start": "2027-02-10T11:00:00-06:00",
+      "end": "2027-02-10T12:00:00-06:00",
+      "date_precision": "day",
+      "city": "Online",
+      "venue": null,
+      "url": "https://prechangeway.com/events#spotlight-fixture-2027-02",
+      "register_url": null
+    }
+  ],
+  "past": [
+    {
+      "id": "spotlight-fixture-2026-09",
+      "series": "spotlight",
+      "title": "FIXTURE · Prechange Spotlight · a later past event",
+      "date": "2026-09-20",
+      "city": "Saskatoon",
+      "url": "https://prechangeway.com/events#spotlight-fixture-2026-09",
+      "highlights": "FIXTURE TEXT. This past event is not the launch and must not show on this site.",
+      "photos": [],
+      "more_photos_url": null,
+      "video": null
+    },
+    {
+      "id": "spotlight-change-anesthesiology-2026-08",
+      "series": "spotlight",
+      "title": "Prechange Spotlight · Change Anesthesiology book launch",
+      "date": "2026-08-13",
+      "city": "Saskatoon",
+      "url": "https://prechangeway.com/events#spotlight-change-anesthesiology-2026-08",
+      "highlights": "FIXTURE TEXT for testing. Sukant Ratnakar launched Change Anesthesiology: Why Resistance Is Never the Problem, with short talks from guest authors Tammy Martins and Ryan Myers. The Elite Leadership Club of Canada was the community partner for the evening.",
+      "photos": [
+        {
+          "src": "https://prechangeway.com/fixture/01.jpg",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: the speaker at the lectern"
+        },
+        {
+          "src": "https://prechangeway.com/fixture/02.jpg",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: guests seated in the auditorium"
+        },
+        {
+          "src": "https://prechangeway.com/fixture/03.jpg",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: a guest author answering a question"
+        },
+        {
+          "src": "https://prechangeway.com/fixture/04.jpg",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: guests talking over evening snacks"
+        },
+        {
+          "src": "https://prechangeway.com/fixture/05.webp",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: copies of the book on a table"
+        },
+        {
+          "src": "https://prechangeway.com/fixture/06.png",
+          "width": 800,
+          "height": 533,
+          "alt": "Fixture photo: the three authors on stage"
+        }
+      ],
+      "more_photos_url": "https://prechangeway.com/events#spotlight-change-anesthesiology-2026-08",
+      "video": null
+    }
+  ]
+}
