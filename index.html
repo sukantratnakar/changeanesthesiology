@@ -373,6 +373,30 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
   .fit-tempo span+i+span{margin-top:.7rem}
   .fit-tempo i{display:none}
 }
+/* ── events feed: filled from prechangeway.com by scripts/events-feed.mjs ── */
+.event-top:has(.feed-up){align-items:start}
+.feed-up{list-style:none;margin:1.6rem auto 0;max-width:380px;text-align:left;border-top:2px solid var(--gold)}
+.feed-up li{border-bottom:1px solid rgba(212,177,95,.18)}
+.feed-up a{display:block;padding:.95rem .2rem;transition:background .25s}
+.feed-up a:hover{background:rgba(240,237,228,.04)}
+.feed-when{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);line-height:1.7}
+.feed-local{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--cream-dim);line-height:1.7;margin-top:.1rem}
+.feed-local[hidden]{display:none}
+.feed-title{display:block;font-family:var(--serif);font-size:1.02rem;font-weight:700;color:var(--cream);margin-top:.25rem}
+.feed-city{display:block;font-size:.82rem;color:var(--cream-dim);margin-top:.15rem}
+.feed-gallery{margin-top:4rem;padding-top:2.6rem;border-top:1px solid rgba(212,177,95,.2)}
+.feed-hl{font-size:.98rem;line-height:1.85;color:var(--cream-dim);max-width:720px}
+.feed-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:2rem}
+.feed-photos figure{margin:0;background:var(--navy)}
+.feed-photos img{width:100%;height:100%;aspect-ratio:3/2;object-fit:cover}
+.feed-photos figure:first-child{grid-column:span 2;grid-row:span 2}
+.feed-more{display:inline-block;margin-top:1.4rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:3px}
+.feed-more:hover{color:var(--cream);border-color:var(--cream)}
+@media(max-width:680px){
+  .feed-photos{grid-template-columns:1fr 1fr;gap:.5rem}
+  .feed-photos figure:first-child{grid-column:1/-1;grid-row:auto}
+  .feed-photos figure:last-child:nth-child(even){grid-column:1/-1}
+}
 /* ── reveal ── */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
 .reveal.vis{opacity:1;transform:none}
@@ -804,6 +828,8 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
       <div class="reveal" style="text-align:center">
         <p style="font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:1.5rem">Next events</p>
         <a href="https://prechangeway.com/events" target="_blank" class="btn btn-gold" style="font-size:.82rem;padding:1rem 2.4rem">Upcoming Events</a>
+        <!-- events-feed:upcoming -->
+        <!-- /events-feed:upcoming -->
         <p style="font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--slate);margin-top:1.2rem;line-height:1.9">Online and in person · on prechangeway.com</p>
         <p style="margin-top:1rem"><a href="https://prechangeway.com/events#spotlight-change-anesthesiology-2026-08" target="_blank" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--slate);border-bottom:1px solid rgba(135,146,166,.35);padding-bottom:2px">Photos from the launch &rarr;</a></p>
         <p style="margin-top:1.6rem;font-size:.86rem;color:var(--cream-dim);line-height:1.8">Missed the launch? <a href="#preorder" style="color:var(--gold);border-bottom:1px solid rgba(212,177,95,.45);padding-bottom:2px">Buy the book</a>, posted anywhere in the world.</p>
@@ -879,6 +905,8 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
       </div>
       <img src="images/elc-logo.png" alt="Elite Leadership Club of Canada" class="partner-mark">
     </div>
+    <!-- events-feed:gallery -->
+    <!-- /events-feed:gallery -->
   </div>
 </section>
 
@@ -957,10 +985,29 @@ document.addEventListener('click',function(e){
   var a=e.target.closest('a'); if(!a||!window.gtag) return;
   if(a.hasAttribute('data-buy')){
     gtag('event','begin_checkout',{option:a.textContent.trim(),link_url:a.href});
-  }else if(a.href==='https://prechangeway.com/events'){
+  }else if(a.href==='https://prechangeway.com/events'||a.hasAttribute('data-register-click')){
     gtag('event','register_click',{link_url:a.href});
   }
 });
+</script>
+<script>
+/* "Your time" for online events (Q09, D45): converted in the visitor's browser, with no network
+   calls, cookies or storage. Hidden where the clock already reads UTC-6 on that date. */
+(function(){
+  var parts=function(d,o,l){var r={};new Intl.DateTimeFormat(l||'en-GB',o).formatToParts(d).forEach(function(p){r[p.type]=p.value});return r};
+  var clock=function(d){var p=parts(d,{hour:'numeric',minute:'2-digit',hour12:true},'en-US');return p.hour+':'+p.minute+' '+String(p.dayPeriod).toLowerCase()};
+  var day=function(d,z){var p=parts(d,{weekday:'long',day:'numeric',month:'long',timeZone:z});return p.weekday+' '+p.day+' '+p.month};
+  document.querySelectorAll('[data-local-start]').forEach(function(el){
+    try{
+      var s=new Date(el.getAttribute('data-local-start')),e=new Date(el.getAttribute('data-local-end'));
+      if(isNaN(s)||isNaN(e)||s.getTimezoneOffset()===360)return;
+      var zone=parts(s,{hour:'numeric',timeZoneName:'short'},'en-US').timeZoneName||'';
+      var here=day(s);
+      el.textContent='Your time: '+(here!==day(s,'America/Regina')?here+', ':'')+clock(s)+' \u2013 '+clock(e)+(zone?' '+zone:'');
+      el.hidden=false;
+    }catch(_){}
+  });
+})();
 </script>
 </body>
 </html>
