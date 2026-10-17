@@ -648,7 +648,7 @@ def empty_spots(lines):
     return lines, inner
 
 
-def spot_problems(inner, has_data):
+def spot_problems(inner, has_data, data=None):
     problems = []
     if not has_data:
         for name, body in inner.items():
@@ -667,10 +667,30 @@ def spot_problems(inner, has_data):
                 problems.append(f"the {name} spot links to {n.attrs.get('href')}")
             if n.tag == "img" and not (n.attrs.get("src") or "").startswith(f"images/events/{LAUNCH}/"):
                 problems.append(f"the {name} spot shows {n.attrs.get('src')}")
+    # Everything shown must come from the committed feed copy (data/events.json).
+    if data is not None:
+        titles = {e.get("url"): e.get("title") for e in data.get("upcoming", [])}
+        for li in parse(inner.get("upcoming", "")).find_all(lambda n: n.tag == "li"):
+            links = li.find_all(lambda n: n.tag == "a")
+            title = text(first(li, has_class("feed-title")) or li)
+            if len(links) != 1 or titles.get(links[0].attrs.get("href")) != title:
+                problems.append(f"the upcoming spot shows an event that is not in data/events.json: {title[:40]!r}")
+        launch = next((p for p in data.get("past", []) if p.get("id") == LAUNCH), {})
+        g = parse(inner.get("gallery", ""))
+        if inner.get("gallery", "").strip():
+            hl = first(g, has_class("feed-hl"))
+            if text(hl or g) != launch.get("highlights"):
+                problems.append("the gallery's highlights differ from data/events.json")
+            alts = [i.attrs.get("alt") for i in g.find_all(lambda n: n.tag == "img")]
+            if alts != [ph.get("alt") for ph in launch.get("photos", [])[:6]]:
+                problems.append("the gallery's photos differ from data/events.json")
+            more = first(g, has_class("feed-more"))
+            if not more or more.attrs.get("href") != launch.get("more_photos_url"):
+                problems.append("the gallery's 'More photos' link differs from data/events.json")
     return problems
 
 
-def ef08_problems(old_html, new_html, has_data):
+def ef08_problems(old_html, new_html, has_data, data=None):
     problems, want = [], old_html
     for before, after in APPROVED_EDITS:
         if want.count(before) != 1:
@@ -696,7 +716,7 @@ def ef08_problems(old_html, new_html, has_data):
             problems.append(f"new CSS styles other selectors: {stray[:3]}")
         if re.search(r"@import|url\(|@font-face|font-family:(?!var\(--(?:serif|sans|mono)\))", body):
             problems.append("new CSS loads a file or another font")
-    problems += spot_problems(inner, has_data)
+    problems += spot_problems(inner, has_data, data)
     return problems
 
 
@@ -740,6 +760,7 @@ def check_served(base):
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
     has_data = "data/events.json" in tracked
+    data = json.loads(git("show", "HEAD:data/events.json")) if has_data else None
     extra = [f for f in changed if not ALLOWED_FILES.match(f)]
     report(not extra, "EF-08", f"Checkout: only Q09's files changed since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
     report(not dirty, "EF-08", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
@@ -748,12 +769,13 @@ def check_served(base):
     except Exception as e:  # noqa: BLE001
         die(f"cannot fetch {base}: {e}")
     report(article == old_article, "EF-08", f"article.html is exactly as in {BASE_REF}")
-    probs = ef08_problems(old_index, index, has_data)
+    probs = ef08_problems(old_index, index, has_data, data)
     report(not probs, "EF-08", f"index.html: {BASE_REF} plus Q09's code and feed content only", "; ".join(probs[:3]) or "ok")
     if probs:
         report(False, "EF-08", "Self-test: planted edits are caught", "needs a page that passes first")
     else:
-        missed = [k for k, plant in PLANTED.items() if plant(index) == index or not ef08_problems(old_index, plant(index), has_data)]
+        missed = [k for k, plant in PLANTED.items()
+                  if plant(index) == index or not ef08_problems(old_index, plant(index), has_data, data)]
         report(not missed, "EF-08", f"Self-test: all {len(PLANTED)} planted edits are caught", ", ".join(missed) or "ok")
     images = [f for f in tracked if f.startswith("images/events/")]
     report(has_data or not images, "EF-08", "Nothing invented: no data/events.json, no event photos (D42)" if not has_data
