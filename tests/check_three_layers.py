@@ -87,38 +87,45 @@ BAND_TAG = "Where this fits"
 BAND_HEAD = "Three layers. One system."
 ONE_SENTENCE = ("Prechange names the stage. Change Anesthesiology explains why it matters. "
                 "Morphosis builds the conditions, every day.")
-LAYERS = [  # label, name, text, small line
-    ("When · The stage", "Prechange",
-     "The stage before each change, and its measure, the Check.",
-     "Energy · Headroom · Perspective · Routines"),
-    ("Why · The philosophy and the model", "Change Anesthesiology",
-     "People adapt when the conditions around them let them. Resistance is often a signal that "
-     "those conditions are missing.",
-     "Four zones · Broaden · Expand · Reduce · Increase"),
-    ("How · The practice", "Morphosis",
-     "Five daily practices designed to build the four conditions.",
-     "White Space Thinking · Perspective Thinking · OmniMeta Mindfulness · Tinergy · The Habit Machine"),
-]
+# Design v3 of the figure (Sukant, 17 Oct 2026, D56; screen-reader wording D57): a picture of time
+# around one change. Each part's words, in reading order.
+V3 = {
+    "why": ("Why", "Change Anesthesiology", "This book", "The philosophy and the model · four zones",
+            "People adapt when the conditions around them let them. Resistance is often a signal that those "
+            "conditions are missing."),
+    "when": ("When", "Before each change", "Prechange", "The stage before each change, and its measure, the Check."),
+    "bars": ["Energy", "Headroom", "Perspective", "Routines"],
+    "note": "The Check finds the weakest condition; a focused boost builds it before launch.",
+    "launch": "Change launches",
+    "depth": ("Depth", "During and after launch", "The Sunfish Paradox",
+              "Carrying out change, and keeping it from slipping back after launch."),
+    "legend": ["The change holds", "Without it, it slips back"],
+    "how": ("How", "Morphosis", "Every day, before, during and after",
+            "Five daily practices designed to build the four conditions."),
+    "practices": ["Tinergy", "White Space Thinking", "OmniMeta Mindfulness", "Perspective Thinking", "Habit Machine"],
+    "found": ("Foundation", "Iknetix and ZERO", "The author's earlier books. Iknetix also feeds the perspective tools."),
+}
 THIS_BOOK = "This book"
-SF_BOX = ("Depth · beside the three layers", "The Sunfish Paradox",
-          "The book on carrying out change, and keeping it from slipping back after launch.",
-          "The Mola Series · Book Two")
-FOUNDATION = ("Foundation", "Iknetix and ZERO", "The author's earlier books.")
+FIG_TEXT = norm(" ".join(
+    [V3["why"][0], V3["why"][1], V3["why"][2], V3["why"][3], V3["why"][4]]
+    + list(V3["when"]) + V3["bars"] + [V3["note"], V3["launch"]]
+    + list(V3["depth"]) + V3["legend"]
+    + list(V3["how"]) + V3["practices"] + list(V3["found"])))
 TEMPOS = ("Every day Morphosis / Before each change the Prechange Check, then a boost on the weakest "
           "condition / During and after launch sustaining, through Zone 4 and The Sunfish Paradox")
 EVIDENCE = ("The evidence supports each of these mechanisms on its own. Whether building all four "
             "conditions before a change improves adoption still needs independent research.")
 PRECHANGE_URL = "https://prechangeway.com"
 LINK_TEXT = "Read about Prechange at prechangeway.com →"
-FIG_DESC = ("Diagram of how the parts fit. Three layers are stacked: Prechange says when, Change "
-            "Anesthesiology says why, and Morphosis says how. The Sunfish Paradox sits beside them for "
-            "depth. Iknetix and ZERO lie underneath as the foundation.")
-# Everything the band says, in order: nothing more, nothing less (TL-02, TL-05).
-BAND_TEXT = norm(" ".join(
-    [BAND_TAG, BAND_HEAD, ONE_SENTENCE, FIG_DESC]
-    + [w for label, name, body, small in LAYERS
-       for w in (label, name) + ((THIS_BOOK,) if name == "Change Anesthesiology" else ()) + (body, small)]
-    + list(SF_BOX) + list(FOUNDATION) + [TEMPOS, EVIDENCE, LINK_TEXT]))
+FIG_DESC = ("A picture of time around one change. Over everything, the why: Change Anesthesiology, the "
+            "philosophy and the model. On the timeline, before the change launches: Prechange, the stage before "
+            "each change, where the Check measures energy, headroom, perspective and routines, finds the "
+            "weakest, and a focused boost builds it. After the change launches: The Sunfish Paradox, on "
+            "carrying out change and keeping it from slipping back. Running underneath the whole timeline, "
+            "every day: Morphosis, five daily practices, each designed to build one of the four conditions. "
+            "At the base, the foundation: Iknetix and ZERO, the author's earlier books.")
+# Everything the band says, in order: nothing more, nothing less (TL-02).
+BAND_TEXT = norm(" ".join([BAND_TAG, BAND_HEAD, ONE_SENTENCE, FIG_TEXT, FIG_DESC, TEMPOS, EVIDENCE, LINK_TEXT]))
 
 # TL-04: claims that must not appear anywhere in either page (meta tags included).
 BANNED = ["70%", "Seventy percent", "$2.3", "trillion", "12%", "ego depletion", "Lewin",
@@ -289,6 +296,32 @@ def band(pages):
     return section(pages["index"]["root"], "where-this-fits")
 
 
+def v3_parts(fig):
+    """Each part of the design v3 figure as its words, in the shape of V3."""
+    def part(cls):
+        return first(fig, has_class(cls)) if fig is not None else None
+
+    def word(node, cls):
+        return tx(first(node, has_class(cls))) if node is not None else ""
+
+    why, pc, sf, how, fd, la = (part(c) for c in ("tl3-why", "tl3-pc", "tl3-sf", "tl3-how", "tl3-found", "tl3-launch"))
+    spans = lambda node, cls: [tx(n) for n in node.find_all(lambda n: n.tag == "span" and any(  # noqa: E731
+        cls in a.classes() for a in n.ancestors()))] if node is not None else []
+    return {
+        "why": (word(why, "tl3-q"), direct(first(why, has_class("tl3-name"))) if why else "", word(why, "tl3-tag"),
+                word(why, "tl3-cap"), word(why, "tl3-txt")),
+        "when": (word(pc, "tl3-q"), word(pc, "tl3-cap"), word(pc, "tl3-name"), word(pc, "tl3-txt")),
+        "bars": spans(pc, "tl3-barlab"),
+        "note": word(pc, "tl3-note"),
+        "launch": word(la, "tl3-cap"),
+        "depth": (word(sf, "tl3-q"), word(sf, "tl3-cap"), word(sf, "tl3-name"), word(sf, "tl3-txt")),
+        "legend": [s for s in spans(sf, "tl3-legend") if s],
+        "how": (word(how, "tl3-q"), word(how, "tl3-name"), word(how, "tl3-cap"), word(how, "tl3-txt")),
+        "practices": [tx(n) for n in how.find_all(lambda n: n.tag == "li")] if how is not None else [],
+        "found": (word(fd, "tl3-cap"), word(fd, "tl3-name"), word(fd, "tl3-txt")),
+    }
+
+
 def check_tl02(pages):
     root = pages["index"]["root"]
     b = band(pages)
@@ -303,16 +336,13 @@ def check_tl02(pages):
     got = text(line) if line else ""
     report(got == ONE_SENTENCE, "TL-02", "The one sentence, word for word", same(got, ONE_SENTENCE))
     fig = first(b, lambda n: n.tag == "figure")
-    layers = fig.find_all(has_class("fit-layer")) if fig else []
-    report(len(layers) == 3 and [direct(first(l, lambda n: n.tag == "h3")) for l in layers] == [x[1] for x in LAYERS],
-           "TL-02", "Three layers: Prechange, Change Anesthesiology, Morphosis",
-           ", ".join(text(first(l, lambda n: n.tag == "h3") or l) for l in layers) or "none")
-    side = first(fig, has_class("fit-side")) if fig else None
-    report(side is not None and THIS_BOOK not in text(side) and SF_BOX[1] in text(side), "TL-02",
-           "The Sunfish Paradox box beside the layers", text(side)[:60] if side else "missing")
-    base = first(fig, has_class("fit-base")) if fig else None
-    report(base is not None and FOUNDATION[1] in text(base), "TL-02", "Foundation strip: Iknetix and ZERO",
-           text(base)[:60] if base else "missing")
+    parts = v3_parts(fig)
+    names = (parts["why"][1], parts["when"][2], parts["how"][1])
+    report(names == ("Change Anesthesiology", "Prechange", "Morphosis"), "TL-02",
+           "Three layers: Change Anesthesiology (why), Prechange (when), Morphosis (how)", ", ".join(names))
+    report(parts["depth"][2] == "The Sunfish Paradox", "TL-02", "The Sunfish Paradox (depth) after the launch",
+           parts["depth"][2] or "missing")
+    report(parts["found"][1] == "Iknetix and ZERO", "TL-02", "Foundation: Iknetix and ZERO", parts["found"][1] or "missing")
     tempo = first(b, has_class("fit-tempo"))
     got = text(tempo) if tempo else ""
     report(got == TEMPOS, "TL-02", "Tempos line", same(got, TEMPOS))
@@ -586,17 +616,20 @@ def check_tl05(pages, base):
 def check_tl06(pages, base):
     b = band(pages)
     fig = first(b, lambda n: n.tag == "figure") if b else None
-    cap = first(fig, lambda n: n.tag == "figcaption") if fig else None
-    capt = text(cap) if cap else ""
+    desc = first(fig, lambda n: n.attrs.get("id") == "tl3-desc") if fig else None
+    capt = text(desc) if desc else ""
     named = all(x in capt for x in ("Prechange", "Change Anesthesiology", "Morphosis",
                                      "The Sunfish Paradox", "Iknetix", "ZERO"))
-    report(fig is not None and "sr-only" in (cap.classes() if cap else []) and named, "TL-06",
-           "Diagram is a <figure> with a screen-reader description", capt[:60] or "missing")
-    media = [n.tag for n in fig.walk() if n.tag in ("img", "svg", "canvas", "picture", "iframe", "object")] if fig else []
+    report(fig is not None and fig.attrs.get("aria-describedby") == "tl3-desc" and "tl3-sr" in (desc.classes() if desc else [])
+           and named, "TL-06", "Diagram is a <figure> with a screen-reader description", capt[:60] or "missing")
+    # A drawn line (aria-hidden SVG) is allowed; pictures and embeds are not.
+    media = [n.tag for n in fig.walk() if n.tag in ("img", "canvas", "picture", "iframe", "object")
+             or (n.tag == "svg" and not any(a.attrs.get("aria-hidden") == "true" for a in [n, *n.ancestors()]))] if fig else []
     words = text(fig) if fig else ""
-    real = fig is not None and all(x[1] in words and x[2] in words for x in LAYERS)
+    real = fig is not None and all(w in words for w in ("Prechange", "Change Anesthesiology", "Morphosis",
+                                                        V3["when"][3], V3["why"][4], V3["how"][3]))
     report(real and not media, "TL-06", "Real text, no image or embedded picture", ", ".join(media) or ("ok" if real else "text missing"))
-    rule = re.search(r"\.sr-only\{[^}]*clip:rect\(0,\s*0,\s*0,\s*0\)", pages["index"]["html"].replace(" ", ""))
+    rule = re.search(r"\.tl3-sr\{[^}]*clip:rect\(0[ ,]+0[ ,]+0[ ,]+0\)", pages["index"]["html"])
     report(bool(rule), "TL-06", "The description is hidden visually, not from screen readers")
 
     if not os.path.exists(q06.CHROME):
@@ -672,32 +705,10 @@ def check_tl09(pages):
     tag, head = first(b, has_class("tag")), first(b, lambda n: n.tag == "h2")
     got = (text(tag) if tag else "", text(head) if head else "")
     report(got == (BAND_TAG, BAND_HEAD), "TL-09", "Item 11: tag and heading", " / ".join(got))
-    for want, layer in zip(LAYERS, b.find_all(has_class("fit-layer")) + [None] * 3):
-        if layer is None:
-            report(False, "TL-09", f"Item 11: {want[1]} box", "missing")
-            continue
-        role = first(layer, has_class("fit-role"))
-        h3 = first(layer, lambda n: n.tag == "h3")
-        tagged = first(layer, has_class("fit-here"))
-        body = [text(p) for p in layer.find_all(lambda n: n.tag == "p" and not n.classes())]
-        sub = first(layer, has_class("fit-sub"))
-        got = (tx(role), direct(h3), body[0] if body else "", tx(sub))
-        is_ca = want[1] == "Change Anesthesiology"
-        ok = got == want and (text(tagged) == THIS_BOOK if (is_ca and tagged) else (tagged is None and not is_ca))
-        report(ok, "TL-09", f"Item 11: {want[1]} box",
-               "ok" if ok else " | ".join(got)[:90] + (f" | tag {text(tagged) if tagged else 'missing'}" if is_ca else ""))
-    side = first(b, has_class("fit-side"))
-    got = (tx(first(side, has_class("fit-k"))), tx(first(side, lambda n: n.tag == "h3")),
-           next((text(p) for p in side.find_all(lambda n: n.tag == "p" and not n.classes())), ""),
-           tx(first(side, has_class("fit-sub")))) if side else ()
-    report(got == SF_BOX, "TL-09", "Item 11: The Sunfish Paradox box", "ok" if got == SF_BOX else " | ".join(got)[:90])
-    fb = first(b, has_class("fit-base"))
-    got = ()
-    if fb:
-        bold = first(fb, lambda n: n.tag == "b")
-        p = first(fb, lambda n: n.tag == "p" and not n.classes())
-        got = (tx(first(fb, has_class("fit-k"))), tx(bold), direct(p))
-    report(got == FOUNDATION, "TL-09", "Item 11: foundation strip", "ok" if got == FOUNDATION else " | ".join(got)[:90])
+    got = v3_parts(first(b, lambda n: n.tag == "figure"))
+    for key, want in V3.items():
+        report(got[key] == want, "TL-09", f"Item 11 (design v3): {key}",
+               "ok" if got[key] == want else str(got[key])[:90])
 
 
 def main():
@@ -718,8 +729,9 @@ def main():
     for fn in (check_tl01, check_tl02, check_tl03, check_tl04):
         fn(pages)
         print()
-    check_tl05(pages, base)
-    print()
+    # TL-05 ("nothing else changed" against 4deca4e, plus the Q04 and Q06 runs) is replaced by
+    # TV-08 and TV-09 in tests/check_three_layers_v3.py from Q12 on (D56, 17 Oct 2026).
+    print("TL-05 is replaced by TV-08 and TV-09 in tests/check_three_layers_v3.py (Q12).\n")
     check_tl06(pages, base)
     print()
     check_tl07(base)
