@@ -10,10 +10,10 @@ Fetches / and /article from the base URL and prints one PASS/FAIL line per
 check. Exits 1 if any check fails, 2 if the test itself can't run.
 Fetches pages with urllib only (no browser), so it does not trigger Google
 Analytics; the TL-06 layout checks use headless Chrome with analytics blocked.
-TL-05 compares the served pages with BASE_REF (default 4deca4e, main before
-this change) plus exactly the approved edits from the git checkout this script lives in, and runs the Q04 and
-Q06 tests against the same base URL: all of their checks must pass except
-Q06's PR-04, which TL-05 replaces. Node and Chrome must be installed.
+Until Q09, TL-05 compared the served pages with BASE_REF (4deca4e) plus exactly the
+approved edits, and ran the Q04 and Q06 tests. From Q09 on, EF-08 in
+tests/check_events_feed.py does that job (D43), so this test no longer runs TL-05.
+Node and Chrome must be installed.
 """
 
 import json
@@ -718,8 +718,9 @@ def main():
     for fn in (check_tl01, check_tl02, check_tl03, check_tl04):
         fn(pages)
         print()
-    check_tl05(pages, base)
-    print()
+    # TL-05 ("nothing else changed" against 4deca4e, plus the Q04 and Q06 runs) is replaced by
+    # EF-08 in tests/check_events_feed.py from Q09 on (Sukant, D43, 16 Oct 2026).
+    print("TL-05 is replaced by EF-08 in tests/check_events_feed.py (Q09, D43).\n")
     check_tl06(pages, base)
     print()
     check_tl07(base)

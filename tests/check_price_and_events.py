@@ -49,6 +49,19 @@ ONLINE_LINE = "Online and in person · on prechangeway.com"
 ARTICLE_SESSIONS = "Free sessions online and in person, listed on prechangeway.com."
 # Q08 (TL-02) adds one link to the Prechange home page, not to events; PR-03 skips it.
 PRECHANGE_HOME = ("https://prechangeway.com", "Read about Prechange at prechangeway.com →")
+# Q09 (D43): links written from prechangeway.com's feed inside the event band. Upcoming events
+# (.feed-up) count as register_click like the button; the gallery's links (.feed-gallery) do not.
+FEED_LISTS = ("feed-up", "feed-gallery")
+
+
+def feed_link(a):
+    """A link the Q09 feed wrote: to /events#… inside the upcoming list or the gallery."""
+    return (a["href"].startswith(EVENTS_URL + "#")
+            and any(c in FEED_LISTS for n in a["node"].ancestors() for c in n.classes()))
+
+
+def upcoming_link(a):
+    return feed_link(a) and any("feed-up" in n.classes() for n in a["node"].ancestors())
 # The launch record, in past tense, with no book signing (Sukant, 16 Oct 2026).
 LAUNCH_RECORD = [
     "Guests arrived and connected over evening snacks",
@@ -330,7 +343,7 @@ def check_pr03(pages):
             host = u.netloc.lower()
             is_event = host in ("luma.com", "lu.ma", "www.luma.com", "prechangeway.com",
                                 "www.prechangeway.com") or a["raw"] == "#event"
-            if not is_event or (a["href"], a["text"]) == PRECHANGE_HOME:
+            if not is_event or (a["href"], a["text"]) == PRECHANGE_HOME or feed_link(a):
                 continue
             if a["href"] == PHOTOS_URL:
                 if a["text"] != PHOTOS_TEXT:
@@ -711,9 +724,9 @@ def check_pr06(pages):
     res = json.loads(r.stdout)
     fired = [(a["href"], e) for a, evs in zip(idx["anchors"], res["events"]) for e in evs
              if e["name"] == "register_click"]
-    want = [a["href"] for a in idx["anchors"] if a["href"] == EVENTS_URL]
+    want = [a["href"] for a in idx["anchors"] if a["href"] == EVENTS_URL or upcoming_link(a)]
     report(res["handler"] and len(want) >= 1 and sorted(h for h, _ in fired) == sorted(want),
-           "PR-06", "register_click fires for every /events link, and only those",
+           "PR-06", "register_click fires for every /events link and upcoming event, only those",
            f"{len(fired)} fired, {len(want)} /events links; fired for: "
            + (", ".join(sorted(set(h for h, _ in fired))) or "none"))
     report(all(e["params"].get("link_url") == h for h, e in fired) and fired, "PR-06",
