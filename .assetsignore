@@ -12,6 +12,9 @@
 # Worker settings, tests, notes and packages (wrangler dev makes node_modules)
 /wrangler.*
 /tests
+# The events build script and its last good copy of the feed (Q09)
+/scripts
+/data
 *.md
 /package*.json
 node_modules

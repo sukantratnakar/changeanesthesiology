@@ -1,0 +1,41 @@
+# Updates the events on changeanesthesiology.com from prechangeway.com's feed (Q09, D40 and D41).
+# Once a day it runs scripts/events-feed.mjs. When the feed passes every check and something
+# changed, it commits the result to this branch; Workers Builds then deploys it as usual.
+# If the feed fails a check, nothing is committed and the run fails, so GitHub emails the owner.
+# Uses only GitHub's built-in token: no secret, no deploy hook, no ping (Q09-7).
+name: Events feed
+
+on:
+  schedule:
+    - cron: "37 11 * * *"  # 05:37 Saskatchewan time (UTC-6), every day
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: events-feed
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Build the events from the feed
+        run: node scripts/events-feed.mjs
+
+      - name: Commit if anything changed
+        run: |
+          git add --all -- index.html data/events.json images/events
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "events: update from prechangeway.com feed"
+          git push
