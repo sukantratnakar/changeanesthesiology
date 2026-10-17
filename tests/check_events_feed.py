@@ -399,7 +399,7 @@ def check_script():
     report(files_ok and all(sizes), "EF-02", "Photos copied into this site, sizes match, at most 800 px")
     src_meta = sum(len(image_info(open(os.path.join(MIRROR, "fixture", f), "rb").read())[2])
                    for f in os.listdir(os.path.join(MIRROR, "fixture")))
-    report(src_meta >= 3 and not meta_left, "EF-02", "File details stripped (fixtures carried EXIF, GPS, text)",
+    report(src_meta >= 3 and not meta_left, "EF-06", "File details stripped (fixtures carried EXIF, GPS, text)",
            ", ".join(meta_left[:3]) or f"{src_meta} detail parts removed")
     more = first(gal, has_class("feed-more")) if gal else None
     report(more is not None and more.attrs.get("href") == launch["more_photos_url"]
@@ -417,7 +417,7 @@ def check_script():
            "ok" if got == UPCOMING_AT_NOW else "; ".join(f"{g[1]} {g[2]}" for g in got)[:90])
     report(all(i["attrs"].get("target") == "_blank" and "data-register-click" in i["attrs"] for i in items) and items,
            "EF-03", "Each links to its prechangeway.com page, counted as register_click")
-    report("lu.ma" not in html and "fixture-live-online" not in html, "EF-03", "register_url is never shown")
+    report("lu.ma" not in html and "fixture-live-online" not in html, "EF-06", "register_url is never shown")
     report(all("Saskatchewan time" not in i["when"] or i["when"].count(" · ") == 1 for i in items), "EF-03",
            "Date line: day · time Saskatchewan time (D44)")
     later = tempfile.mkdtemp(prefix="events-feed-later-")
@@ -478,11 +478,14 @@ def check_script():
         "launch event missing": mutate(lambda f: f.update(past=[p for p in f["past"] if p["id"] != LAUNCH])),
         "feed larger than 256 KB": mutate(lambda f: f.update(padding="x" * 300000)),
     }
+    rules = {"link to another site", "Check link (/start)", "Check link (src=live-)", "price with a sign",
+             "price with a code", "photo off prechangeway.com", "alt names a person", "alt names a first name",
+             "seven photos", "feed says 1200 px", "file larger than it says"}
     good = snapshot(site)
     for label, feed in bad.items():
         r = run_script(site, write_feed(feed, work))
         same = snapshot(site) == good
-        report(r.returncode == 1 and same and "nothing changed" in r.stderr, "EF-04",
+        report(r.returncode == 1 and same and "nothing changed" in r.stderr, "EF-06" if label in rules else "EF-04",
                f"Rejected, last good copy kept: {label}",
                r.stderr.strip().split("\n")[-1][:60] if r.returncode == 1 else f"exit {r.returncode}")
 
