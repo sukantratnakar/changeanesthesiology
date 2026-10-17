@@ -13,6 +13,14 @@ Checks the pages served at <base-url>:
          from Q09 is in the checkout. This replaces Q08's TL-05, as Q09 did.
   EL-05  no request to prechangeway.com when either page loads (headless Chrome, analytics blocked)
   EL-06  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
+Q11 (D50) adds, for the launch section as a past event:
+  LP-01  the section reads as a past event (tag and heading)
+  LP-02  the 12 launch photos, in album order, copied into images/launch/ (at most 800 px on the
+         page, 1,000 px full size), each with width, height, lazy loading, alt text and a full-size link
+  LP-03  the video as a local thumbnail with "Watch on YouTube ↗"; no embedded player
+  LP-04  "Show more photos": 6 shown, 12 when opened; without the script all 12 show
+  LP-05  photo and video links are not register_click (D25-3)
+  LP-06  no file details in any copy, every photo served from this site; EL-05 also bars YouTube
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
 """
@@ -26,6 +34,8 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import check_price_and_events as q06  # noqa: E402  (shared parser, fetch, click harness, Chrome path)
@@ -40,10 +50,100 @@ EVENTS_URL = "https://prechangeway.com/events"
 PHOTOS_URL = EVENTS_URL + "#spotlight-change-anesthesiology-2026-08"
 LABEL = "Upcoming Events"
 PHOTOS_TEXT = "Photos from the launch →"
-# Q10's edits to BASE_REF, as (file, before, after). None were needed: the three links and the
-# photos address were already in place on main.
-APPROVED_EDITS = []
+# Q11 (D50): the launch section becomes a past event, with a one-time copy of the launch photos
+# and video. The new CSS, photos-and-video block and "Show more photos" script, word for word.
+LAUNCH_CSS = r'''/* ── launch photos and video (Q11): a one-time copy, nothing loads from elsewhere ── */
+.lp-media{margin-top:3.5rem;padding-top:2.6rem;border-top:1px solid rgba(212,177,95,.2)}
+.lp-photos,.lp-videos{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.lp-photos a{display:block;background:var(--navy)}
+.lp-photos img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;transition:opacity .25s}
+.lp-photos a:hover img{opacity:.85}
+.lp-photos a:focus-visible,.lp-videos a:focus-visible,.lp-more .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.lp-photos.lp-folded li:nth-child(n+7){display:none}
+.lp-more{margin-top:1.6rem;text-align:center}
+.lp-more .btn{background:none}
+.lp-video{margin-top:3rem;padding-top:2.2rem;border-top:1px solid rgba(212,177,95,.14)}
+.lp-videos a{display:block}
+.lp-thumb{position:relative;display:block;background:var(--navy)}
+.lp-thumb img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.lp-play{position:absolute;left:50%;top:50%;width:56px;height:40px;transform:translate(-50%,-50%)}
+.lp-vtitle{display:block;font-family:var(--serif);font-size:1.02rem;font-weight:700;color:var(--cream);margin-top:.8rem}
+.lp-vlink{display:block;margin-top:.3rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.lp-videos a:hover .lp-vlink{color:var(--cream)}
+@media(max-width:680px){
+  .lp-photos,.lp-videos{grid-template-columns:1fr 1fr;gap:.5rem}
+  .lp-videos li{grid-column:1/-1}
+}
+'''
+LAUNCH_MEDIA = r'''    <!-- Launch photos and video: a one-time copy of prechangeway.com's launch entry (Q11, D50) -->
+    <div class="lp-media">
+      <p class="tag reveal">Photos</p>
+      <ul class="lp-photos" id="lp-photos">
+        <li><a href="images/launch/full/01.jpg"><img src="images/launch/01.jpg" width="800" height="533" alt="Speakers and guests on stage holding copies of Change Anesthesiology" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/02.jpg"><img src="images/launch/02.jpg" width="800" height="533" alt="A talk at the podium, with the audience in the auditorium at Alice Turner Library" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/03.jpg"><img src="images/launch/03.jpg" width="800" height="533" alt="Group photo of guests at the Change Anesthesiology book launch" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/04.jpg"><img src="images/launch/04.jpg" width="800" height="533" alt="The auditorium from the back during a talk" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/05.jpg"><img src="images/launch/05.jpg" width="800" height="533" alt="Five guests, two of them holding books, one of them Change Anesthesiology" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/06.jpg"><img src="images/launch/06.jpg" width="800" height="533" alt="A copy of Change Anesthesiology being presented" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/07.jpg"><img src="images/launch/07.jpg" width="800" height="533" alt="A speaker in a light blue jacket at the podium" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/08.jpg"><img src="images/launch/08.jpg" width="800" height="536" alt="A speaker in a teal shirt at the podium" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/09.jpg"><img src="images/launch/09.jpg" width="800" height="533" alt="A speaker in a dark jacket and white shirt at the podium" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/10.jpg"><img src="images/launch/10.jpg" width="800" height="533" alt="A speaker in glasses at the podium, with notes in hand" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/11.jpg"><img src="images/launch/11.jpg" width="800" height="533" alt="A speaker in a red tie at the podium" loading="lazy" decoding="async"></a></li>
+        <li><a href="images/launch/full/12.jpg"><img src="images/launch/12.jpg" width="800" height="533" alt="A speaker in a grey jacket at the podium" loading="lazy" decoding="async"></a></li>
+      </ul>
+      <div class="lp-video">
+        <p class="tag reveal">Video</p>
+        <ul class="lp-videos">
+          <li><a href="https://youtu.be/DDxNcCjijgg" target="_blank" rel="noopener"><span class="lp-thumb"><img src="images/launch/video.jpg" width="800" height="450" alt="Video: Change Anesthesiology" loading="lazy" decoding="async"><svg class="lp-play" viewBox="0 0 68 48" aria-hidden="true" focusable="false"><rect width="68" height="48" rx="12" fill="#0C203B" fill-opacity="0.78"/><path d="M27 14v20l18-10z" fill="#D4B15F"/></svg></span><span class="lp-vtitle" aria-hidden="true">Change Anesthesiology</span><span class="lp-vlink">Watch on YouTube &#8599;</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+'''
+LAUNCH_SCRIPT = r'''<script>
+/* Launch photos (Q11): 6 show, the other 6 sit behind "Show more photos". Without this script
+   all 12 show. Each photo opens its full-size copy, as on prechangeway.com. */
+(function(){
+  var list=document.getElementById('lp-photos');
+  if(!list||list.children.length<=6)return;
+  var wrap=document.createElement('div'),b=document.createElement('button');
+  wrap.className='lp-more';b.type='button';b.className='btn btn-line';b.setAttribute('aria-controls','lp-photos');
+  var set=function(open){list.classList.toggle('lp-folded',!open);b.setAttribute('aria-expanded',String(open));b.textContent=open?'Show fewer photos':'Show more photos'};
+  b.addEventListener('click',function(){set(list.classList.contains('lp-folded'))});
+  wrap.appendChild(b);list.insertAdjacentElement('afterend',wrap);set(false);
+})();
+</script>'''
+# Edits to BASE_REF, as (file, before, after). Q10 needed none (the three links and the photos
+# address were already in place on main); Q11 relabels the section and adds the photos and video.
+APPROVED_EDITS = [
+    ("index.html", '<p class="tag reveal">How the book launched</p>', '<p class="tag reveal">Past event</p>'),
+    ("index.html", '<h2 class="head reveal">An evening of conversation,<br>ideas, and connection.</h2>',
+     '<h2 class="head reveal">How the book<br>launched.</h2>'),
+    ("index.html", "/* ── reveal ── */", LAUNCH_CSS + "/* ── reveal ── */"),
+    ("index.html", '    <div class="speakers" style="margin-top:3.5rem">',
+     LAUNCH_MEDIA + '    <div class="speakers" style="margin-top:3.5rem">'),
+    ("index.html", "</body>", LAUNCH_SCRIPT + "\n</body>"),
+]
 Q09_FILES = ("scripts/events-feed.mjs", ".github/workflows/events-feed.yml", "data/events.json", "images/events/")
+# Q11: the 12 launch photos ("Website" copies, in album order) and the video, copied once.
+LAUNCH_ALTS = [
+    "Speakers and guests on stage holding copies of Change Anesthesiology",
+    "A talk at the podium, with the audience in the auditorium at Alice Turner Library",
+    "Group photo of guests at the Change Anesthesiology book launch",
+    "The auditorium from the back during a talk",
+    "Five guests, two of them holding books, one of them Change Anesthesiology",
+    "A copy of Change Anesthesiology being presented",
+    "A speaker in a light blue jacket at the podium",
+    "A speaker in a teal shirt at the podium",
+    "A speaker in a dark jacket and white shirt at the podium",
+    "A speaker in glasses at the podium, with notes in hand",
+    "A speaker in a red tie at the podium",
+    "A speaker in a grey jacket at the podium",
+]
+VIDEO_URL = "https://youtu.be/DDxNcCjijgg"
+LAUNCH_FILES = re.compile(r"^images/launch/(?:full/)?\d\d\.jpg$|^images/launch/video\.jpg$")
+ELSEWHERE = r"^https?://([^/]*\.)?(prechangeway\.com|youtube\.com|youtu\.be|ytimg\.com|googlevideo\.com|youtube-nocookie\.com)(/|$)"
 WIDTHS = (390, 1440)
 
 RESULTS = []
@@ -139,11 +239,20 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       errors = []; requests = [];
       const loaded = new Promise(r => events.push(function f(m) {
         if (m.method === 'Page.loadEventFired') { events.splice(events.indexOf(f), 1); r(); } }));
+      await send('Emulation.setScriptExecutionDisabled', { value: !!c.noJs });
       await send('Page.navigate', { url: c.url }); await loaded;
       await sleep(1500);
+      if (c.noJs) {
+        const doc = await send('DOM.getDocument', { depth: -1 });
+        const html = (await send('DOM.getOuterHTML', { nodeId: doc.root.nodeId })).outerHTML;
+        out.push({ name: c.name, over: 0, value: html, errors: [...errors], requests: [...requests] });
+        continue;
+      }
+      if (c.pre) { await send('Runtime.evaluate', { expression: c.pre }); await sleep(1500); }
       const over = (await send('Runtime.evaluate', { returnByValue: true,
         expression: 'document.documentElement.scrollWidth - document.documentElement.clientWidth' })).result.value;
-      out.push({ name: c.name, over, errors: [...errors], requests: [...requests] });
+      const value = c.expr ? (await send('Runtime.evaluate', { returnByValue: true, expression: c.expr })).result.value : null;
+      out.push({ name: c.name, over, value, errors: [...errors], requests: [...requests] });
     }
     console.log(JSON.stringify(out)); ws.close();
   } finally { chrome.kill(); }
@@ -197,6 +306,115 @@ PLANTED = {
     "script calling prechangeway.com": lambda h: h.replace("</body>", "<script>fetch('https://prechangeway.com/events.json')</script></body>", 1),
     "events feed spot added": lambda h: h.replace("</footer>", "<!-- events-feed:upcoming --></footer>", 1),
 }
+
+
+def get(url):
+    req = urllib.request.Request(url, headers={"User-Agent": q06.UA, "Accept": "*/*"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return r.status, r.headers.get("Content-Type", ""), r.read()
+    except urllib.error.HTTPError as e:
+        return e.code, "", b""
+
+
+def jpeg_info(b):
+    """((width, height), file-detail segments) of a JPEG; only a plain JFIF header may remain."""
+    if b[:2] != b"\xff\xd8":
+        return None, ["not a JPEG"]
+    i, size, extra = 2, None, []
+    while i + 4 <= len(b) and b[i] == 0xFF:
+        m = b[i + 1]
+        if m == 0xFF:
+            i += 1
+            continue
+        if m == 0xDA:
+            break
+        if 0xD0 <= m <= 0xD7 or m == 0x01:
+            i += 2
+            continue
+        ln = int.from_bytes(b[i + 2:i + 4], "big")
+        if (0xE0 <= m <= 0xEF and not (m == 0xE0 and b[i + 4:i + 9] == b"JFIF\0")) or m == 0xFE:
+            extra.append("COM" if m == 0xFE else f"APP{m - 0xE0}")
+        if 0xC0 <= m <= 0xCF and m not in (0xC4, 0xC8, 0xCC):
+            size = (int.from_bytes(b[i + 7:i + 9], "big"), int.from_bytes(b[i + 5:i + 7], "big"))
+        i += 2 + ln
+    return size, extra
+
+
+def check_launch(base, root):
+    """Q11 (D50): the launch section as a past event, with its photos and video."""
+    band = first(root.find_all(lambda n: n.tag == "section" and n.attrs.get("id") == "event"))
+    tag = first(band.find_all(lambda n: "tag" in n.classes())) if band else None
+    head = first(band.find_all(lambda n: n.tag == "h2")) if band else None
+    got = (text(tag) if tag else "", text(head) if head else "")
+    report(got == ("Past event", "How the book launched."), "LP-01", "Section reads as a past event", " / ".join(got))
+
+    photos = root.find_all(lambda n: n.tag == "ul" and n.attrs.get("id") == "lp-photos")
+    items = photos[0].find_all(lambda n: n.tag == "li") if photos else []
+    rows = []
+    for li in items:
+        a, img = first(li.find_all(lambda n: n.tag == "a")), first(li.find_all(lambda n: n.tag == "img"))
+        rows.append((a.attrs.get("href") if a else None, img.attrs if img else {}))
+    want_src = [f"images/launch/{i:02d}.jpg" for i in range(1, 13)]
+    ok = (len(rows) == 12 and [r[1].get("src") for r in rows] == want_src
+          and [r[0] for r in rows] == [f"images/launch/full/{i:02d}.jpg" for i in range(1, 13)]
+          and [r[1].get("alt") for r in rows] == LAUNCH_ALTS
+          and all(r[1].get("width") and r[1].get("height") and r[1].get("loading") == "lazy" for r in rows))
+    report(ok and band and any(x is band for x in photos[0].ancestors()), "LP-02",
+           "12 photos in album order: width, height, lazy, alt, full-size link", f"{len(rows)} photos")
+    files = want_src + [f"images/launch/full/{i:02d}.jpg" for i in range(1, 13)] + ["images/launch/video.jpg"]
+    bad_size, details, not_served = [], [], []
+    for f in files:
+        code, ctype, body = get(f"{base}/{f}")
+        if code != 200 or not ctype.startswith("image/jpeg"):
+            not_served.append(f"{f} {code}")
+            continue
+        size, extra = jpeg_info(body)
+        limit = 1000 if "/full/" in f else 800
+        if not size or max(size) > limit:
+            bad_size.append(f"{f} {size}")
+        details += [f"{f}: {e}" for e in extra]
+    report(not not_served, "LP-02", f"All {len(files)} images served from this site", ", ".join(not_served[:3]) or "ok")
+    report(not bad_size, "LP-02", "Page copies at most 800 px, full size at most 1,000 px", ", ".join(bad_size[:3]) or "ok")
+    report(not details, "LP-06", "No file details (EXIF, GPS, colour profile, comments) in any copy",
+           ", ".join(details[:3]) or "ok")
+    report(all(not (r[1].get("src") or "").startswith(("http:", "https:", "//")) for r in rows), "LP-06",
+           "Every photo is served from this site, none hotlinked")
+
+    video = root.find_all(lambda n: n.tag == "ul" and "lp-videos" in n.classes())
+    links = video[0].find_all(lambda n: n.tag == "a") if video else []
+    vimg = first(video[0].find_all(lambda n: n.tag == "img")) if video else None
+    report(len(links) == 1 and links[0].attrs.get("href") == VIDEO_URL and links[0].attrs.get("target") == "_blank"
+           and "Watch on YouTube ↗" in text(links[0]) and vimg is not None
+           and vimg.attrs.get("src") == "images/launch/video.jpg" and vimg.attrs.get("alt") == "Video: Change Anesthesiology",
+           "LP-03", "Video: local thumbnail, 'Watch on YouTube ↗' in a new tab",
+           links[0].attrs.get("href") if links else "missing")
+    embeds = [n.tag for n in root.walk() if n.tag in ("iframe", "embed", "object", "video")]
+    report(not embeds, "LP-03", "No embedded player or YouTube code", ", ".join(embeds) or "ok")
+
+    anchors, fired = clicks(root)
+    media = [(a["href"], evs) for a, evs in zip(anchors, fired)
+             if a["href"].startswith((base + "/images/launch/", "https://changeanesthesiology.com/images/launch/")) or a["href"] == VIDEO_URL]
+    report(len(media) == 13 and not any("register_click" in evs for _, evs in media), "LP-05",
+           "Photo and video links are not register_click", f"{len(media)} links checked")
+
+    expr = ("(() => { const l = document.getElementById('lp-photos'), b = document.querySelector('.lp-more button');"
+            " return { shown: [...l.children].filter(li => getComputedStyle(li).display !== 'none').length,"
+            " button: b ? b.textContent : null, expanded: b ? b.getAttribute('aria-expanded') : null }; })()")
+    click = "document.querySelector('.lp-more button').click()"
+    res = {x["name"]: x for x in browser([
+        {"name": "closed", "url": base + "/", "width": 1440, "expr": expr},
+        {"name": "opened", "url": base + "/", "width": 1440, "pre": click, "expr": expr},
+        {"name": "closed again", "url": base + "/", "width": 390, "pre": click + ";" + click, "expr": expr},
+        {"name": "no script", "url": base + "/", "width": 390, "noJs": True}])}
+    c, o, again = res["closed"]["value"], res["opened"]["value"], res["closed again"]["value"]
+    report(c == {"shown": 6, "button": "Show more photos", "expanded": "false"}, "LP-04", "6 photos shown, 'Show more photos'", str(c))
+    report(o == {"shown": 12, "button": "Show fewer photos", "expanded": "true"}, "LP-04", "Opened: all 12, 'Show fewer photos'", str(o))
+    report(again == {"shown": 6, "button": "Show more photos", "expanded": "false"}, "LP-04", "Closes again to 6", str(again))
+    nojs = parse(res["no script"]["value"] or "")
+    lst = first(nojs.find_all(lambda n: n.attrs.get("id") == "lp-photos"))
+    report(lst is not None and "lp-folded" not in lst.classes() and len(lst.find_all(lambda n: n.tag == "li")) == 12
+           and not nojs.find_all(lambda n: "lp-more" in n.classes()), "LP-04", "Without the script, all 12 photos show")
 
 
 def run_suite(cmd):
@@ -253,8 +471,8 @@ def main():
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
     allowed = {"tests/"} | {f for f, _, _ in APPROVED_EDITS}
-    extra = [f for f in changed if not any(f == a or (a.endswith("/") and f.startswith(a)) for a in allowed)]
-    report(not extra, "EL-04", f"Checkout: only tests/ changed since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
+    extra = [f for f in changed if not (LAUNCH_FILES.match(f) or any(f == a or (a.endswith("/") and f.startswith(a)) for a in allowed))]
+    report(not extra, "EL-04", f"Checkout: only index.html, images/launch/, tests/ since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
     report(not dirty, "EL-04", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
     q09 = [f for f in tracked if f.startswith(Q09_FILES)]
     report(not q09, "EL-04", "Nothing from Q09 (script, workflow, data, event photos)", ", ".join(q09[:3]) or "none")
@@ -273,15 +491,24 @@ def main():
                and "prechangeway" in (n.attrs.get("src") or n.attrs.get("href") or "")]
         scripts = " ".join(" ".join(c for c in n.children if isinstance(c, str))
                            for n in page.find_all(lambda n: n.tag == "script"))
-        calls = re.findall(r"(?:fetch|open|sendBeacon|EventSource|WebSocket)\(\s*['\"][^'\"]*prechangeway[^'\"]*['\"]", scripts)
-        report(not src and not calls, "EL-05", f"{name}: no script, image or call to prechangeway.com",
+        src += [n.attrs.get("src") or n.attrs.get("href") for n in page.walk()
+                if n.tag in ("script", "img", "link", "iframe", "source", "video", "audio", "object", "embed")
+                and re.search(r"youtube|youtu\.be|ytimg", n.attrs.get("src") or n.attrs.get("href") or "")]
+        calls = re.findall(r"(?:fetch|open|sendBeacon|EventSource|WebSocket)\(\s*['\"][^'\"]*(?:prechangeway|youtu)[^'\"]*['\"]", scripts)
+        report(not src and not calls, "EL-05", f"{name}: no script, image or call to prechangeway.com or YouTube",
                ", ".join(src + calls)[:80] or "ok")
+    more = "document.querySelector('.lp-more button') && document.querySelector('.lp-more button').click()"
+    eager = "document.querySelectorAll('img').forEach(i => { i.loading = 'eager'; });" + more
     cases = [{"name": f"{p} {w}px", "url": base + p, "width": w} for p in ("/", "/article") for w in WIDTHS]
+    cases += [{"name": f"/ {w}px, all photos opened", "url": base + "/", "width": w, "pre": eager} for w in WIDTHS]
     for x in browser(cases):
-        pre = [u for u in x["requests"] if re.match(r"^https?://([^/]*\.)?prechangeway\.com(/|$)", u)]
+        pre = [u for u in x["requests"] if re.match(ELSEWHERE, u)]
         report(not pre and not x["errors"] and x["over"] <= 0, "EL-05",
-               f"{x['name']}: zero requests to prechangeway.com, no errors",
+               f"{x['name']}: zero requests to prechangeway.com or YouTube, no errors",
                ", ".join(pre + x["errors"])[:70] or f"{len(x['requests'])} requests, {x['over']} px sideways")
+    print()
+
+    check_launch(base, root)
     print()
 
     # EL-06: the earlier suites.
