@@ -29,6 +29,9 @@ Q11b (D51 to D54), after Sukant's review:
   LB-05  the "Next events" label and "Online and in person · on prechangeway.com" stay
   The photos link (EL-02), the Upcoming Events links (EL-01), the photos and video (LP) and the
   article page byte-identical to main (EL-04) are checked above.
+Q11c (D55), unused files removed:
+  LC-01  the 8 files are gone from the repo and return 404
+  LC-02  every image, icon and share image on both pages is served, and none shows broken
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
 """
@@ -189,6 +192,9 @@ SPEAKERS = ["Sukant Ratnakar", "Tammy Martins", "Ryan Myers"]
 GUEST_BOOKS = ["Designing Your Second Act", "One Match, One Brick, One Life"]
 PROGRAMME = ["Welcome & Networking", "Guests arrived and connected", "Guest Author Talks", "Open questions with all three authors",
              "Conversations and networking", "Event ended"]
+# Q11c (D55): unused files Sukant had removed. They must be gone and must not be served.
+D55_DELETED = ["images/partner-masud.jpg", "images/elc-logo.png", "ca-book-3d-spine.png", "ca-book-3d.png",
+               "ca-cover-mockup.jpg", "elc-logo.png", "mola-fish.png", "partner-masud.jpg"]
 PARTNER_WORDS = ["Masud Alam", "Elite Leadership Club", "Community Partner", "partner-masud", "elc-logo", "partner"]
 LAUNCH_FILES = re.compile(r"^images/launch/(?:full/)?\d\d\.jpg$|^images/launch/video\.jpg$")
 ELSEWHERE = r"^https?://([^/]*\.)?(prechangeway\.com|youtube\.com|youtu\.be|ytimg\.com|googlevideo\.com|youtube-nocookie\.com)(/|$)"
@@ -500,6 +506,37 @@ def check_review(base, root):
         report(w in words, "LB-05", f"Kept: {what}")
 
 
+def check_cleanup(base):
+    """Q11c (D55): the unused files are gone, and nothing on either page is broken."""
+    tracked = set(git("ls-files").split("\n"))
+    for f in D55_DELETED:
+        code = get(f"{base}/{f}")[0]
+        report(f not in tracked and code == 404, "LC-01", f"/{f} removed and not served", f"got {code}")
+    for name, path in (("index", "/"), ("article", "/article")):
+        page = parse(q06.fetch(base + path))
+        refs = set()
+        for n in page.walk():
+            if n.tag in ("img", "source") and n.attrs.get("src"):
+                refs.add(n.attrs["src"])
+            if n.tag == "link" and "icon" in (n.attrs.get("rel") or "") and n.attrs.get("href"):
+                refs.add(n.attrs["href"])
+            if n.tag == "meta" and (n.attrs.get("property") or n.attrs.get("name") or "").endswith(":image"):
+                refs.add(re.sub(r"^https://changeanesthesiology\.com/", "", n.attrs.get("content") or ""))
+        bad = []
+        for ref in sorted(refs):
+            if ref.startswith(("http:", "https:", "//", "data:")):
+                continue
+            code, ctype, _ = get(f"{base}/{ref.lstrip('/')}")
+            if code != 200 or not ctype.startswith("image/"):
+                bad.append(f"{ref} {code}")
+        report(not bad, "LC-02", f"{name}: every image, icon and share image is served", ", ".join(bad[:3]) or f"{len(refs)} files")
+    expr = "[...document.images].filter(i => !(i.complete && i.naturalWidth > 0)).map(i => i.getAttribute('src'))"
+    eager = "document.querySelectorAll('img').forEach(i => { i.loading = 'eager'; }); document.querySelector('.lp-more button') && document.querySelector('.lp-more button').click()"
+    for x in browser([{"name": f"{p} {w}px", "url": base + p, "width": w, "pre": eager, "expr": expr}
+                      for p in ("/", "/article") for w in WIDTHS]):
+        report(x["value"] == [], "LC-02", f"{x['name']}: no broken image", ", ".join(x["value"] or [])[:80] or "ok")
+
+
 def run_suite(cmd):
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=900)
@@ -554,8 +591,10 @@ def main():
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
     allowed = {"tests/"} | {f for f, _, _ in APPROVED_EDITS}
-    extra = [f for f in changed if not (LAUNCH_FILES.match(f) or any(f == a or (a.endswith("/") and f.startswith(a)) for a in allowed))]
-    report(not extra, "EL-04", f"Checkout: only index.html, images/launch/, tests/ since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
+    extra = [f for f in changed if not (LAUNCH_FILES.match(f) or f in D55_DELETED
+                                        or any(f == a or (a.endswith("/") and f.startswith(a)) for a in allowed))]
+    report(not extra, "EL-04", f"Checkout: only index.html, images/launch/, D55 deletions, tests/ since {BASE_REF}",
+           ", ".join(extra) or f"{len(changed)} files")
     report(not dirty, "EL-04", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
     q09 = [f for f in tracked if f.startswith(Q09_FILES)]
     report(not q09, "EL-04", "Nothing from Q09 (script, workflow, data, event photos)", ", ".join(q09[:3]) or "none")
@@ -594,6 +633,8 @@ def main():
     check_launch(base, root)
     print()
     check_review(base, root)
+    print()
+    check_cleanup(base)
     print()
 
     # EL-06: the earlier suites.
