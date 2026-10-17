@@ -9,6 +9,9 @@ on:
   schedule:
     - cron: "37 11 * * *"  # 05:37 Saskatchewan time (UTC-6), every day
   workflow_dispatch:
+  push:  # TEMPORARY end-to-end test on content/events-feed only (Q09); removed right after
+    branches: [content/events-feed]
+    paths: [.github/workflows/events-feed.yml]
 
 permissions:
   contents: write
@@ -27,6 +30,9 @@ jobs:
 
       - name: Build the events from the feed
         run: node scripts/events-feed.mjs
+        env:  # TEMPORARY: the labelled fixture feed, never the real site's content
+          FEED_FILE: tests/fixtures/events/feed-valid.json
+          PRECHANGE_MIRROR: tests/fixtures/events/mirror
 
       - name: Commit if anything changed
         run: |
