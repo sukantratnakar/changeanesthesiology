@@ -21,6 +21,14 @@ Q11 (D50) adds, for the launch section as a past event:
   LP-04  "Show more photos": 6 shown, 12 when opened; without the script all 12 show
   LP-05  photo and video links are not register_click (D25-3)
   LP-06  no file details in any copy, every photo served from this site; EL-05 also bars YouTube
+Q11b (D51 to D54), after Sukant's review:
+  LB-01  the speaker cards stay: the author, Tammy Martins and Ryan Myers, with their profiles
+  LB-02  no community partner card or credit (name, photo, logo, text)
+  LB-03  the programme is gone; the date, time and place stay
+  LB-04  the highlight line, word for word, with the book title in italics
+  LB-05  the "Next events" label and "Online and in person · on prechangeway.com" stay
+  The photos link (EL-02), the Upcoming Events links (EL-01), the photos and video (LP) and the
+  article page byte-identical to main (EL-04) are checked above.
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
 """
@@ -53,6 +61,9 @@ PHOTOS_TEXT = "Photos from the launch →"
 # Q11 (D50): the launch section becomes a past event, with a one-time copy of the launch photos
 # and video. The new CSS, photos-and-video block and "Show more photos" script, word for word.
 LAUNCH_CSS = r'''/* ── launch photos and video (Q11): a one-time copy, nothing loads from elsewhere ── */
+#event .event-top{align-items:start}
+.event-hl{margin-top:2.6rem;padding-top:1.6rem;border-top:1px solid rgba(212,177,95,.22);font-size:1rem;line-height:1.8;color:var(--cream-dim);max-width:520px}
+.event-hl em{color:var(--cream)}
 .lp-media{margin-top:3.5rem;padding-top:2.6rem;border-top:1px solid rgba(212,177,95,.2)}
 .lp-photos,.lp-videos{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
 .lp-photos a{display:block;background:var(--navy)}
@@ -101,6 +112,29 @@ LAUNCH_MEDIA = r'''    <!-- Launch photos and video: a one-time copy of prechang
     </div>
 
 '''
+LAUNCH_PROGRAMME = r'''        <div class="prog">
+          <div class="prog-row reveal"><b>5:30</b><div><em>Welcome &amp; Networking</em>Guests arrived and connected over evening snacks</div></div>
+          <div class="prog-row reveal"><b>5:45</b><div><em>Book Launch</em>Sukant Ratnakar presented Change Anesthesiology</div></div>
+          <div class="prog-row reveal"><b>6:05</b><div><em>Guest Author Talks</em>Tammy Martins and Ryan Myers</div></div>
+          <div class="prog-row reveal"><b>6:25</b><div><em>Q&amp;A</em>Open questions with all three authors</div></div>
+          <div class="prog-row reveal"><b>6:45 – 7:00</b><div><em>Closing</em>Conversations and networking</div></div>
+          <div class="prog-row reveal" style="border-bottom:none;padding-top:1.3rem"><b style="color:var(--cream)">7:00</b><div style="color:var(--gold)">Event ended</div></div>
+        </div>
+'''
+LAUNCH_HIGHLIGHT_HTML = r'''        <p class="event-hl reveal">Sukant Ratnakar launched <em>Change Anesthesiology: Why Resistance Is Never the Problem</em>, with short talks from guest authors Tammy Martins and Ryan Myers.</p>
+'''
+LAUNCH_PARTNER = r'''
+    <div class="partner reveal">
+      <img src="images/partner-masud.jpg" alt="Masud Alam" class="partner-photo">
+      <div class="partner-body">
+        <p class="partner-l">Community Partner</p>
+        <p class="partner-name">Masud Alam</p>
+        <p class="partner-role">President and Founder &middot; Elite Leadership Club of Canada</p>
+        <p class="partner-p">Brought together leaders from across business, public service, and community life in Saskatchewan for the evening.</p>
+      </div>
+      <img src="images/elc-logo.png" alt="Elite Leadership Club of Canada" class="partner-mark">
+    </div>
+'''
 LAUNCH_SCRIPT = r'''<script>
 /* Launch photos (Q11): 6 show, the other 6 sit behind "Show more photos". Without this script
    all 12 show. Each photo opens its full-size copy, as on prechangeway.com. */
@@ -124,6 +158,10 @@ APPROVED_EDITS = [
     ("index.html", '    <div class="speakers" style="margin-top:3.5rem">',
      LAUNCH_MEDIA + '    <div class="speakers" style="margin-top:3.5rem">'),
     ("index.html", "</body>", LAUNCH_SCRIPT + "\n</body>"),
+    # Q11b (D53, D54): the programme gives way to one highlight line.
+    ("index.html", LAUNCH_PROGRAMME, LAUNCH_HIGHLIGHT_HTML),
+    # Q11b (D52): the community partner card goes.
+    ("index.html", LAUNCH_PARTNER, ""),
 ]
 Q09_FILES = ("scripts/events-feed.mjs", ".github/workflows/events-feed.yml", "data/events.json", "images/events/")
 # Q11: the 12 launch photos ("Website" copies, in album order) and the video, copied once.
@@ -142,6 +180,16 @@ LAUNCH_ALTS = [
     "A speaker in a grey jacket at the podium",
 ]
 VIDEO_URL = "https://youtu.be/DDxNcCjijgg"
+# Q11b (D51 to D54): the launch section after Sukant's review.
+HIGHLIGHT = ("Sukant Ratnakar launched Change Anesthesiology: Why Resistance Is Never the Problem, "
+             "with short talks from guest authors Tammy Martins and Ryan Myers.")
+HIGHLIGHT_TITLE = "Change Anesthesiology: Why Resistance Is Never the Problem"
+WHEN = ("THURSDAY 13 AUGUST 2026", "5:30 – 7:00 pm", "Auditorium, Alice Turner Library Saskatoon, Saskatchewan")
+SPEAKERS = ["Sukant Ratnakar", "Tammy Martins", "Ryan Myers"]
+GUEST_BOOKS = ["Designing Your Second Act", "One Match, One Brick, One Life"]
+PROGRAMME = ["Welcome & Networking", "Guests arrived and connected", "Guest Author Talks", "Open questions with all three authors",
+             "Conversations and networking", "Event ended"]
+PARTNER_WORDS = ["Masud Alam", "Elite Leadership Club", "Community Partner", "partner-masud", "elc-logo", "partner"]
 LAUNCH_FILES = re.compile(r"^images/launch/(?:full/)?\d\d\.jpg$|^images/launch/video\.jpg$")
 ELSEWHERE = r"^https?://([^/]*\.)?(prechangeway\.com|youtube\.com|youtu\.be|ytimg\.com|googlevideo\.com|youtube-nocookie\.com)(/|$)"
 WIDTHS = (390, 1440)
@@ -417,6 +465,41 @@ def check_launch(base, root):
            and not nojs.find_all(lambda n: "lp-more" in n.classes()), "LP-04", "Without the script, all 12 photos show")
 
 
+def check_review(base, root):
+    """Q11b (D51 to D54): the launch section after Sukant's review."""
+    band = first(root.find_all(lambda n: n.tag == "section" and n.attrs.get("id") == "event"))
+    if band is None:
+        report(False, "LB-01", "Launch section found", "missing")
+        return
+    names = [text(n) for n in band.find_all(lambda n: "spk-name" in n.classes())]
+    books = [text(n) for n in band.find_all(lambda n: "spk-book" in n.classes())]
+    guests = [t for t in band.find_all(lambda n: "tag" in n.classes()) if text(t) == "Featured Guest Authors"]
+    report(names == SPEAKERS and all(b in books for b in GUEST_BOOKS) and guests, "LB-01",
+           "Speaker cards kept: the author, Tammy Martins and Ryan Myers", ", ".join(names))
+    html = q06.fetch(base + "/")
+    words = text(band)
+    found = [w for w in PARTNER_WORDS if w.lower() in (words + " " + html[html.find('id="event"'):html.find("</section>", html.find('id="event"'))]).lower()]
+    cards = band.find_all(lambda n: any(c.startswith("partner") for c in n.classes()))
+    report(not found and not cards, "LB-02", "No community partner card or credit in the section", ", ".join(found) or "ok")
+    report("Masud Alam" not in html and "partner-masud" not in html and "elc-logo" not in html, "LB-02",
+           "No partner name, photo or logo anywhere on the home page")
+    prog = band.find_all(lambda n: any(c in ("prog", "prog-row") for c in n.classes()))
+    left = [w for w in PROGRAMME if w in words]
+    report(not prog and not left, "LB-03", "Programme removed", ", ".join(left) or "ok")
+    when = (text(first(band.find_all(lambda n: "event-date" in n.classes())) or band),
+            text(first(band.find_all(lambda n: "event-time" in n.classes())) or band),
+            text(first(band.find_all(lambda n: "event-place" in n.classes())) or band))
+    report(when == WHEN, "LB-03", "Date, time and place kept", " | ".join(when)[:90])
+    hl = band.find_all(lambda n: "event-hl" in n.classes())
+    em = hl[0].find_all(lambda n: n.tag == "em") if hl else []
+    line = re.sub(r"\s+([,.;:!?])", r"\1", text(hl[0])) if hl else ""  # text() spaces out inline tags
+    report(len(hl) == 1 and line == HIGHLIGHT and len(em) == 1 and text(em[0]) == HIGHLIGHT_TITLE, "LB-04",
+           "Highlight line word for word, book title in italics", line[:80] or "missing")
+    kept = {"'Next events' label": "Next events", "'Online and in person · on prechangeway.com'": "Online and in person · on prechangeway.com"}
+    for what, w in kept.items():
+        report(w in words, "LB-05", f"Kept: {what}")
+
+
 def run_suite(cmd):
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=900)
@@ -509,6 +592,8 @@ def main():
     print()
 
     check_launch(base, root)
+    print()
+    check_review(base, root)
     print()
 
     # EL-06: the earlier suites.
