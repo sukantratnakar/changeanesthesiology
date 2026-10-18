@@ -296,7 +296,11 @@ def check_pr02(pages):
         "free registration": r"free registration",
     }
     for name, p in pages.items():
-        found = [label for label, rx in gone.items() if re.search(rx, p["wording"], re.I)]
+        # Q12 (D56): design v3's figure (.tl3) says "Change launches" for a change going live, which
+        # is not offer wording; only the "launching / launches" rule skips that figure.
+        no_fig = wording(p["root"], skip=lambda n: "tl3" in n.classes())
+        found = [label for label, rx in gone.items()
+                 if re.search(rx, no_fig if label == "launching / launches" else p["wording"], re.I)]
         report(not found, "PR-02", f"{name}: no offer, pre-order or signed-copy wording",
                ", ".join(found) or "ok")
     for name, p in pages.items():

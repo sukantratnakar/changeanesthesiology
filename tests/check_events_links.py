@@ -10,7 +10,9 @@ Checks the pages served at <base-url>:
   EL-02  the launch photos link goes to prechangeway.com/events#spotlight-change-anesthesiology-2026-08
   EL-03  those "Upcoming Events" links count as register_click; photo links do not (D22b-9, D25-3)
   EL-04  nothing else changed against BASE_REF (default 27cf1c4, main after Q08), and nothing
-         from Q09 is in the checkout. This replaces Q08's TL-05, as Q09 did.
+         from Q09 is in the checkout. This replaces Q08's TL-05, as Q09 did; from Q12 on,
+         TV-08 in tests/check_three_layers_v3.py shares it, and EL-04 also accepts Q12's
+         exact edits to the diagram (Q12b).
   EL-05  no request to prechangeway.com when either page loads (headless Chrome, analytics blocked)
   EL-06  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
 Q11 (D50) adds, for the launch section as a past event:
@@ -50,6 +52,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import check_price_and_events as q06  # noqa: E402  (shared parser, fetch, click harness, Chrome path)
+import check_three_layers_v3 as v3  # noqa: E402  (Q12's exact edits to the diagram, for EL-04)
 
 from check_price_and_events import parse, text  # noqa: E402
 
@@ -166,6 +169,9 @@ APPROVED_EDITS = [
     # Q11b (D52): the community partner card goes.
     ("index.html", LAUNCH_PARTNER, ""),
 ]
+# Q12b: design v3 of the three-layers diagram (D56, D57) is on the page too. Its exact edits live
+# in tests/check_three_layers_v3.py (TV-08); EL-04 accepts those and nothing else outside the launch section.
+APPROVED_EDITS += [("index.html", before, after) for before, after in v3.APPROVED_EDITS]
 Q09_FILES = ("scripts/events-feed.mjs", ".github/workflows/events-feed.yml", "data/events.json", "images/events/")
 # Q11: the 12 launch photos ("Website" copies, in album order) and the video, copied once.
 LAUNCH_ALTS = [
