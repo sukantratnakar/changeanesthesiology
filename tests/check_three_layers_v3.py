@@ -17,7 +17,8 @@ Checks the pages served at <base-url>:
          page source never says "habits"
   TV-08  nothing else changed against BASE_REF (default 2a2f919, main after PR #5, so the
          launch section must be exactly as live); article untouched. With EL-04 in
-         tests/check_events_links.py, this replaces Q08's TL-05 (Q12b).
+         tests/check_events_links.py, this replaces Q08's TL-05 (Q12b). From Q13 on it also
+         accepts Q13's CSS block (tests/check_anchor_position.py).
   TV-09  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
@@ -36,6 +37,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import check_price_and_events as q06  # noqa: E402  (shared parser, fetch, Chrome path)
 import check_three_layers as tl  # noqa: E402  (design v3's words and the figure reader)
+import check_anchor_position as q13  # noqa: E402  (Q13's CSS block, which TV-08 accepts too)
 
 from check_price_and_events import parse, text  # noqa: E402
 
@@ -248,6 +250,9 @@ V3_FIGURE = r'''    <figure class="tl3 tl3-fig reveal" aria-describedby="tl3-des
     </figure>
 '''
 APPROVED_EDITS = [(OLD_SR, ""), (OLD_CSS, V3_CSS), (OLD_MEDIA_1024, ""), (OLD_MEDIA_680, ""), (OLD_FIGURE, V3_FIGURE)]
+# Q13 (D61) adds one CSS block so links land on their section; its exact edit lives in
+# tests/check_anchor_position.py (AP-05), and TV-08 accepts it and nothing else.
+LATER_EDITS = q13.APPROVED_EDITS
 
 RESULTS = []
 
@@ -352,11 +357,11 @@ def browser(cases):
 
 
 def changes(old, new):
-    """How the served page differs from BASE_REF plus Q12's edits; [] if not at all."""
+    """How the served page differs from BASE_REF plus Q12's (and Q13's) edits; [] if not at all."""
     if APPROVED_EDITS is None:
         return ["Q12's edits are not recorded in this test yet"]
     want = old
-    for before, after in APPROVED_EDITS:
+    for before, after in APPROVED_EDITS + LATER_EDITS:
         if want.count(before) != 1:
             return [f"approved edit not found once in {BASE_REF}: {before[:40]!r}"]
         want = want.replace(before, after)
@@ -484,7 +489,7 @@ def main():
     report(not dirty, "TV-08", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
     report(article == old_article, "TV-08", f"article.html is exactly as in {BASE_REF}")
     probs = changes(old_index, index)
-    report(not probs, "TV-08", f"index.html: {BASE_REF} plus the v3 figure only", "; ".join(probs) or "ok")
+    report(not probs, "TV-08", f"index.html: {BASE_REF} plus the v3 figure (and Q13 CSS) only", "; ".join(probs) or "ok")
     if probs:
         report(False, "TV-08", "Self-test: planted edits are caught", "needs a page that passes first")
     else:

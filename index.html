@@ -43,6 +43,18 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* Q13 (D61): links to a section land on it, below the fixed menu. The browser keeps the menu's
+   height clear at the top (4rem; 3.5rem on phones), the two targets with no top padding of their
+   own get 2rem more, and each image above the sections keeps its space while it loads, so nothing
+   moves while the page glides to a section. Nothing looks different once the page has loaded. */
+html{scroll-padding-top:4rem}
+@media(max-width:680px){html{scroll-padding-top:3.5rem}}
+#model,#po-terms{scroll-margin-top:2rem}
+.hero-series img{aspect-ratio:auto 268/300}
+.hero-cover,.band img{aspect-ratio:auto 1000/1569}
+.series-img img{aspect-ratio:auto 1600/900}
+.author-photo img{aspect-ratio:auto 707/760}
+.analogy-fig img{aspect-ratio:auto 1071/583}
 body{font-family:var(--sans);background:var(--navy);color:var(--cream);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--gold);color:var(--navy-deep)}
 img{max-width:100%;display:block}
