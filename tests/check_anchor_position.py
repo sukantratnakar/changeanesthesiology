@@ -18,6 +18,7 @@ each time (analytics blocked):
          section by at most 57 px (measured 17 Oct 2026, fallback against final fonts).
   AP-03  a jump from the top of the loaded page (location.hash, as a menu link does) lands on
          AP-01's spot, within 4 px
+         (AP-02 and AP-03 allow 26 px more for a target that fades in itself: #po-terms)
   AP-04  nothing looks different: once loaded, every element of the home page has the same
          position, size, font and colour as on BASE_REF's page (served from this checkout)
   AP-05  nothing else changed against BASE_REF (default 90d9c26, main): only index.html and
@@ -53,6 +54,10 @@ ARRIVALS = 3
 GAP = (8, 120)       # AP-01: px between the menu's bottom edge and the heading
 FONT_SLACK = 64      # AP-02: px an arrival may differ from AP-01 (fonts move a section by 57 px at most)
 JUMP_SLACK = 4       # AP-03
+# A target that fades in itself (.reveal, now only #po-terms) slides up 26 px (translateY(26px)
+# in index.html) after the browser has scrolled to it, so it lands up to 26 px higher; AP-02 and
+# AP-03 allow that on top of their own slack. It did the same before Q13.
+REVEAL_SHIFT = 26
 
 # Q13's one edit to BASE_REF's index.html, as (before, after), word for word.
 Q13_CSS = r'''/* Q13 (D61): links to a section land on it, below the fixed menu. The browser keeps the menu's
@@ -84,7 +89,8 @@ RESULTS = []
 MEASURE = r"""(id => { const t = document.getElementById(id), h = t.querySelector('.tag, h1, h2, h3, h4, q') || t,
   n = document.getElementById('nav').getBoundingClientRect(), r = h.getBoundingClientRect();
   return {heading: h.textContent.replace(/\s+/g, ' ').trim().slice(0, 30), top: Math.round(r.top),
-          bottom: Math.round(r.bottom), nav: Math.round(n.bottom), vh: innerHeight}; })"""
+          bottom: Math.round(r.bottom), nav: Math.round(n.bottom), vh: innerHeight,
+          fades: t.classList.contains('reveal')}; })"""
 
 # Every element of the loaded page (images loaded, fade-ins shown, the drifting fish held still):
 # position, size, font, colour.
@@ -298,15 +304,15 @@ def main():
                 report(False, "AP-01", f"{w} px #{t}: measured", "no result")
                 continue
             meant, menu = j["meant"], j["meant"]["nav"]
-            gap = meant["top"] - menu
+            gap, fade = meant["top"] - menu, REVEAL_SHIFT if meant["fades"] else 0
             report(GAP[0] <= gap <= GAP[1] and meant["bottom"] <= meant["vh"], "AP-01",
                    f"{w} px #{t}: '{meant['heading'][:22]}' lands just below the menu",
                    f"heading at {meant['top']} px, {gap} px below the menu (allowed {GAP[0]} to {GAP[1]})")
-            bad = [a["top"] for a in arrivals if a["top"] < a["nav"] or abs(a["top"] - meant["top"]) > FONT_SLACK]
+            bad = [a["top"] for a in arrivals if a["top"] < a["nav"] or abs(a["top"] - meant["top"]) > FONT_SLACK + fade]
             report(not bad, "AP-02", f"{w} px #{t}: {ARRIVALS} fresh arrivals land on it",
                    ", ".join(str(a["top"]) for a in arrivals) + f" px (menu ends at {arrivals[0]['nav']} px)")
-            report(abs(j["jump"]["top"] - meant["top"]) <= JUMP_SLACK, "AP-03", f"{w} px #{t}: a jump from the top lands on it",
-                   f"{j['jump']['top']} px")
+            report(abs(j["jump"]["top"] - meant["top"]) <= JUMP_SLACK + fade and j["jump"]["top"] >= j["jump"]["nav"], "AP-03",
+                   f"{w} px #{t}: a jump from the top lands on it", f"{j['jump']['top']} px" + (" (fades in itself)" if fade else ""))
             table.append((w, t, menu, meant["top"], j["jump"]["top"], [a["top"] for a in arrivals]))
     print()
     print("Where each heading lands, in px from the top of the window:")
