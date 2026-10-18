@@ -86,10 +86,11 @@ MEASURE = r"""(id => { const t = document.getElementById(id), h = t.querySelecto
   return {heading: h.textContent.replace(/\s+/g, ' ').trim().slice(0, 30), top: Math.round(r.top),
           bottom: Math.round(r.bottom), nav: Math.round(n.bottom), vh: innerHeight}; })"""
 
-# Every element of the loaded page (images loaded, fade-ins shown): position, size, font, colour.
+# Every element of the loaded page (images loaded, fade-ins shown, the drifting fish held still):
+# position, size, font, colour.
 LAYOUT = r"""(async () => {
   const st = document.createElement('style');
-  st.textContent = '.reveal{opacity:1!important;transform:none!important;transition:none!important}';
+  st.textContent = '.reveal{opacity:1!important;transform:none!important;transition:none!important}*{animation:none!important}';
   document.head.appendChild(st);
   document.querySelectorAll('img').forEach(i => { i.loading = 'eager'; });
   await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
