@@ -49,14 +49,11 @@ ONLINE_LINE = "Online and in person · on prechangeway.com"
 ARTICLE_SESSIONS = "Free sessions online and in person, listed on prechangeway.com."
 # Q08 (TL-02) adds one link to the Prechange home page, not to events; PR-03 skips it.
 PRECHANGE_HOME = ("https://prechangeway.com", "Read about Prechange at prechangeway.com →")
-# The launch record, in past tense, with no book signing (Sukant, 16 Oct 2026).
+# The launch record, in past tense, with no book signing (Sukant, 16 Oct 2026). Q11b (D52, D53)
+# removed the programme and the partner card, so their lines are no longer expected here.
 LAUNCH_RECORD = [
-    "Guests arrived and connected over evening snacks",
-    "Sukant Ratnakar presented Change Anesthesiology",
-    "Conversations and networking",
-    "Event ended",
+    "Sukant Ratnakar launched",
     "Featured Guest Authors",
-    "Brought together leaders",
 ]
 BASE_URL = ""  # set from the command line
 CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")

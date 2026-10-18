@@ -10,10 +10,12 @@ Fetches / and /article from the base URL and prints one PASS/FAIL line per
 check. Exits 1 if any check fails, 2 if the test itself can't run.
 Fetches pages with urllib only (no browser), so it does not trigger Google
 Analytics; the TL-06 layout checks use headless Chrome with analytics blocked.
-TL-05 compares the served pages with BASE_REF (default 4deca4e, main before
+Until Q10, TL-05 compared the served pages with BASE_REF (default 4deca4e, main before
 this change) plus exactly the approved edits from the git checkout this script lives in, and runs the Q04 and
 Q06 tests against the same base URL: all of their checks must pass except
-Q06's PR-04, which TL-05 replaces. Node and Chrome must be installed.
+Q06's PR-04, which TL-05 replaces. From Q10 on, EL-04 and EL-06 in tests/check_events_links.py
+(the launch section) and, from Q12 on, TV-08 and TV-09 in tests/check_three_layers_v3.py (the
+diagram) do this instead. Node and Chrome must be installed.
 """
 
 import json
@@ -729,9 +731,12 @@ def main():
     for fn in (check_tl01, check_tl02, check_tl03, check_tl04):
         fn(pages)
         print()
-    # TL-05 ("nothing else changed" against 4deca4e, plus the Q04 and Q06 runs) is replaced by
-    # TV-08 and TV-09 in tests/check_three_layers_v3.py from Q12 on (D56, 17 Oct 2026).
-    print("TL-05 is replaced by TV-08 and TV-09 in tests/check_three_layers_v3.py (Q12).\n")
+    # TL-05 ("nothing else changed" against 4deca4e, plus the Q04 and Q06 runs) is handed over to
+    # two tests, each checking its own section: EL-04 and EL-06 in tests/check_events_links.py
+    # (the launch section, from Q10 on; Sukant, D48, 16 Oct 2026) and TV-08 and TV-09 in
+    # tests/check_three_layers_v3.py (the diagram, from Q12 on; D56, 17 Oct 2026).
+    print("TL-05 is replaced by EL-04 and EL-06 in tests/check_events_links.py (Q10, launch section)\n"
+          "and by TV-08 and TV-09 in tests/check_three_layers_v3.py (Q12, diagram).\n")
     check_tl06(pages, base)
     print()
     check_tl07(base)

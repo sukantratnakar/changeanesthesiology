@@ -15,8 +15,9 @@ Checks the pages served at <base-url>:
          label font), no Cormorant Garamond or Jost; HTML and CSS only (no image, no script)
   TV-07  v3's palette, scoped to the figure (.tl3); the routines colour is --routines, and the
          page source never says "habits"
-  TV-08  nothing else changed against BASE_REF (default 27cf1c4, main); article untouched.
-         This replaces Q08's TL-05 on this branch.
+  TV-08  nothing else changed against BASE_REF (default 2a2f919, main after PR #5, so the
+         launch section must be exactly as live); article untouched. With EL-04 in
+         tests/check_events_links.py, this replaces Q08's TL-05 (Q12b).
   TV-09  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
@@ -41,7 +42,7 @@ from check_price_and_events import parse, text  # noqa: E402
 q06.UA = "check_three_layers_v3.py (changeanesthesiology repo test)"
 TESTS = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(TESTS)
-BASE_REF = os.environ.get("BASE_REF", "27cf1c4")
+BASE_REF = os.environ.get("BASE_REF", "2a2f919")
 WIDTHS = (360, 390, 820, 1280, 1440)
 PALETTE = {"--energy": "#7A2E2A", "--slate": "#5C7385", "--sage": "#687B5A", "--routines": "#B07A3B",
            "--ink": "#0C203B", "--navy-deep": "#071426", "--gold": "#D4B15F", "--gold-ln": "#B8995A",
