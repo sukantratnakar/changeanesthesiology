@@ -1,0 +1,132 @@
+name: Weekly website check
+
+# Rollback point: the build link of the version to roll back to. Each merge prompt updates this one line.
+env:
+  ROLLBACK_URL: https://0ed6ad41-changeanesthesiology.sukantratnakar.workers.dev
+
+# Q14 (Sukant, 18 Oct 2026, D64). Once a week, confirm the live site is still exactly what's on
+# GitHub, every test still passes, and the rollback point still loads. Look only: it never commits,
+# pushes, deploys or changes a setting, and uses no secrets. A failed run fails, and GitHub emails
+# Sukant. See OPERATIONS.md.
+
+on:
+  schedule:
+    - cron: "47 13 * * 1"   # Mondays 13:47 UTC = 7:47 am Saskatchewan time (UTC-6 all year)
+  workflow_dispatch:        # the "Run workflow" button
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0              # the tests compare with older commits
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Run the checks
+        env:
+          CHROME: /usr/bin/google-chrome
+        run: |
+          set +e
+          UA="weekly-check.yml (changeanesthesiology repo, GitHub Actions)"
+          HOSTS="changeanesthesiology.com www.changeanesthesiology.com"
+          LOGS="$RUNNER_TEMP/logs"; mkdir -p "$LOGS"
+          declare -A CELL
+          FAILED=0; DETAILS=""
+          fail() { FAILED=$((FAILED + 1)); DETAILS+="- **$1**: $2"$'\n'; echo "::error title=$1::$2"; }
+
+          git fetch -q --no-tags origin main
+          MAIN=$(git rev-parse --short origin/main)
+          echo "Chrome: $("$CHROME" --version)  Node: $(node --version)  Python: $(python3 --version)"
+
+          # suite <key> <name> <known-failing check or -> <host> <command...>: runs one test file.
+          suite() {
+            local key=$1 name=$2 known=$3 h=$4; shift 4
+            local log="$LOGS/$key-$h.txt"
+            echo "::group::$name on $h"
+            "$@" "https://$h" > "$log" 2>&1; local code=$?
+            cat "$log"; echo "::endgroup::"
+            local pass bad knownfails
+            pass=$(grep -c '^PASS' "$log")
+            bad=$(awk -v k="$known" '$1 == "FAIL" && $2 != k' "$log")
+            knownfails=$(awk -v k="$known" '$1 == "FAIL" && $2 == k' "$log" | grep -c .)
+            if [ "$pass" -gt 0 ] && [ -z "$bad" ] && { [ $code = 0 ] || { [ "$known" != - ] && [ $code = 1 ]; }; }; then
+              CELL[$key,$h]="✅ $pass passed$([ "$knownfails" -gt 0 ] && echo ", $knownfails known $known")"
+            else
+              CELL[$key,$h]="❌ failed"
+              fail "$name on $h" "$( [ -n "$bad" ] && echo "$bad" | head -3 | sed 's/  */ /g' | paste -sd ';' - || echo "the test did not run (exit $code); see its output in the step log")"
+            fi
+          }
+
+          for h in $HOSTS; do
+            # 1. The live pages are byte for byte what's on main.
+            ok=1
+            for p in "/:index.html" "/article:article.html"; do
+              url="https://$h${p%%:*}"; file=${p#*:}
+              if ! curl -sS --fail --max-time 30 -H 'Accept: */*' -A "$UA" -o "$LOGS/live.html" "$url"; then
+                ok=0; fail "Check 1 on $h" "$url did not load"
+              elif ! git show "origin/main:$file" | cmp -s - "$LOGS/live.html"; then
+                ok=0; fail "Check 1 on $h" "$url is not the same as $file on main ($MAIN)"
+              fi
+            done
+            CELL[1,$h]=$([ $ok = 1 ] && echo "✅ same" || echo "❌ different")
+
+            # 2. Every test suite passes against the live site (the test files as they are).
+            suite q13 "Q13 test (links land on their section)" - "$h" python3 tests/check_anchor_position.py
+            suite q12 "Q12 test (three-layers diagram)" - "$h" python3 tests/check_three_layers_v3.py
+            suite q10 "Q10/Q11 test (events links, launch section)" - "$h" python3 tests/check_events_links.py
+            suite q04 "Q04 test (only visitor files are served)" - "$h" bash tests/check_public_files.sh
+            suite q08 "Q08 test (Where this fits)" - "$h" python3 tests/check_three_layers.py
+            suite q06 "Q06 test (price and events)" PR-04 "$h" python3 tests/check_price_and_events.py
+
+            # 3. No requests to prechangeway.com or YouTube, no console errors: the Q10/Q11 test's EL-05 lines.
+            el05=$(grep -E '^(PASS|FAIL)  EL-05' "$LOGS/q10-$h.txt")
+            if [ -n "$el05" ] && ! echo "$el05" | grep -q '^FAIL'; then
+              CELL[3,$h]="✅ $(echo "$el05" | grep -c .) pages and widths"
+            else
+              CELL[3,$h]="❌ failed"
+              fail "Check 3 on $h" "$( [ -n "$el05" ] && echo "$el05" | grep '^FAIL' | head -3 | sed 's/  */ /g' | paste -sd ';' - || echo "no EL-05 lines in the Q10/Q11 output")"
+            fi
+          done
+
+          # 4. The rollback point still loads (its build link, no token needed).
+          code=$(curl -sS -o "$LOGS/rollback.html" -w '%{http_code}' --max-time 30 -H 'Accept: */*' -A "$UA" "$ROLLBACK_URL/")
+          if [ "$code" = 200 ] && grep -q 'Change Anesthesiology' "$LOGS/rollback.html"; then
+            ROLLBACK="✅ loads"
+          else
+            ROLLBACK="❌ does not load (HTTP $code)"; fail "Check 4" "$ROLLBACK_URL did not load the site (HTTP $code)"
+          fi
+
+          A=changeanesthesiology.com; W=www.changeanesthesiology.com
+          {
+            if [ $FAILED = 0 ]; then echo "## ✅ Weekly website check: everything passed"
+            else echo "## ❌ Weekly website check: $FAILED problem(s) found"; fi
+            echo
+            echo "Live site compared with \`main\` at \`$MAIN\`, $(date -u '+%-d %b %Y, %H:%M UTC')."
+            echo
+            echo "| Check | $A | $W |"
+            echo "|---|---|---|"
+            echo "| 1. Live pages are exactly what's on main | ${CELL[1,$A]} | ${CELL[1,$W]} |"
+            echo "| 2. Q13 test: links land on their section | ${CELL[q13,$A]} | ${CELL[q13,$W]} |"
+            echo "| 2. Q12 test: three-layers diagram | ${CELL[q12,$A]} | ${CELL[q12,$W]} |"
+            echo "| 2. Q10/Q11 test: events links, launch section | ${CELL[q10,$A]} | ${CELL[q10,$W]} |"
+            echo "| 2. Q04 test: only visitor files are served | ${CELL[q04,$A]} | ${CELL[q04,$W]} |"
+            echo "| 2. Q08 test: Where this fits | ${CELL[q08,$A]} | ${CELL[q08,$W]} |"
+            echo "| 2. Q06 test: price and events (its 3 PR-04 lines are known) | ${CELL[q06,$A]} | ${CELL[q06,$W]} |"
+            echo "| 3. No requests to prechangeway.com or YouTube, no console errors | ${CELL[3,$A]} | ${CELL[3,$W]} |"
+            echo
+            echo "4. Rollback point ($ROLLBACK_URL): $ROLLBACK"
+            if [ $FAILED != 0 ]; then echo; echo "### What failed"; echo; printf '%s' "$DETAILS"; fi
+            echo
+            echo "Every test's full output is in the log of the \"Run the checks\" step."
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+          [ $FAILED = 0 ]

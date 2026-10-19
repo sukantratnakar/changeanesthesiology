@@ -600,7 +600,7 @@ def main():
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
     allowed = {"tests/"} | {f for f, _, _ in APPROVED_EDITS}
-    extra = [f for f in changed if not (LAUNCH_FILES.match(f) or f in D55_DELETED
+    extra = [f for f in changed if not (LAUNCH_FILES.match(f) or f in D55_DELETED or f in q13.OPS_FILES
                                         or any(f == a or (a.endswith("/") and f.startswith(a)) for a in allowed))]
     report(not extra, "EL-04", f"Checkout: only index.html, images/launch/, D55 deletions, tests/ since {BASE_REF}",
            ", ".join(extra) or f"{len(changed)} files")

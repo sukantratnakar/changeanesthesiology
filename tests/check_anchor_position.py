@@ -26,8 +26,9 @@ each time (analytics blocked):
   AP-04  nothing looks different: once loaded, every element of the home page has the same
          position, size, font and colour as on BASE_REF's page (served from this checkout)
   AP-05  nothing else changed against BASE_REF (default 90d9c26, main before Q13): only
-         index.html and tests/, the article untouched, index.html is BASE_REF plus the Q13 CSS
-         block and the Q15 arrival script
+         index.html and tests/ (and the weekly check's two files, OPS_FILES, which are never
+         served), the article untouched, index.html is BASE_REF plus the Q13 CSS block and the
+         Q15 arrival script
   AP-06  the Q12 and Q10/Q11 tests pass (between them they run Q04, Q06 apart from its known
          PR-04 lines, and Q08)
   AP-07  the same with a deliberately wide stand-in font (the served page, copied locally with
@@ -110,6 +111,11 @@ PLANTED = {
     "script added": lambda h: h.replace("</head>", "<script>void 0</script>\n</head>", 1),
     "arrival script changed": lambda h: h.replace("t.scrollIntoView()", "t.scrollIntoView(false)", 1),
 }
+
+# Files that only run or describe the weekly check (Q14, D64). The website never serves them
+# (.assetsignore hides dot-folders and *.md; Q04 checks), so the checkout checks allow them:
+# AP-05 here, TV-08 (Q12) and EL-04 (Q10/Q11).
+OPS_FILES = {".github/workflows/weekly-check.yml", "OPERATIONS.md"}
 
 RESULTS = []
 
@@ -382,7 +388,7 @@ def main():
     print()
 
     # AP-05: nothing else changed against main.
-    extra = [f for f in changed if f != "index.html" and not f.startswith("tests/")]
+    extra = [f for f in changed if f != "index.html" and not f.startswith("tests/") and f not in OPS_FILES]
     report(not extra, "AP-05", f"Checkout: only index.html and tests/ changed since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
     report(not dirty, "AP-05", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
     report(article == old_article, "AP-05", f"article.html is exactly as in {BASE_REF}")
