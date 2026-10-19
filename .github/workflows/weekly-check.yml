@@ -2,7 +2,7 @@ name: Weekly website check
 
 # Rollback point: the build link of the version to roll back to. Each merge prompt updates this one line.
 env:
-  ROLLBACK_URL: https://661631ac-changeanesthesiology.sukantratnakar.workers.dev
+  ROLLBACK_URL: https://24f3915c-changeanesthesiology.sukantratnakar.workers.dev
 
 # Q14 (Sukant, 18 Oct 2026, D64). Once a week, confirm the live site is still exactly what's on
 # GitHub, every test still passes, and the rollback point still loads. Look only: it never commits,
