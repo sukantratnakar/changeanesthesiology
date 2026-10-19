@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Checks that links to a section land on it, below the fixed menu (Q13, D61, 17 Oct 2026).
+"""Checks that links to a section land on it, below the fixed menu (Q13, D61, 17 Oct 2026;
+Q15, D65, 18 Oct 2026).
 
 Usage:  python3 tests/check_anchor_position.py <base-url>
   e.g.  python3 tests/check_anchor_position.py https://fix-anchor-position-changeanesthesiology.sukantratnakar.workers.dev
@@ -8,24 +9,31 @@ Opening /#where-this-fits (prechangeway.com links there) landed above the sectio
 to a section (scroll-behavior: smooth) towards a spot fixed when the glide starts; the images above
 it, with no space kept for them while they load, and the fonts then moved the section mid-glide.
 #model and #po-terms, with no top padding of their own, ended up under the fixed menu.
+Q13 fixed that with CSS. Q15 adds a short script: on a fresh arrival at /#id the page jumps
+straight to the section and lines it up again once it has loaded, because on some devices (GitHub's
+Linux machines, possibly some Android phones) much wider stand-in fonts still moved the section
+off screen while the page glided.
 
 For every in-page target (TARGETS), at 390 and 1280 px, in headless Chrome with an empty cache
 each time (analytics blocked):
   AP-01  where the target is meant to land (scrolled to once the page has loaded): its heading
          sits just below the menu, 8 to 120 px under the menu's bottom edge
-  AP-02  arriving fresh at /#id, three times: the heading is never under the menu and is within
-         64 px of AP-01's spot. Only the fonts can still move the page mid-glide; they move a
-         section by at most 57 px (measured 17 Oct 2026, fallback against final fonts).
+  AP-02  arriving fresh at /#id, three times: the heading is never under the menu and lands
+         where a jump from the top (AP-03, as a menu link does) lands, within 4 px
   AP-03  a jump from the top of the loaded page (location.hash, as a menu link does) lands on
          AP-01's spot, within 4 px
-         (AP-02 and AP-03 allow 26 px more for a target that fades in itself: #po-terms)
+         (AP-02, AP-03 and AP-07 allow 26 px more for a target that fades in itself: #po-terms)
   AP-04  nothing looks different: once loaded, every element of the home page has the same
          position, size, font and colour as on BASE_REF's page (served from this checkout)
-  AP-05  nothing else changed against BASE_REF (default 90d9c26, main): only index.html and
-         tests/ (and the weekly check's two files, OPS_FILES, which are never served), the
-         article untouched, index.html is BASE_REF plus the Q13 CSS block
+  AP-05  nothing else changed against BASE_REF (default 90d9c26, main before Q13): only
+         index.html and tests/ (and the weekly check's two files, OPS_FILES, which are never
+         served), the article untouched, index.html is BASE_REF plus the Q13 CSS block and the
+         Q15 arrival script
   AP-06  the Q12 and Q10/Q11 tests pass (between them they run Q04, Q06 apart from its known
          PR-04 lines, and Q08)
+  AP-07  the same with a deliberately wide stand-in font (the served page, copied locally with
+         'Courier New', monospace as the fallback for the serif and sans fonts): two fresh
+         arrivals at each target land where a jump from the top lands, within 4 px
 Prints one PASS/FAIL line per check and where each heading landed (px from the top of the
 window). Exits 1 if any check fails, 2 if the test can't run. Node and Chrome must be installed.
 """
@@ -52,12 +60,16 @@ BASE_REF = os.environ.get("BASE_REF", "90d9c26")
 WIDTHS = (390, 1280)
 TARGETS = ["premise", "preorder", "po-terms", "author", "model", "morphosis", "where-this-fits", "inside", "event"]
 ARRIVALS = 3
+WIDE_ARRIVALS = 2
 GAP = (8, 120)       # AP-01: px between the menu's bottom edge and the heading
-FONT_SLACK = 64      # AP-02: px an arrival may differ from AP-01 (fonts move a section by 57 px at most)
+ARRIVAL_SLACK = 4    # AP-02 and AP-07: px an arrival may differ from a jump from the top
 JUMP_SLACK = 4       # AP-03
+# AP-07: the page's serif and sans stand-in fonts swapped for a much wider one.
+WIDE_FONTS = [("--serif:'Playfair Display',Georgia,serif;", "--serif:'Playfair Display','Courier New',monospace;"),
+              ("--sans:'DM Sans',system-ui,sans-serif;", "--sans:'DM Sans','Courier New',monospace;")]
 # A target that fades in itself (.reveal, now only #po-terms) slides up 26 px (translateY(26px)
 # in index.html) after the browser has scrolled to it, so it lands up to 26 px higher; AP-02 and
-# AP-03 allow that on top of their own slack. It did the same before Q13.
+# AP-03 (and AP-07) allow that on top of their own slack. It did the same before Q13.
 REVEAL_SHIFT = 26
 
 # Q13's one edit to BASE_REF's index.html, as (before, after), word for word.
@@ -74,7 +86,22 @@ html{scroll-padding-top:4rem}
 .author-photo img{aspect-ratio:auto 707/760}
 .analogy-fig img{aspect-ratio:auto 1071/583}
 '''
-APPROVED_EDITS = [("html{scroll-behavior:smooth}\n", "html{scroll-behavior:smooth}\n" + Q13_CSS)]
+# Q15's one edit: the arrival script, just before </head>.
+Q15_SCRIPT = r'''<script>
+/* Q15 (D65): on a fresh arrival at /#section, jump straight to the section instead of gliding to
+   it, and once the page and its fonts have loaded, line it up again (unless the visitor has
+   already scrolled), so nothing that loads above it can move it off screen. Menu clicks still
+   glide. Without this script the Q13 CSS still applies. */
+(function(d,h,n){if(!h||(n&&n.type!=='navigate'))return;
+var s=d.documentElement.style,moved=0,stop=function(){moved=1};s.scrollBehavior='auto';
+['wheel','touchstart','keydown','mousedown'].forEach(function(e){addEventListener(e,stop,{once:true,passive:true})});
+addEventListener('load',function(){(d.fonts?d.fonts.ready:Promise.resolve()).then(function(){
+var t=d.getElementById(h.slice(1));if(t&&!moved)t.scrollIntoView();s.scrollBehavior=''})})
+})(document,location.hash,performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]);
+</script>
+'''
+APPROVED_EDITS = [("html{scroll-behavior:smooth}\n", "html{scroll-behavior:smooth}\n" + Q13_CSS),
+                  ("</head>", Q15_SCRIPT + "</head>")]
 
 PLANTED = {
     "word changed": lambda h: h.replace("surgery was torture", "surgery was agony", 1),
@@ -82,6 +109,7 @@ PLANTED = {
     "menu space changed": lambda h: h.replace("html{scroll-padding-top:4rem}", "html{scroll-padding-top:6rem}", 1),
     "image rule changed": lambda h: h.replace("aspect-ratio:auto 1071/583", "aspect-ratio:auto 16/9", 1),
     "script added": lambda h: h.replace("</head>", "<script>void 0</script>\n</head>", 1),
+    "arrival script changed": lambda h: h.replace("t.scrollIntoView()", "t.scrollIntoView(false)", 1),
 }
 
 # Files that only run or describe the weekly check (Q14, D64). The website never serves them
@@ -220,15 +248,15 @@ def in_parallel(groups):
     return out
 
 
-def landing_cases(base, width):
+def landing_cases(base, width, tag="", arrivals=ARRIVALS):
     cases = []
     for t in TARGETS:
-        for i in range(ARRIVALS):
-            cases.append({"name": f"{width}|{t}|arrive{i}", "url": f"{base}/#{t}", "width": width, "wait": 4000,
+        for i in range(arrivals):
+            cases.append({"name": f"{tag}{width}|{t}|arrive{i}", "url": f"{base}/#{t}", "width": width, "wait": 4000,
                           "expr": f"{MEASURE}('{t}')"})
         # A jump from the top once loaded (as a menu link does), then where the target is meant to
         # land: scrolled to directly, which honours the menu space and the targets' own margins.
-        cases.append({"name": f"{width}|{t}|jump", "url": f"{base}/", "width": width, "wait": 2000, "expr": (
+        cases.append({"name": f"{tag}{width}|{t}|jump", "url": f"{base}/", "width": width, "wait": 2000, "expr": (
             "new Promise(ok => { location.hash = '#" + t + "'; setTimeout(() => { const jump = " + MEASURE + "('" + t + "');"
             " document.getElementById('" + t + "').scrollIntoView({behavior: 'instant'});"
             " setTimeout(() => ok({jump, meant: " + MEASURE + "('" + t + "')}), 1500); }, 3000); })")})
@@ -240,9 +268,10 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-def serve_base(index_html):
-    """Serves BASE_REF's index.html with this checkout's other files (AP-05 checks they are unchanged)."""
-    root = tempfile.mkdtemp(prefix="check-anchor-position-base-")
+def serve(index_html):
+    """Serves a given index.html with this checkout's other files (AP-05 checks they are unchanged):
+    BASE_REF's page for AP-04, the served page with wide stand-in fonts for AP-07."""
+    root = tempfile.mkdtemp(prefix="check-anchor-position-local-")
     with open(os.path.join(root, "index.html"), "w") as f:
         f.write(index_html)
     for name in os.listdir(REPO_ROOT):
@@ -254,7 +283,7 @@ def serve_base(index_html):
 
 
 def changes(old, new):
-    """How the served page differs from BASE_REF plus Q13's edit; [] if not at all."""
+    """How the served page differs from BASE_REF plus Q13's and Q15's edits; [] if not at all."""
     want = old
     for before, after in APPROVED_EDITS:
         if want.count(before) != 1:
@@ -291,14 +320,21 @@ def main():
         die(f"cannot fetch {base}: {e}")
     print(f"Checking {base} (base reference {BASE_REF})\n")
 
-    srv, root, base_local = serve_base(old_index)
+    wide = index
+    for before, after in WIDE_FONTS:
+        wide = wide.replace(before, after) if wide and wide.count(before) == 1 else ""
+    if not wide:
+        report(False, "AP-07", "Wide stand-in font copy of the served page", "font settings not found")
+    servers = [serve(old_index)] + ([serve(wide)] if wide else [])
     try:
         res = in_parallel([landing_cases(base, w) for w in WIDTHS] + [
             [{"name": f"layout|{w}|{which}", "url": url + "/", "width": w, "wait": 1500, "expr": LAYOUT}
-             for w in WIDTHS for which, url in (("served", base), ("base", base_local))]])
+             for w in WIDTHS for which, url in (("served", base), ("base", servers[0][2]))]] +
+            ([landing_cases(servers[1][2], w, "wide", WIDE_ARRIVALS) for w in WIDTHS] if wide else []))
     finally:
-        srv.shutdown()
-        shutil.rmtree(root, ignore_errors=True)
+        for srv, root, _ in servers:
+            srv.shutdown()
+            shutil.rmtree(root, ignore_errors=True)
 
     # AP-01 to AP-03: where each heading lands.
     table = []
@@ -314,16 +350,32 @@ def main():
             report(GAP[0] <= gap <= GAP[1] and meant["bottom"] <= meant["vh"], "AP-01",
                    f"{w} px #{t}: '{meant['heading'][:22]}' lands just below the menu",
                    f"heading at {meant['top']} px, {gap} px below the menu (allowed {GAP[0]} to {GAP[1]})")
-            bad = [a["top"] for a in arrivals if a["top"] < a["nav"] or abs(a["top"] - meant["top"]) > FONT_SLACK + fade]
-            report(not bad, "AP-02", f"{w} px #{t}: {ARRIVALS} fresh arrivals land on it",
-                   ", ".join(str(a["top"]) for a in arrivals) + f" px (menu ends at {arrivals[0]['nav']} px)")
+            bad = [a["top"] for a in arrivals if a["top"] < a["nav"] or abs(a["top"] - j["jump"]["top"]) > ARRIVAL_SLACK + fade]
+            report(not bad, "AP-02", f"{w} px #{t}: {ARRIVALS} fresh arrivals land where a jump does",
+                   ", ".join(str(a["top"]) for a in arrivals) + f" px (jump {j['jump']['top']}, menu ends at {arrivals[0]['nav']} px)")
             report(abs(j["jump"]["top"] - meant["top"]) <= JUMP_SLACK + fade and j["jump"]["top"] >= j["jump"]["nav"], "AP-03",
                    f"{w} px #{t}: a jump from the top lands on it", f"{j['jump']['top']} px" + (" (fades in itself)" if fade else ""))
             table.append((w, t, menu, meant["top"], j["jump"]["top"], [a["top"] for a in arrivals]))
     print()
-    print("Where each heading lands, in px from the top of the window:")
+
+    # AP-07: the same with a much wider stand-in font, as on some devices.
+    if wide:
+        for w in WIDTHS:
+            for t in TARGETS:
+                j = res[f"wide{w}|{t}|jump"]["value"]
+                arrivals = [res[f"wide{w}|{t}|arrive{i}"]["value"] for i in range(WIDE_ARRIVALS)]
+                if not j or not all(arrivals):
+                    report(False, "AP-07", f"{w} px #{t}, wide font: measured", "no result")
+                    continue
+                fade = REVEAL_SHIFT if j["meant"]["fades"] else 0
+                bad = [a["top"] for a in arrivals if a["top"] < a["nav"] or abs(a["top"] - j["jump"]["top"]) > ARRIVAL_SLACK + fade]
+                report(not bad, "AP-07", f"{w} px #{t}, wide font: {WIDE_ARRIVALS} fresh arrivals land where a jump does",
+                       ", ".join(str(a["top"]) for a in arrivals) + f" px (jump {j['jump']['top']})")
+                table.append((f"{w} wide", t, j["meant"]["nav"], j["meant"]["top"], j["jump"]["top"], [a["top"] for a in arrivals]))
+        print()
+    print("Where each heading lands, in px from the top of the window ('wide': wide stand-in font):")
     for w, t, menu, meant, jump, arr in table:
-        print(f"  {w:>4} px  #{t:<16} menu ends {menu:>3}  meant {meant:>4}  jump {jump:>4}  arrivals {', '.join(f'{a:>4}' for a in arr)}")
+        print(f"  {str(w):>9} px  #{t:<16} menu ends {menu:>3}  meant {meant:>4}  jump {jump:>4}  arrivals {', '.join(f'{a:>4}' for a in arr)}")
     print()
 
     # AP-04: nothing looks different once loaded.

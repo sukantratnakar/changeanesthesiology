@@ -18,7 +18,7 @@ Checks the pages served at <base-url>:
   TV-08  nothing else changed against BASE_REF (default 2a2f919, main after PR #5, so the
          launch section must be exactly as live); article untouched. With EL-04 in
          tests/check_events_links.py, this replaces Q08's TL-05 (Q12b). From Q13 on it also
-         accepts Q13's CSS block (tests/check_anchor_position.py).
+         accepts Q13's CSS block and Q15's arrival script (tests/check_anchor_position.py).
   TV-09  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
 Prints one PASS/FAIL line per check. Exits 1 if any check fails, 2 if the test can't run.
 Node and Chrome must be installed.
@@ -250,8 +250,9 @@ V3_FIGURE = r'''    <figure class="tl3 tl3-fig reveal" aria-describedby="tl3-des
     </figure>
 '''
 APPROVED_EDITS = [(OLD_SR, ""), (OLD_CSS, V3_CSS), (OLD_MEDIA_1024, ""), (OLD_MEDIA_680, ""), (OLD_FIGURE, V3_FIGURE)]
-# Q13 (D61) adds one CSS block so links land on their section; its exact edit lives in
-# tests/check_anchor_position.py (AP-05), and TV-08 accepts it and nothing else.
+# Q13 (D61) adds one CSS block so links land on their section, and Q15 (D65) a short arrival
+# script; their exact edits live in tests/check_anchor_position.py (AP-05), and TV-08 accepts
+# them and nothing else.
 LATER_EDITS = q13.APPROVED_EDITS
 
 RESULTS = []

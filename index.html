@@ -494,6 +494,18 @@ footer{background:var(--navy-deep);padding:4.5rem 2rem 3rem;border-top:1px solid
   .hero-series img{height:76px}
 }
 </style>
+<script>
+/* Q15 (D65): on a fresh arrival at /#section, jump straight to the section instead of gliding to
+   it, and once the page and its fonts have loaded, line it up again (unless the visitor has
+   already scrolled), so nothing that loads above it can move it off screen. Menu clicks still
+   glide. Without this script the Q13 CSS still applies. */
+(function(d,h,n){if(!h||(n&&n.type!=='navigate'))return;
+var s=d.documentElement.style,moved=0,stop=function(){moved=1};s.scrollBehavior='auto';
+['wheel','touchstart','keydown','mousedown'].forEach(function(e){addEventListener(e,stop,{once:true,passive:true})});
+addEventListener('load',function(){(d.fonts?d.fonts.ready:Promise.resolve()).then(function(){
+var t=d.getElementById(h.slice(1));if(t&&!moved)t.scrollIntoView();s.scrollBehavior=''})})
+})(document,location.hash,performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]);
+</script>
 </head>
 <body>
 

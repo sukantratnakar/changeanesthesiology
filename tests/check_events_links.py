@@ -12,7 +12,7 @@ Checks the pages served at <base-url>:
   EL-04  nothing else changed against BASE_REF (default 27cf1c4, main after Q08), and nothing
          from Q09 is in the checkout. This replaces Q08's TL-05, as Q09 did; from Q12 on,
          TV-08 in tests/check_three_layers_v3.py shares it, and EL-04 also accepts Q12's
-         exact edits to the diagram (Q12b) and Q13's CSS block.
+         exact edits to the diagram (Q12b), Q13's CSS block and Q15's arrival script.
   EL-05  no request to prechangeway.com when either page loads (headless Chrome, analytics blocked)
   EL-06  the Q04, Q06 (apart from its known PR-04 lines) and Q08 tests pass
 Q11 (D50) adds, for the launch section as a past event:
@@ -172,7 +172,8 @@ APPROVED_EDITS = [
 ]
 # Q12b: design v3 of the three-layers diagram (D56, D57) is on the page too. Its exact edits live
 # in tests/check_three_layers_v3.py (TV-08); EL-04 accepts those and nothing else outside the launch section.
-# Q13 (D61) adds one CSS block so links land on their section (tests/check_anchor_position.py, AP-05).
+# Q13 (D61) adds one CSS block so links land on their section, and Q15 (D65) a short arrival
+# script (tests/check_anchor_position.py, AP-05).
 APPROVED_EDITS += [("index.html", before, after) for before, after in v3.APPROVED_EDITS + q13.APPROVED_EDITS]
 Q09_FILES = ("scripts/events-feed.mjs", ".github/workflows/events-feed.yml", "data/events.json", "images/events/")
 # Q11: the 12 launch photos ("Website" copies, in album order) and the video, copied once.
