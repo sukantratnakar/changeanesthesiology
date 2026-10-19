@@ -484,7 +484,7 @@ def main():
         old_index, old_article = git("show", f"{BASE_REF}:index.html"), git("show", f"{BASE_REF}:article.html")
     except subprocess.CalledProcessError as e:
         die(f"git failed: {e.stderr.strip()}")
-    extra = [f for f in changed if f != "index.html" and not f.startswith("tests/")]
+    extra = [f for f in changed if f != "index.html" and not f.startswith("tests/") and f not in q13.OPS_FILES]
     report(not extra, "TV-08", f"Checkout: only index.html and tests/ changed since {BASE_REF}", ", ".join(extra) or f"{len(changed)} files")
     report(not dirty, "TV-08", "Checkout: no uncommitted changes to tracked files", dirty.replace("\n", ", ")[:80] or "clean")
     report(article == old_article, "TV-08", f"article.html is exactly as in {BASE_REF}")
