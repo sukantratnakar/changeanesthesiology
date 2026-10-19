@@ -13,6 +13,8 @@ on:
   schedule:
     - cron: "47 13 * * 1"   # Mondays 13:47 UTC = 7:47 am Saskatchewan time (UTC-6 all year)
   workflow_dispatch:        # the "Run workflow" button
+  push:                     # TEMPORARY (Q15 merge go: Linux check before merge): removed next
+    branches: [ops/weekly-check]
 
 permissions:
   contents: read
