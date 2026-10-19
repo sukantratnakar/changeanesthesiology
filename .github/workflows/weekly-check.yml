@@ -43,7 +43,7 @@ jobs:
           LOGS="$RUNNER_TEMP/logs"; mkdir -p "$LOGS"
           declare -A CELL
           FAILED=0; DETAILS=""
-          fail() { FAILED=$((FAILED + 1)); DETAILS+="- **$1**: $2"$'\n'; }
+          fail() { FAILED=$((FAILED + 1)); DETAILS+="- **$1**: $2"$'\n'; echo "::error title=$1::$2"; }
 
           git fetch -q --no-tags origin main
           MAIN=$(git rev-parse --short origin/main)
@@ -129,6 +129,6 @@ jobs:
             if [ $FAILED != 0 ]; then echo; echo "### What failed"; echo; printf '%s' "$DETAILS"; fi
             echo
             echo "Every test's full output is in the log of the \"Run the checks\" step."
-          } >> "$GITHUB_STEP_SUMMARY"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
 
           [ $FAILED = 0 ]
